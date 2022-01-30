@@ -1,0 +1,146 @@
+@import 'src/client/style/shared.scss';
+
+.Tab {
+	padding: 0.8em;
+	font-weight: weight(bold);
+	position: relative;
+	flex-grow: 1;
+	cursor: default;
+	--color: #{$text};
+	width: 250px;
+	max-width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	grid-row: 1;
+	line-height: 1.25em;
+	cursor: pointer;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		right: -0.5px;
+		width: 1px;
+		height: 1.25em;
+		transform: translateY(-50%);
+		// background-color: var(--color);
+		background-color: $border;
+		z-index: 2;
+	}
+
+	.icon {
+		display: grid;
+		height: 1.2em;
+		width: 1.2em;
+		margin-right: 0.35em;
+		flex: 0 0 auto;
+
+		svg {
+			margin: auto;
+			height: 100%;
+			width: 100%;
+			// color: var(--color);
+		}
+	}
+
+	.name {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		background: transparent;
+		flex: 1 1 auto;
+		// text-transform: uppercase;
+	}
+
+	.indicator {
+		display: none;
+		height: 1.1em;
+		width: 1.1em;
+		margin-left: 0.5em;
+		box-sizing: content-box !important;
+		flex: 0 0 auto;
+		position: absolute;
+		top: 0.5em;
+		left: -0.3em;
+		z-index: 1;
+		background-color: $offset;
+		border-radius: 50%;
+
+		svg {
+			margin: auto;
+			height: 100%;
+			width: 100%;
+			pointer-events: none;
+			fill: $green;
+		}
+	}
+
+	&.live {
+		.indicator {
+			display: grid;
+		}
+		&:hover .indicator {
+			background-color: rgba($background, 0.5);
+		}
+		&.active .indicator {
+			background-color: $background;
+		}
+	}
+
+	.menu {
+		display: grid;
+		height: 0.8em;
+		width: 0.8em;
+		margin-left: 0.5em;
+		box-sizing: content-box !important;
+		flex: 0 0 auto;
+		opacity: 0;
+
+		svg {
+			margin: auto;
+			height: 100%;
+			width: 100%;
+			pointer-events: none;
+		}
+	}
+
+	.menu {
+		border-radius: 50%;
+		cursor: pointer;
+		height: 1em;
+		width: 1em;
+
+		svg {
+			color: darken($text, 20%);
+		}
+
+		&:hover {
+			background-color: lighten($background, 3.5%);
+			box-shadow: 0 0 0 0.15em lighten($background, 3.5%);
+
+			svg {
+				color: $text;
+			}
+		}
+	}
+
+	&:focus {
+		text-decoration: underline;
+		outline: none;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: rgba($background, 0.5);
+
+		.menu {
+			opacity: 1;
+		}
+	}
+
+	&.active {
+		background-color: $background;
+		color: var(--color);
+	}
+}

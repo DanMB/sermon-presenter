@@ -1,0 +1,4 @@
+appId: com.danmb.SermonPresenter
+publish:
+  provider: github
+  token: [YOUR GITHUB ACCESS TOKEN]
