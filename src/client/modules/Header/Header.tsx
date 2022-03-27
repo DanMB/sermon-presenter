@@ -162,9 +162,9 @@ const Header = () => {
 				>
 					<Plus />
 				</div>
-				{/* <div class='present'>
-
-				</div> */}
+			</div>
+			<div class='present'>
+				<span>Presenter</span>
 			</div>
 			<div class='controls'>
 				<div

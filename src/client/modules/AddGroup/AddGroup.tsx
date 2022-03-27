@@ -43,7 +43,24 @@ const AddGroup = () => {
 			type: GroupTypes.POWERPOINT,
 			name: 'Powerpoint',
 			button: 'Find .pptx filer',
-			function: () => {},
+			function: () => {
+				main
+					.invoke('invoke:openfile', {
+						type: 'pptx',
+						name: 'Powerpoint',
+					})
+					.then(response => {
+						console.log(response);
+						if (!response) {
+							console.log('no file selected');
+						} else {
+							dispatch({
+								type: 'addGroup',
+								value: response,
+							});
+						}
+					});
+			},
 		},
 		{
 			type: GroupTypes.VIDEO,
@@ -58,7 +75,7 @@ const AddGroup = () => {
 			<div class='title'>SERMON</div>
 			<div class='groups'>
 				{groups.map(group => (
-					<div class='group' data-type={group.type}>
+					<div class='group' data-type={group.type} onClick={group.function}>
 						<div class='logo'>
 							<GroupIcon type={group.type} />
 						</div>

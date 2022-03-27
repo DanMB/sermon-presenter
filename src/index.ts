@@ -16,8 +16,9 @@ import getPowerpointData from './electron/getPowerpointData';
 
 class SermonApp {
 	private mainWindow: Window;
-	private presWindow?: BrowserWindow;
+	private presentingWindow: BrowserWindow;
 	private app: App;
+	private slideshow: Slideshow;
 
 	private mode: Mode = Mode.PROD;
 	private server: http.Server;
@@ -56,6 +57,7 @@ class SermonApp {
 		}
 
 		this.app = app;
+		this.slideshow = new Slideshow();
 
 		this.app.on('window-all-closed', this.onWindowAllClosed.bind(this));
 		this.app.on('ready', this.onReady.bind(this));
@@ -87,7 +89,7 @@ class SermonApp {
 		});
 
 		ipcMain.on(
-			'function:start',
+			'function:present',
 			(
 				e,
 				data: {
@@ -95,6 +97,7 @@ class SermonApp {
 					slide: number;
 				}
 			) => {
+				// this.slideshow.goto()
 				// var presentation = new Slideshow(data.file, SlideshowTypes.POWERPOINT, data.slide);
 			}
 		);
@@ -122,6 +125,7 @@ class SermonApp {
 				});
 
 				if (response && !response.canceled) {
+					if (data.type === 'pptx') this.slideshow.open(response.filePaths[0]);
 					return getPowerpointData(response.filePaths[0]);
 				} else {
 					return null;
@@ -137,6 +141,7 @@ class SermonApp {
 					file: string;
 				}
 			) => {
+				if (data.file.endsWith('.pptx')) this.slideshow.open(data.file);
 				return getPowerpointData(data.file);
 			}
 		);

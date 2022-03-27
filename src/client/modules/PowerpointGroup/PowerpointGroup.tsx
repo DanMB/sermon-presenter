@@ -67,7 +67,7 @@ const PowerpointGroup = ({ data, isActive = false }: { data: IGroupData; isActiv
 								<></>
 							) : (
 								<div class='textContent'>
-									<div class='inner'>{state.activeSlide.content}</div>
+									<div class='inner'>{state.activeSlide?.content}</div>
 								</div>
 							)}
 						</div>
