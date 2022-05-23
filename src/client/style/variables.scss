@@ -9,6 +9,7 @@ $offset: #10141d;
 $box: #27313b;
 $border: #2f363d;
 $text: #f2f5f8;
+$scrollbar: lighten($box, 20%);
 
 $primary: #8b4ec4;
 $primary-dark: #5a2877;
@@ -63,36 +64,34 @@ $font-weights: (
 	margin-top: 3.9rem;
 }
 
-@mixin cleanScrollbar($size: 6px, $hide: false) {
+@mixin cleanScrollbar($hide: false, $size: 8px, $margin: 4px) {
+	overflow-x: hidden;
+	overflow-y: scroll; // fallback because Firefox doesn't support overlay
+	overflow-y: overlay;
+	scrollbar-width: thin;
+	scrollbar-color: $scrollbar rgba(0, 0, 0, 0);
+
 	&::-webkit-scrollbar {
-		width: $size;
-		height: $size;
-		background-color: rgba(0, 0, 0, 0);
+		width: #{$size + $margin};
 	}
-	&::-webkit-scrollbar:hover {
-		background-color: rgba(255, 255, 255, 0.15);
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+
+		&:hover {
+			background: $offset;
+			background-clip: padding-box;
+
+			border: #{$margin} solid transparent;
+			border-radius: #{($size + $margin) * 0.5};
+		}
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: rgba($text, 0.8);
+		background: $scrollbar;
+		background-clip: padding-box;
 
-		@if $hide == true {
-			background: rgba($text, 0);
-		}
-	}
-
-	@if $hide == true {
-		&:hover::-webkit-scrollbar-thumb,
-		&::-webkit-scrollbar:hover::-webkit-scrollbar-thumb {
-			background: rgba($text, 0.8);
-		}
-	}
-
-	&::-webkit-scrollbar-thumb:active {
-		background: rgba($text, 0.9);
-	}
-
-	&::-webkit-scrollbar-corner {
-		background: rgba(0, 0, 0, 0);
+		border: #{$margin} solid transparent;
+		border-radius: #{($size + $margin) * 0.5};
 	}
 }

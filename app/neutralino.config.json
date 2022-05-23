@@ -1,0 +1,47 @@
+{
+	"applicationId": "sermon.neutralino.app",
+	"version": "0.0.1",
+	"defaultMode": "window",
+	"port": 3001,
+	"documentRoot": "/public/",
+	"url": "http://localhost:3000/?isneu=true",
+	"enableServer": true,
+	"enableNativeAPI": true,
+	"tokenSecurity": "one-time",
+	"logging": {
+		"enabled": true,
+		"writeToLogFile": true
+	},
+	"nativeAllowList": ["app.*", "os.*", "debug.log", "window.*"],
+	"globalVariables": {
+		"TEST3": {
+			"value1": 10,
+			"value2": {}
+		}
+	},
+	"modes": {
+		"window": {
+			"title": "myneu",
+			"width": 800,
+			"height": 500,
+			"minWidth": 400,
+			"minHeight": 200,
+			"fullScreen": false,
+			"alwaysOnTop": false,
+			"icon": "/public/icons/appIcon.png",
+			"enableInspector": true,
+			"maximize": true,
+			"hidden": false,
+			"resizable": true,
+			"exitProcessOnClose": true
+		}
+	},
+	"cli": {
+		"binaryName": "sermon-app",
+		"resourcesPath": "/public/",
+		"extensionsPath": "/extensions/",
+		"clientLibrary": "/public/neutralino.js",
+		"binaryVersion": "4.5.0",
+		"clientVersion": "3.4.0"
+	}
+}

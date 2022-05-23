@@ -13,10 +13,15 @@
 		"esModuleInterop": true,
 		"isolatedModules": true,
 		"resolveJsonModule": true,
-		"noImplicitAny": false,
-		"strictNullChecks": false,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"paths": {
+			"@src/*": ["./src/*"],
+			"@client/*": ["./src/client/*"]
+		}
 	},
-	"exclude": ["node_modules"]
+	"include": ["src"]
 }
