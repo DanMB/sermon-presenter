@@ -1,4 +1,4 @@
-var fs = require('fs');
+const fs = require('fs');
 const fileName = './app/neutralino.config.json';
 
 const config = require(fileName);
@@ -8,11 +8,14 @@ const isProd = !process.argv.includes('--dev');
 let envFile = './.env.' + (isProd ? 'prod' : 'dev');
 require('dotenv').config({ path: envFile });
 
-config.port = parseInt(process.env['NEU_PORT']);
-config.url = process.env['URL'];
+const url = new URL(process.env['URL']);
+url.searchParams.set('isneu', 'true');
 
-fs.writeFile(fileName, JSON.stringify(config), err => {
-	if (err) return console.log(err);
-	console.log(JSON.stringify(file));
-	console.log('writing to ' + fileName);
-});
+config.port = parseInt(process.env['NEU_PORT']);
+config.url = url;
+
+fs.writeFileSync(fileName, JSON.stringify(config));
+
+console.log('updated conig');
+console.log('');
+console.log('set-config.js successful!');

@@ -6,7 +6,7 @@
 		"start": "node scripts/set-config.js --dev && concurrently \"yarn start:src\" \"yarn start:app\" -c gray,white -n src,app",
 		"start:src": "vite",
 		"start:app": "cd app && neu run",
-		"build": "node scripts/set-config.js && yarn build:src && yarn build:app",
+		"build": "node scripts/set-config.js && yarn build:src && yarn build:app && node scripts/post-build.js",
 		"build:src": "vite build",
 		"build:app": "cd app && neu build",
 		"type-check": "tsc --noEmit"
