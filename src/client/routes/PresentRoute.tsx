@@ -16,11 +16,15 @@ const PresentRoute = () => {
 		};
 
 		const onWindowClose = () => {
+			if (!Neutralino) return;
 			// Stop presenting state
+			Neutralino.app.broadcast('setPresenting', null);
 		};
 
 		const onWindowFocus = () => {
-			// Focus control state
+			if (!Neutralino) return;
+			// Focus control window
+			Neutralino.app.broadcast('setFocus', 'control');
 		};
 
 		if (Neutralino) {

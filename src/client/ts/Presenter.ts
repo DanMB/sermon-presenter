@@ -1,19 +1,35 @@
 import { CustomProtocol, UriString } from '@src/types/CustomURI';
 import { TabType } from '@src/types/URIParts';
 import 'neutralinojs-types';
+import Storage from './Storage';
+
+export interface IPresenterOptions {
+	scale: number;
+	font: string;
+	background: string;
+	text: string;
+}
+
+export const DefaultPresentingState: IPresenterOptions = {
+	scale: 1,
+	font: "'Open Sans', Roboto, Arial, sans-serif",
+	background: '#000',
+	text: '#fff',
+};
 
 export default class Presenter {
 	private static _instance: Presenter | null = null;
 	public static get(): Presenter | null {
 		return this._instance;
 	}
-	public static open(uri?: UriString) {
+	public static open(uri?: UriString): Presenter | null {
 		try {
 			this._instance = new Presenter(uri);
 		} catch (e) {
 			console.error('Failed to open presenter window');
 			this._instance = null;
 		}
+		return this._instance;
 	}
 	public static close() {
 		this._instance = null;
@@ -25,6 +41,8 @@ export default class Presenter {
 			this._window.postMessage(data, '*');
 		}
 	}
+
+	public _currentOptions: IPresenterOptions = DefaultPresentingState;
 
 	private _window: Window | null = null;
 
@@ -67,7 +85,7 @@ export default class Presenter {
 	}
 
 	private async createNeuWindow(url: URL) {
-		const window = await Neutralino.window.create(url.toString(), {
+		await Neutralino.window.create(url.toString(), {
 			title: 'Presenter',
 			fullScreen: true,
 			enableInspector: false,
@@ -77,6 +95,34 @@ export default class Presenter {
 			resizable: true,
 			maximize: true,
 		});
-		return window;
+	}
+
+	public async setPresenting(presenting: string | null) {
+		await this.send('setPresenting', presenting);
+	}
+
+	public async setOptions(options: Partial<IPresenterOptions>) {
+		this._currentOptions = {
+			...this._currentOptions,
+			...options,
+		};
+
+		Storage.set('presenterOptions', this._currentOptions);
+
+		await this.send('setPresenterOptions', this._currentOptions);
+	}
+
+	private async send(name: string, data: any) {
+		if (Neutralino) {
+			await Neutralino.app.broadcast(name, data);
+		} else if (this._window) {
+			this._window.postMessage(
+				{
+					name,
+					data,
+				},
+				'*'
+			);
+		}
 	}
 }
