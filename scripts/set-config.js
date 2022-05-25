@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const fileName = path.resolve(__dirname, '../app/neutralino.config.json');
+const fileName = path.resolve(__dirname, '../neutralino.config.json');
 const config = require(fileName);
 
 const isProd = !process.argv.includes('--dev');

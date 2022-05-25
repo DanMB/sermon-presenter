@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const fileName = path.resolve(__dirname, '../app/neutralino.config.json');
+const fileName = path.resolve(__dirname, '../neutralino.config.json');
 const config = require(fileName);
 
 const isProd = !process.argv.includes('--dev');
@@ -27,7 +27,7 @@ let data = JSON.stringify(manifest, null, '\t');
 fs.writeFileSync(manifestPath, data);
 console.log('manifest.json was written');
 
-const resourcesPath = path.resolve(__dirname, `../app/dist/${config.cli.binaryName}/resources.neu`);
+const resourcesPath = path.resolve(__dirname, `../dist/${config.cli.binaryName}/resources.neu`);
 const updatePath = path.resolve(__dirname, '../build/ver/update.neu');
 
 fs.copyFileSync(resourcesPath, updatePath);

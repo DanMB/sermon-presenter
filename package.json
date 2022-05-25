@@ -3,12 +3,12 @@
 	"version": "0.0.1",
 	"description": "",
 	"scripts": {
-		"start": "node scripts/set-config.js --dev && concurrently \"yarn start:src\" \"yarn start:app\" -c gray,white -n src,app",
+		"start": "node scripts/set-config.js --dev && concurrently \"yarn start:src\" \"yarn start:neu\" -c gray,white -n src,neu",
 		"start:src": "vite",
-		"start:app": "cd app && neu run",
+		"start:neu": "neu run",
 		"build": "node scripts/set-config.js && yarn build:src && yarn build:app && node scripts/post-build.js",
 		"build:src": "vite build",
-		"build:app": "cd app && neu build",
+		"build:app": "neu build",
 		"type-check": "tsc --noEmit"
 	},
 	"keywords": [],
