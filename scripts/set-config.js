@@ -17,10 +17,12 @@ console.log('updated html');
 const url = new URL(process.env['URL']);
 url.searchParams.set('isneu', 'true');
 
-config.port = parseInt(process.env['NEU_PORT']);
-config.url = url;
+if (parseInt(config.port) !== parseInt(process.env['NEU_PORT']) || config.url !== url.toString()) {
+	config.port = parseInt(process.env['NEU_PORT']);
+	config.url = url.toString();
 
-fs.writeFileSync(fileName, JSON.stringify(config, null, '\t'));
+	fs.writeFileSync(fileName, JSON.stringify(config, null, '\t'));
+}
 
 console.log('updated config');
 console.log('');
