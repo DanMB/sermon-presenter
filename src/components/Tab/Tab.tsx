@@ -2,10 +2,10 @@ import { h } from 'preact';
 import './Tab.scss';
 
 import { useEffect } from 'preact/hooks';
-import Live from '@client/components/icons/Live';
+import Live from '@src/components/icons/Live';
 
-import GroupIcon from '@client/components/icons/GroupIcon';
-import TabStore, { useTabs } from '@client/ts/TabStore';
+import GroupIcon from '@src/components/icons/GroupIcon';
+import TabStore, { useTabs } from '@src/ts/TabStore';
 import { UriString } from '@src/types/CustomURI';
 import { UriParts } from '@src/types/URIParts';
 

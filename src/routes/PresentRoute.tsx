@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
-import Storage from '@client/ts/Storage';
+import Storage from '@src/ts/Storage';
 
 const PresentRoute = () => {
 	const presenting = Storage.use('presenting');

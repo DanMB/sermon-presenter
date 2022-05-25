@@ -3,8 +3,8 @@ import './NewTabModule.scss';
 
 import { useContext } from 'preact/hooks';
 
-import Music from '@client/components/icons/Music';
-import TabStore from '@client/ts/TabStore';
+import Music from '@src/components/icons/Music';
+import TabStore from '@src/ts/TabStore';
 import CustomURI from '@src/types/CustomURI';
 import { TabType } from '@src/types/URIParts';
 import ISongData from '@src/types/ISongData';

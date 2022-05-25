@@ -1,9 +1,9 @@
 import { h, render } from 'preact';
 import CustomURI from '@src/types/CustomURI';
 import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
-import ControlRoute from '@client/routes/ControlRoute';
-import PresentRoute from '@client/routes/PresentRoute';
-import '@client/style/global.scss';
+import ControlRoute from '@src/routes/ControlRoute';
+import PresentRoute from '@src/routes/PresentRoute';
+import '@src/style/global.scss';
 
 let App: () => h.JSX.Element = ControlRoute;
 

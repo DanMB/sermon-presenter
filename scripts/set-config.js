@@ -8,7 +8,7 @@ const isProd = !process.argv.includes('--dev');
 const envFile = path.resolve(__dirname, '../.env.' + (isProd ? 'prod' : 'dev'));
 require('dotenv').config({ path: envFile });
 
-const htmlPath = path.resolve(__dirname, '../src/client/index.html');
+const htmlPath = path.resolve(__dirname, '../src/index.html');
 let htmlData = fs.readFileSync(htmlPath, 'utf8');
 htmlData = htmlData.replaceAll(/(?<=localhost:)\d+(?=\/.+neutralino\.js")/gi, process.env['NEU_PORT']);
 fs.writeFileSync(htmlPath, htmlData);

@@ -1,11 +1,11 @@
 import { h } from 'preact';
 
 import { useEffect } from 'preact/hooks';
-import HeaderModule from '@client/modules/HeaderModule/HeaderModule';
-import TabStore, { useTabs } from '@client/ts/TabStore';
-import NewTabModule from '@client/modules/NewTabModule/NewTabModule';
+import HeaderModule from '@src/modules/HeaderModule/HeaderModule';
+import TabStore, { useTabs } from '@src/ts/TabStore';
+import NewTabModule from '@src/modules/NewTabModule/NewTabModule';
 import { TabType, UriParts } from '@src/types/URIParts';
-import SetListModule from '@client/modules/SetListModule/SetListModule';
+import SetListModule from '@src/modules/SetListModule/SetListModule';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);

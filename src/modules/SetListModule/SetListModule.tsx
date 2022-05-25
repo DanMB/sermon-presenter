@@ -3,9 +3,9 @@ import './SetListModule.scss';
 
 import { useContext, useEffect, useRef } from 'preact/hooks';
 
-import TabStore, { useTabs } from '@client/ts/TabStore';
+import TabStore, { useTabs } from '@src/ts/TabStore';
 import CustomURI from '@src/types/CustomURI';
-import Song from '@client/components/Song/Song';
+import Song from '@src/components/Song/Song';
 import { UriParts } from '@src/types/URIParts';
 
 const digitExp = /^Digit\d+$/i;

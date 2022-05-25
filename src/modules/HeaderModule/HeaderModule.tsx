@@ -2,15 +2,15 @@ import { h } from 'preact';
 import './HeaderModule.scss';
 
 import { useEffect, useRef, useState } from 'preact/hooks';
-import Plus from '@client/components/icons/Plus';
+import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
-import Tab from '@src/client/components/Tab/Tab';
-import TabStore, { useTabs } from '@client/ts/TabStore';
+import Tab from '@src/components/Tab/Tab';
+import TabStore, { useTabs } from '@src/ts/TabStore';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
-import { useIsNeu } from '@client/ts/Window';
+import { useIsNeu } from '@src/ts/Window';
 
 const digitExp = /^Digit\d+$/i;
 

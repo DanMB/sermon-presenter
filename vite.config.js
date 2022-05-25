@@ -11,7 +11,7 @@ require('dotenv').config({ path: envFile });
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	root: './src/client',
+	root: './src',
 	plugins: [
 		tsconfigPaths({
 			root: '../../',
@@ -41,6 +41,6 @@ export default defineConfig({
 		minify: isProd,
 	},
 	cssPreprocessOptions: {
-		includePaths: [path.resolve(__dirname, 'src/client/style/')],
+		includePaths: [path.resolve(__dirname, 'src/style/')],
 	},
 });

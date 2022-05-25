@@ -2,7 +2,7 @@
 	"applicationId": "sermon.neutralino.app",
 	"version": "0.0.1",
 	"defaultMode": "window",
-	"port": 3001,
+	"port": 7553,
 	"documentRoot": "/public/",
 	"url": "http://localhost:3000/?isneu=true",
 	"enableServer": true,
@@ -12,7 +12,12 @@
 		"enabled": true,
 		"writeToLogFile": true
 	},
-	"nativeAllowList": ["app.*", "os.*", "debug.log", "window.*"],
+	"nativeAllowList": [
+		"app.*",
+		"os.*",
+		"debug.log",
+		"window.*"
+	],
 	"globalVariables": {
 		"TEST3": {
 			"value1": 10,

@@ -3,9 +3,9 @@ import './Song.scss';
 
 import { useContext, useEffect, useRef } from 'preact/hooks';
 import ISongData from '@src/types/ISongData';
-import { useTabs } from '@client/ts/TabStore';
+import { useTabs } from '@src/ts/TabStore';
 import { UriParts } from '@src/types/URIParts';
-import { cleanMultiline } from '@src/client/utils/textUtils';
+import { cleanMultiline } from '@src/utils/textUtils';
 
 const digitExp = /^Digit\d+$/i;
 
