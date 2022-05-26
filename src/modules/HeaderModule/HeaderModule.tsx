@@ -18,9 +18,8 @@ const HeaderModule = () => {
 	const tabs = useTabs(state => state.tabs);
 	const active = useTabs(state => state.active);
 	const setActive = useTabs(state => state.setActive);
+	const moveActive = useTabs(state => state.moveActive);
 	const tabData = useRef<CustomMap<ITabData>>(TabStore.allTabs);
-
-	const activeTab = active?.limit(UriParts.ID)?.toString();
 
 	useEffect(() => {
 		tabData.current = TabStore.allTabs;
@@ -33,31 +32,31 @@ const HeaderModule = () => {
 
 		if (e.key === 'Tab') {
 			// if ctrl + tab
-			let tabIndex = tabs.findIndex(tab => tab === activeTab);
+			// const activeTab = active?.limit(UriParts.ID)?.toString();
+			// let tabIndex = tabs.findIndex(tab => tab === activeTab);
 
 			// should move backward or forward
 			if (e.shiftKey) {
-				tabIndex--;
-				if (tabIndex < 0) tabIndex = tabs.length;
+				moveActive('-');
 			} else {
-				tabIndex++;
-				if (tabIndex > tabs.length) tabIndex = 0;
+				moveActive('+');
 			}
 
 			// make sure tab exists
-			const newTab = tabs[tabIndex];
-			if (!newTab) return;
+			// const newTab = tabs[tabIndex];
+			// if (!newTab) return;
 
-			setActive(newTab);
+			// setActive(newTab);
 		} else if (digitExp.test(e.code)) {
 			// if ctrl + number
 			let tab = parseInt(e.key) - 1;
 			if (tab === -1) tab = 9;
+			moveActive(tab);
 
-			let newTab = tabs[tab];
-			if (!newTab) return;
+			// let newTab = tabs[tab];
+			// if (!newTab) return;
 
-			setActive(newTab);
+			// setActive(newTab);
 		}
 	};
 
@@ -100,9 +99,11 @@ const HeaderModule = () => {
 			<div class={`background ${isFocused ? 'focused' : ''}`}></div>
 			<div class='nav'>
 				<div class='tabs'>
-					{tabs.map(tab => (
-						<Tab uri={tab} />
-					))}
+					{tabs.map(tab => {
+						if (tab === newtabUri) return null;
+
+						return <Tab key={tab} uri={tab} />;
+					})}
 				</div>
 				<div
 					class={`add ${active.toString() === newtabUri ? 'active' : ''}`}

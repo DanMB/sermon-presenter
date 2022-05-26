@@ -8,11 +8,12 @@ import GroupIcon from '@src/components/icons/GroupIcon';
 import TabStore, { useTabs } from '@src/ts/TabStore';
 import { UriString } from '@src/types/CustomURI';
 import { UriParts } from '@src/types/URIParts';
+import { usePresent } from '@src/ts/PresentStore';
 
 const Tab = ({ uri }: { uri: UriString }) => {
 	const active = useTabs(state => state.active);
-	const isPresenting = useTabs(state => state.isPresenting);
-	const presenting = useTabs(state => state.presenting);
+	const isPresenting = usePresent(state => state.isPresenting);
+	const presenting = usePresent(state => state.presenting);
 	const setActive = useTabs(state => state.setActive);
 
 	const presentingTab: string | undefined = presenting?.parts[UriParts.ID];

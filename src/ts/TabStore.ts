@@ -1,21 +1,17 @@
 import CustomURI, { UriString } from '@src/types/CustomURI';
 import ITabData from '@src/types/ITabData';
 import Store from '@src/types/Store';
-// import main from '../ts/window';
 import CustomMap from '@src/types/CustomMap';
-import { newtabUri } from '@src/types/URIParts';
+import { newtabUri, UriParts } from '@src/types/URIParts';
 import Storage from './Storage';
 
 export interface ITabState {
 	tabs: UriString[];
 	active: CustomURI;
-	isPresenting: boolean;
-	presenting?: CustomURI;
 
 	setTabs: (tabs: CustomMap<ITabData>) => void;
 	setActive: (active: UriString) => void;
-	setIsPresenting: (isPresenting: boolean) => void;
-	setPresenting: (presenting?: UriString) => void;
+	moveActive: (movement: '+' | '-' | number) => void;
 }
 
 export class Tabs extends Store<ITabState> {
@@ -35,10 +31,8 @@ export class Tabs extends Store<ITabState> {
 		if (active && !map.get(active)) active = newtabUri;
 
 		super((set, get) => ({
-			tabs: tabs.map(tab => tab.uri),
+			tabs: [...tabs.map(tab => tab.uri), newtabUri],
 			active: new CustomURI(active ?? newtabUri),
-			isPresenting: false,
-			presenting: undefined,
 			setTabs: tabs => {
 				this.allTabs = tabs;
 
@@ -59,22 +53,38 @@ export class Tabs extends Store<ITabState> {
 					});
 				}
 			},
-			setIsPresenting: isPresenting => {
-				if (isPresenting) {
-					set({
-						isPresenting,
-					});
+
+			moveActive: movement => {
+				const tabs = get().tabs;
+
+				if (movement !== '+' && movement !== '-') {
+					let index = movement;
+					let maxIndex = tabs.length - 1;
+
+					if (index > maxIndex) index = maxIndex;
+					else if (index < 0) index = 0;
+
+					const newTab = tabs[index];
+					if (!newTab) return;
+
+					get().setActive(newTab);
 				} else {
-					set({
-						isPresenting,
-						presenting: undefined,
-					});
+					const activeTab = get().active?.limit(UriParts.ID)?.toString();
+					let index = get().tabs.findIndex(tab => tab === activeTab);
+
+					if (movement === '+') {
+						index--;
+						if (index < 0) index = tabs.length - 1;
+					} else {
+						index++;
+						if (index + 1 > tabs.length) index = 0;
+					}
+
+					const newTab = tabs[index];
+					if (!newTab) return;
+
+					get().setActive(newTab);
 				}
-			},
-			setPresenting: presenting => {
-				set({
-					presenting: presenting ? new CustomURI(presenting) : undefined,
-				});
 			},
 		}));
 
