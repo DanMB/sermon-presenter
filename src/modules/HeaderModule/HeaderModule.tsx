@@ -32,65 +32,25 @@ const HeaderModule = () => {
 
 		if (e.key === 'Tab') {
 			// if ctrl + tab
-			// const activeTab = active?.limit(UriParts.ID)?.toString();
-			// let tabIndex = tabs.findIndex(tab => tab === activeTab);
-
 			// should move backward or forward
 			if (e.shiftKey) {
 				moveActive('-');
 			} else {
 				moveActive('+');
 			}
-
-			// make sure tab exists
-			// const newTab = tabs[tabIndex];
-			// if (!newTab) return;
-
-			// setActive(newTab);
 		} else if (digitExp.test(e.code)) {
 			// if ctrl + number
 			let tab = parseInt(e.key) - 1;
 			if (tab === -1) tab = 9;
 			moveActive(tab);
-
-			// let newTab = tabs[tab];
-			// if (!newTab) return;
-
-			// setActive(newTab);
 		}
 	};
 
 	useEffect(() => {
-		document.addEventListener('keydown', keyDown);
-		// const tabsMap = TabStore.allTabs;
-
-		// tabsMap.mutate(tab => {
-		// 	const data = main
-		// 		.invoke('invoke:getSetList', {
-		// 			id: tab.id,
-		// 		})
-		// 		.then((response: ITabData) => {
-		// 			if (!response) {
-		// 				return response;
-		// 			} else {
-		// 				return response;
-		// 			}
-		// 		});
-
-		// 	return data;
-		// });
-
-		const windowFocus = () => {};
-
-		const windowBlur = () => {};
-
-		// main.on('window:focus', windowFocus);
-		// main.on('window:blur', windowBlur);
+		window.addEventListener('keydown', keyDown);
 
 		return function () {
-			document.removeEventListener('keydown', keyDown);
-			// main.off('window:focus', windowFocus);
-			// main.off('window:blur', windowBlur);
+			window.removeEventListener('keydown', keyDown);
 		};
 	}, []);
 
