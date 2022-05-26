@@ -10,6 +10,10 @@ export interface IPresenterOptions {
 	text: string;
 }
 
+export interface IPresenterProps extends Partial<IPresenterOptions> {
+	uri?: UriString;
+}
+
 export const DefaultPresentingState: IPresenterOptions = {
 	scale: 1,
 	font: "'Open Sans', Roboto, Arial, sans-serif",
@@ -17,14 +21,14 @@ export const DefaultPresentingState: IPresenterOptions = {
 	text: '#fff',
 };
 
-export default class Presenter {
-	private static _instance: Presenter | null = null;
-	public static get(): Presenter | null {
+export default class PresentWindow {
+	private static _instance: PresentWindow | null = null;
+	public static get(): PresentWindow | null {
 		return this._instance;
 	}
-	public static open(uri?: UriString): Presenter | null {
+	public static open(uri?: UriString): PresentWindow | null {
 		try {
-			this._instance = new Presenter(uri);
+			this._instance = new PresentWindow({ uri });
 		} catch (e) {
 			console.error('Failed to open presenter window');
 			this._instance = null;
@@ -42,11 +46,9 @@ export default class Presenter {
 		}
 	}
 
-	public _currentOptions: IPresenterOptions = DefaultPresentingState;
-
 	private _window: Window | null = null;
 
-	constructor(uri?: UriString) {
+	constructor({ uri, ...options }: IPresenterProps) {
 		const url = new URL(window.location.href);
 		url.searchParams.set('route', uri ?? `${CustomProtocol}://${TabType.PRESENT}`);
 
@@ -85,6 +87,8 @@ export default class Presenter {
 	}
 
 	private async createNeuWindow(url: URL) {
+		Neutralino.debug.log(`Creating window - ${url.toString()}`);
+		return;
 		await Neutralino.window.create(url.toString(), {
 			title: 'Presenter',
 			fullScreen: true,
@@ -97,23 +101,10 @@ export default class Presenter {
 		});
 	}
 
-	public async setPresenting(presenting: string | null) {
-		await this.send('setPresenting', presenting);
-	}
-
-	public async setOptions(options: Partial<IPresenterOptions>) {
-		this._currentOptions = {
-			...this._currentOptions,
-			...options,
-		};
-
-		Storage.set('presenterOptions', this._currentOptions);
-
-		await this.send('setPresenterOptions', this._currentOptions);
-	}
-
-	private async send(name: string, data: any) {
+	public async send(name: string, data: any) {
 		if (Neutralino) {
+			Neutralino.debug.log(`${name} - ${data}`);
+			return;
 			await Neutralino.app.broadcast(name, data);
 		} else if (this._window) {
 			this._window.postMessage(
@@ -123,6 +114,15 @@ export default class Presenter {
 				},
 				'*'
 			);
+		}
+	}
+
+	public async destroy() {
+		if (Neutralino) {
+			await Neutralino.app.broadcast('closeWindow', 'present');
+		} else if (this._window) {
+			this._window.close();
+			this._window = null;
 		}
 	}
 }
