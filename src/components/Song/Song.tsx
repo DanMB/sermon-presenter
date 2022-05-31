@@ -8,6 +8,7 @@ import { TabType, UriParts } from '@src/types/URIParts';
 import { cleanMultiline } from '@src/utils/textUtils';
 import { usePresent } from '@src/ts/PresentStore';
 import CustomURI from '@src/types/CustomURI';
+import SongSlide from './SongSlide';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -94,16 +95,11 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 		};
 	}, []);
 
-	const onSetSlide = (slideId: string) => {
-		const uri = new CustomURI([TabType.SETLIST, listId, song.id, slideId]).toString();
-		setActive(uri);
-		if (isPresenting) {
-			setPresenting(uri);
-		}
-	};
-
 	const onFocusOrClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
-		onSetSlide(e.currentTarget.id);
+		setActive(e.currentTarget.id);
+		if (isPresenting) {
+			setPresenting(e.currentTarget.id);
+		}
 	};
 
 	return (
@@ -113,37 +109,15 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 				{song.name}
 			</div>
 			<div class='slides' ref={slidesRef}>
-				{song.slides.map((slide, i) => {
-					let key = i + 1;
-					let shift = false;
-					if (key > 10) {
-						shift = true;
-						key -= 10;
-					}
-					if (key === 10) key = 0;
-
-					return (
-						<div
-							key={`${song.id}_sld${i}`}
-							id={`${i}`}
-							tabIndex={-1}
-							role='listitem'
-							class={`slide ${slideI.current === i ? (isActive.current ? 'active' : 'subActive') : ''}`}
-							onClick={onFocusOrClick}
-							onFocus={onFocusOrClick}
-						>
-							<div class='hotkey'>
-								{shift ? <li></li> : <></>}
-								{key}
-							</div>
-							<div class='preview'>
-								<div class='textContent'>
-									<div class='inner'>{cleanMultiline(slide.text)}</div>
-								</div>
-							</div>
-						</div>
-					);
-				})}
+				{song.slides.map((slide, index) => (
+					<SongSlide
+						key={`${song.id}_sld${index}`}
+						{...{ slide, index, listId }}
+						songId={song.id}
+						onClick={onFocusOrClick}
+						onFocus={onFocusOrClick}
+					/>
+				))}
 			</div>
 		</div>
 	);
