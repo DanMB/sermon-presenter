@@ -66,7 +66,7 @@ const SetListModule = ({ uri }: { uri: CustomURI }) => {
 	return (
 		<div class='page SongsGroup' key={`grp${data.id}`}>
 			{data.songs.map((song, i) => (
-				<Song key={song.id} song={song} index={i + 1} />
+				<Song key={song.id} song={song} listId={data.id} index={i + 1} />
 			))}
 		</div>
 	);

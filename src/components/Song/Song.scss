@@ -40,6 +40,10 @@
 			background-color: $box;
 			overflow: hidden;
 
+			&:focus {
+				outline: none;
+			}
+
 			&:hover,
 			&:focus {
 				box-shadow: 0 0 0 3px lighten($box, 12%);
