@@ -6,10 +6,7 @@ import PresentRoute from '@src/routes/PresentRoute';
 import '@src/style/global.scss';
 import { useState, useEffect } from 'preact/hooks';
 import Window from './ts/Window';
-
-const Empty = () => {
-	return <></>;
-};
+import PWA from './modules/PWA/PWA';
 
 const App = () => {
 	const [Route, setRoute] = useState<h.JSX.Element>(<></>);
@@ -45,7 +42,12 @@ const App = () => {
 		return function () {};
 	}, []);
 
-	return Route;
+	return (
+		<>
+			{Route}
+			<PWA />
+		</>
+	);
 };
 
 // @ts-ignore

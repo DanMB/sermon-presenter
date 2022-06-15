@@ -22,6 +22,6 @@
 			"@src/*": ["./src/*"]
 		}
 	},
-	"include": ["src"],
-	"exclude": ["src/public"]
+	"include": ["src", "node_modules/**/*.d.ts"],
+	"exclude": ["src/public", "node_modules "]
 }
