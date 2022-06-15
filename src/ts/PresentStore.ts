@@ -37,10 +37,17 @@ export class Presenter extends Store<IPresentState> {
 
 			setIsPresenting: isPresenting => {
 				if (isPresenting) {
+					if (!this.presentWindow) this.presentWindow = new PresentWindow(get().options);
+
 					set({
 						isPresenting,
 					});
 				} else {
+					if (this.presentWindow) {
+						this.presentWindow?.destroy();
+						this.presentWindow = null;
+					}
+
 					set({
 						isPresenting,
 						presenting: undefined,

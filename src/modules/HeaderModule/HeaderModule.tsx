@@ -11,6 +11,7 @@ import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
 import { useIsNeu } from '@src/ts/Window';
+import { usePresent } from '@src/ts/PresentStore';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -20,6 +21,9 @@ const HeaderModule = () => {
 	const setActive = useTabs(state => state.setActive);
 	const moveActive = useTabs(state => state.moveActive);
 	const tabData = useRef<CustomMap<ITabData>>(TabStore.allTabs);
+
+	const isPresenting = usePresent(state => state.isPresenting);
+	const setIsPresenting = usePresent(state => state.setIsPresenting);
 
 	useEffect(() => {
 		tabData.current = TabStore.allTabs;
@@ -74,8 +78,13 @@ const HeaderModule = () => {
 					<Plus />
 				</div>
 			</div>
-			<div class='present'>
-				<span>Presentér</span>
+			<div
+				class={`present ${isPresenting ? 'isPresenting' : ''}`}
+				onClick={() => {
+					setIsPresenting(!isPresenting);
+				}}
+			>
+				<span>{isPresenting ? 'Stop' : 'Start'}</span>
 			</div>
 		</div>
 	);

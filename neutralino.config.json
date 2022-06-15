@@ -2,9 +2,8 @@
 	"applicationId": "sermon.neutralino.app",
 	"version": "0.0.1",
 	"defaultMode": "window",
-	"port": 7553,
 	"documentRoot": "/src/public/",
-	"url": "http://localhost:3000/?isneu=true",
+	"url": "/",
 	"enableServer": true,
 	"enableNativeAPI": true,
 	"tokenSecurity": "one-time",
@@ -12,15 +11,10 @@
 		"enabled": true,
 		"writeToLogFile": true
 	},
-	"nativeAllowList": [
-		"app.*",
-		"os.*",
-		"debug.log",
-		"window.*"
-	],
+	"nativeAllowList": ["app.*", "os.*", "debug.log", "window.*"],
 	"modes": {
 		"window": {
-			"title": "myneu",
+			"title": "Sermon Presenter",
 			"width": 800,
 			"height": 500,
 			"minWidth": 400,

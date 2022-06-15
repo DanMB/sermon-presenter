@@ -49,10 +49,10 @@ export default class PresentWindow {
 	private _window: Window | null = null;
 
 	constructor({ uri, ...options }: IPresenterProps) {
-		const url = new URL(window.location.href);
-		url.searchParams.set('route', uri ?? `${CustomProtocol}://${TabType.PRESENT}`);
-
 		if (!Neutralino) {
+			const url = new URL(window.location.href);
+			url.searchParams.set('route', uri ?? `${CustomProtocol}://${TabType.PRESENT}`);
+
 			this._window = window.open(
 				url,
 				'PresenterWindow',
@@ -70,7 +70,9 @@ export default class PresentWindow {
 				})
 			);
 		} else {
-			this.createNeuWindow(url);
+			const params = new URLSearchParams();
+			params.set('route', uri ?? `${CustomProtocol}://${TabType.PRESENT}`);
+			this.createNeuWindow(params);
 		}
 	}
 
@@ -86,25 +88,28 @@ export default class PresentWindow {
 			.join(',');
 	}
 
-	private async createNeuWindow(url: URL) {
-		Neutralino.debug.log(`Creating window - ${url.toString()}`);
-		return;
-		await Neutralino.window.create(url.toString(), {
+	private async createNeuWindow(params: URLSearchParams) {
+		const path = `/#?${params.toString()}`;
+		Neutralino.debug.log(`Creating window - ${path}`);
+		// return;
+		await Neutralino.window.create(path, {
 			title: 'Presenter',
 			fullScreen: true,
-			enableInspector: false,
-			exitProcessOnClose: false,
+			enableInspector: true,
+			exitProcessOnClose: true,
 			maximizable: true,
 			borderless: true,
 			resizable: true,
-			maximize: true,
+			maximize: false,
+			hidden: true,
+			processArgs: '--route=present',
 		});
 	}
 
 	public async send(name: string, data: any) {
 		if (Neutralino) {
 			Neutralino.debug.log(`${name} - ${data}`);
-			return;
+			// return;
 			await Neutralino.app.broadcast(name, data);
 		} else if (this._window) {
 			this._window.postMessage(

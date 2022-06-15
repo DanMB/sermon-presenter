@@ -4,21 +4,49 @@ import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
 import ControlRoute from '@src/routes/ControlRoute';
 import PresentRoute from '@src/routes/PresentRoute';
 import '@src/style/global.scss';
+import { useState, useEffect } from 'preact/hooks';
+import Window from './ts/Window';
 
-let App: () => h.JSX.Element = ControlRoute;
+const Empty = () => {
+	return <></>;
+};
 
-try {
-	const urlParams = new URLSearchParams(window.location.search);
-	if (urlParams.has('uri')) {
-		const uri = new CustomURI(urlParams.get('uri') ?? newtabUri);
+const App = () => {
+	const [Route, setRoute] = useState<h.JSX.Element>(<></>);
 
-		if (uri.parts[UriParts.TYPE] === TabType.PRESENT) {
-			App = PresentRoute;
+	useEffect(() => {
+		const ready = () => {
+			if (Neutralino) {
+				Neutralino.init();
+				const args = Window.getArgs();
+				if (args.get('route') === 'present') {
+					setRoute(<PresentRoute />);
+				} else {
+					setRoute(<ControlRoute />);
+				}
+			}
+		};
+
+		// @ts-ignore
+		if (!window.REF_PORT) {
+			const params = new URLSearchParams(window.location.search);
+			if (params.get('route') === 'present') {
+				setRoute(<PresentRoute />);
+			} else {
+				setRoute(<ControlRoute />);
+			}
+			// @ts-ignore
+		} else if (window.NEU_LOADED) {
+			ready();
+		} else {
+			window.addEventListener('onNeuLoaded', ready);
 		}
-	}
-} catch (e) {
-	console.error(e);
-}
+
+		return function () {};
+	}, []);
+
+	return Route;
+};
 
 // @ts-ignore
 render(<App />, document.getElementById('wrapper'));

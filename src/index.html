@@ -8,11 +8,26 @@
 		<meta name="google" content="notranslate" />
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, shrink-to-fit=no" />
-		<script data-initialized="false"></script>
+		<script>
+			const urlParams = new URLSearchParams(window.location.search);
+			window.REF_PORT = urlParams.get('port') || undefined;
+			window.NEU_LOADED = false;
+			if (window.REF_PORT) {
+				const script = document.createElement('script');
+				script.src = `http://localhost:${REF_PORT}/neutralino.js`;
+
+				script.onload = () => {
+					console.log('LOADED');
+					window.dispatchEvent(new CustomEvent('onNeuLoaded'));
+					window.NEU_LOADED = true;
+				};
+
+				document.getElementsByTagName('head')[0].appendChild(script);
+			}
+		</script>
 	</head>
 	<body background="#000000">
 		<div id="wrapper"></div>
-		<script src="http://localhost:7553/neutralino.js"></script>
 		<script type="module" src="./index.tsx"></script>
 	</body>
 </html>

@@ -11,7 +11,6 @@ const PresentRoute = () => {
 				await Neutralino.window.move(-500, -500);
 				await Neutralino.window.maximize();
 				await Neutralino.window.show();
-			} else {
 			}
 		};
 
@@ -27,13 +26,7 @@ const PresentRoute = () => {
 			Neutralino.app.broadcast('setFocus', 'control');
 		};
 
-		if (Neutralino) {
-			Neutralino.init();
-			Neutralino.events.on('windowClose', onWindowClose);
-			Neutralino.events.on('windowFocus', onWindowFocus);
-
-			onInit();
-		}
+		onInit();
 
 		return function () {
 			if (Neutralino) {

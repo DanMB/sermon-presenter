@@ -1,31 +1,33 @@
+import CustomMap, { ReadonlyCustomMap } from '@src/types/CustomMap';
 import { h } from 'preact';
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 
 export default class Window {
-	public static _isNeu: boolean | null = null;
+	private static _isNeu: boolean | null = null;
 	public static async isNeu(): Promise<boolean> {
 		console.log('Window.isNeu', Window._isNeu);
 		if (Window._isNeu !== null) {
 			return Window._isNeu;
 		}
 
-		return new Promise(resolve => {
-			Neutralino.app
-				.getConfig()
-				.then(config => {
-					console.log('GOT CONFIG', config, !!config);
-					const urlParams = new URLSearchParams(window.location.search);
-					Window._isNeu = !!config && urlParams.get('isneu') === 'true';
-				})
-				.catch(() => {
-					console.log('FAILED TO GET CONFIG');
-					Window._isNeu = false;
-				})
-				.finally(() => {
-					console.log('FINALLY', Window._isNeu);
-					resolve(Window._isNeu ?? false);
+		// @ts-ignore
+		if (!window.REF_PORT) {
+			Window._isNeu = false;
+			return Window._isNeu;
+		}
+
+		// @ts-ignore
+		if (window.NEU_LOADED) {
+			Window._isNeu = true;
+			return Window._isNeu;
+		} else {
+			return new Promise(resolve => {
+				window.addEventListener('onNeuLoaded', () => {
+					Window._isNeu = typeof Neutralino !== 'undefined';
+					resolve(Window._isNeu);
 				});
-		});
+			});
+		}
 	}
 
 	public static useIsNeu(): boolean {
@@ -44,6 +46,28 @@ export default class Window {
 		}, []);
 
 		return isNeuState;
+	}
+
+	private static argsMap: CustomMap<string> | null = null;
+	private static argRegex = /^--([a-z-_\d]*)=?(.*)$/;
+
+	public static getArgs(args?: string[]): ReadonlyCustomMap<string> {
+		if (this.argsMap !== null) return this.argsMap.readonly;
+
+		const map = new CustomMap<string>();
+
+		if (!args && !NL_ARGS) return map;
+		const cleanedArray = (args || NL_ARGS).filter(a => a.length > 0 && a.startsWith('--'));
+
+		for (const arg of cleanedArray) {
+			const match = arg.match(this.argRegex);
+			if (match && match[1]) {
+				map.set(match[1], match[2] ?? '');
+			}
+		}
+
+		this.argsMap = map;
+		return map;
 	}
 
 	constructor() {}
