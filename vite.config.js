@@ -22,7 +22,7 @@ export default defineConfig({
 			defaultExport: 'component',
 		}),
 		VitePWA({
-			includeAssets: ['icons/appIcon.png'],
+			includeAssets: ['icons/appIcon.png', 'robots.txt'],
 			manifest: {
 				name: 'Sermon Presenter',
 				short_name: 'Sermon',
