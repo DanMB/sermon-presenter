@@ -5,7 +5,7 @@ import ControlRoute from '@src/routes/ControlRoute';
 import PresentRoute from '@src/routes/PresentRoute';
 import '@src/style/global.scss';
 import { useState, useEffect } from 'preact/hooks';
-import Window from './ts/Window';
+import Client from './ts/Client';
 import PWA from './modules/PWA/PWA';
 
 const App = () => {
@@ -15,7 +15,7 @@ const App = () => {
 		const ready = () => {
 			if (Neutralino) {
 				Neutralino.init();
-				const args = Window.getArgs();
+				const args = Client.getArgs();
 				if (args.get('route') === 'present') {
 					setRoute(<PresentRoute />);
 				} else {

@@ -14,6 +14,13 @@ export interface IPresenterProps extends Partial<IPresenterOptions> {
 	uri?: UriString;
 }
 
+export enum Events {
+	SET = 'presenter:set',
+	CLEAR = 'presenter:clear',
+	STOP = 'presenter:stop',
+	STYLE = 'presenter:style',
+}
+
 export const DefaultPresentingState: IPresenterOptions = {
 	scale: 1,
 	font: "'Open Sans', Roboto, Arial, sans-serif",
@@ -37,13 +44,6 @@ export default class PresentWindow {
 	}
 	public static close() {
 		this._instance = null;
-	}
-
-	public set(data: any) {
-		if (!this._window) {
-		} else {
-			this._window.postMessage(data, '*');
-		}
 	}
 
 	private _window: Window | null = null;
@@ -102,15 +102,15 @@ export default class PresentWindow {
 			resizable: true,
 			maximize: false,
 			hidden: true,
-			processArgs: '--route=present',
+			processArgs: `--route=present --control-port=${NL_PORT}`,
 		});
 	}
 
-	public async send(name: string, data: any) {
+	public async send(name: Event, data: any) {
 		if (Neutralino) {
 			Neutralino.debug.log(`${name} - ${data}`);
 			// return;
-			await Neutralino.app.broadcast(name, data);
+			await Neutralino.events.broadcast(`${name}`, data);
 		} else if (this._window) {
 			this._window.postMessage(
 				{
@@ -123,8 +123,9 @@ export default class PresentWindow {
 	}
 
 	public async destroy() {
+		console.log('Destroying window');
 		if (Neutralino) {
-			await Neutralino.app.broadcast('closeWindow', 'present');
+			await Neutralino.events.broadcast(Events.STOP);
 		} else if (this._window) {
 			this._window.close();
 			this._window = null;

@@ -6,12 +6,12 @@
 	"url": "/",
 	"enableServer": true,
 	"enableNativeAPI": true,
-	"tokenSecurity": "one-time",
+	"tokenSecurity": "none",
 	"logging": {
 		"enabled": true,
 		"writeToLogFile": true
 	},
-	"nativeAllowList": ["app.*", "os.*", "debug.log", "window.*"],
+	"nativeAllowList": ["app.*", "os.*", "debug.log", "window.*", "events.*"],
 	"modes": {
 		"window": {
 			"title": "Sermon Presenter",

@@ -45,7 +45,7 @@ export class Presenter extends Store<IPresentState> {
 				} else {
 					if (this.presentWindow) {
 						this.presentWindow?.destroy();
-						this.presentWindow = null;
+						// this.presentWindow = null;
 					}
 
 					set({
