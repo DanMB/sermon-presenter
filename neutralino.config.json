@@ -11,7 +11,7 @@
 		"enabled": true,
 		"writeToLogFile": true
 	},
-	"nativeAllowList": ["app.*", "os.*", "debug.log", "window.*", "events.*"],
+	"nativeAllowList": ["app.exit", "debug.log", "window.*", "events.*", "computer.*"],
 	"modes": {
 		"window": {
 			"title": "Sermon Presenter",
@@ -33,7 +33,7 @@
 		"binaryName": "sermon-app",
 		"resourcesPath": "/src/public/",
 		"clientLibrary": "/src/public/neutralino.js",
-		"binaryVersion": "4.5.0",
-		"clientVersion": "3.4.0"
+		"binaryVersion": "4.7.0",
+		"clientVersion": "3.6.0"
 	}
 }
