@@ -2,9 +2,11 @@ import CustomURI, { UriString } from '@src/types/CustomURI';
 import ITabData from '@src/types/ITabData';
 import Store from '@src/types/Store';
 import CustomMap from '@src/types/CustomMap';
-import { newtabUri } from '@src/types/URIParts';
+import { newtabUri, UriParts } from '@src/types/URIParts';
 import Storage from './Storage';
-import PresentWindow, { DefaultPresentingState, IPresenterOptions, IPresenterProps } from './PresentWindow';
+import PresentWindow, { DefaultPresentingState, Events, IPresenterOptions, IPresenterProps } from './PresentWindow';
+import Client from './Client';
+import TabStore from './TabStore';
 
 export interface IPresentState {
 	isPresenting: boolean;
@@ -45,7 +47,7 @@ export class Presenter extends Store<IPresentState> {
 				} else {
 					if (this.presentWindow) {
 						this.presentWindow?.destroy();
-						// this.presentWindow = null;
+						this.presentWindow = null;
 					}
 
 					set({
@@ -55,14 +57,25 @@ export class Presenter extends Store<IPresentState> {
 				}
 			},
 			setPresenting: presenting => {
+				const uri = presenting ? new CustomURI(presenting) : undefined;
 				if (this.presentWindow) {
-					this.presentWindow.send('setPresenting', presenting);
+					const tab = uri ? TabStore.getTab(uri.limit(UriParts.ID)?.toString() ?? '') : undefined;
+					const song = uri && tab ? tab.songs.find(s => s.id === uri.parts[UriParts.SONG]) : null;
+					const slide = uri && song ? song.slides[uri.parts[UriParts.SLIDE] as unknown as number] : null;
+					console.log({
+						uri: presenting,
+						data: slide,
+					});
+					Client.broadcast(Events.SET, {
+						uri: presenting,
+						data: slide,
+					});
 				} else if (presenting) {
 					this.presentWindow = new PresentWindow({ uri: presenting, ...get().options });
 				}
 
 				set({
-					presenting: presenting ? new CustomURI(presenting) : undefined,
+					presenting: uri,
 				});
 			},
 			setPresenterOptions: options => {
@@ -72,7 +85,7 @@ export class Presenter extends Store<IPresentState> {
 				};
 
 				if (this.presentWindow) {
-					this.presentWindow.send('setPresenterOptions', newOptions);
+					Client.broadcast(Events.STYLE, newOptions);
 				}
 
 				Storage.set('presenterOptions', newOptions);

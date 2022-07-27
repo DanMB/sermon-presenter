@@ -79,7 +79,7 @@ export default class Client {
 			try {
 				const data = event?.data ? JSON.parse(event.data) : null;
 				if (data?.event) {
-					window.dispatchEvent(new CustomEvent(`ws:${data.event}`, { detail: data }));
+					window.dispatchEvent(new CustomEvent(`ws:${data.event}`, { detail: data.data }));
 				}
 			} catch (e) {
 				console.warn('Failed to parse socket event', e);

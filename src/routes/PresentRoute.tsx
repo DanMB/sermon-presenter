@@ -4,9 +4,16 @@ import Storage from '@src/ts/Storage';
 import CustomURI from '@src/types/CustomURI';
 import { Events } from '@src/ts/PresentWindow';
 import Client from '@src/ts/Client';
+import PresentingContent from '@src/components/PresentingContent/PresentingContent';
 
 const PresentRoute = () => {
-	const [presenting, setPresenting] = useState<CustomURI | null>(null);
+	const [presenting, setPresenting] = useState<{
+		uri: CustomURI | null;
+		data: any | null;
+	}>({
+		uri: null,
+		data: null,
+	});
 	const style = Storage.use(Events.STYLE);
 
 	useEffect(() => {
@@ -28,6 +35,10 @@ const PresentRoute = () => {
 			Neutralino.app.exit();
 		};
 
+		const onSetPresenting = (e: CustomEvent<any>) => {
+			setPresenting(e.detail);
+		};
+
 		const onInit = async () => {
 			if (Neutralino) {
 				const controlPort = Client.getArgs().get('control-port');
@@ -35,13 +46,7 @@ const PresentRoute = () => {
 				if (controlPort) {
 					Client.connect(controlPort);
 					Client.listen(Events.STOP, onStopPresenting);
-					// const ws = new WebSocket(`ws:localhost:${controlPort}`);
-					// ws.addEventListener('message', event => {
-					// 	const data = JSON.parse(event.data);
-					// 	if (data?.event === Events.STOP) {
-					// 		Neutralino.app.exit();
-					// 	}
-					// });
+					Client.listen(Events.SET, onSetPresenting);
 				}
 
 				Neutralino.events.on('windowClose', onWindowClose);
@@ -58,15 +63,16 @@ const PresentRoute = () => {
 		return function () {
 			if (Neutralino) {
 				Client.remove(Events.STOP, onStopPresenting);
+				Client.remove(Events.SET, onSetPresenting);
 				Neutralino.events.off('windowClose', onWindowClose);
 				Neutralino.events.off('windowFocus', onWindowFocus);
 			}
 		};
 	}, []);
 
-	if (presenting === null) return <></>;
+	if (!presenting.data?.text) return <div class='Present'></div>;
 
-	return <></>;
+	return <PresentingContent data={presenting.data} />;
 };
 
 export default PresentRoute;
