@@ -90,7 +90,7 @@ export default class PresentWindow {
 
 	private async createNeuWindow(params: URLSearchParams) {
 		const path = `/#?${params.toString()}`;
-		Neutralino.debug.log(`Creating window - ${path}`);
+		// Neutralino.debug.log(`Creating window - ${path}`);
 		// return;
 		await Neutralino.window.create(path, {
 			title: 'Presenter',
@@ -108,7 +108,7 @@ export default class PresentWindow {
 
 	public async send(name: Event, data: any) {
 		if (Neutralino) {
-			Neutralino.debug.log(`${name} - ${data}`);
+			// Neutralino.debug.log(`${name} - ${data}`);
 			// return;
 			await Neutralino.events.broadcast(`${name}`, data);
 		} else if (this._window) {
