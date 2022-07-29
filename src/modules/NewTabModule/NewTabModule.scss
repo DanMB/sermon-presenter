@@ -5,6 +5,7 @@
 	align-items: center;
 	justify-content: space-around;
 	--color: #{$text};
+	flex-grow: 1;
 
 	.title {
 		font-weight: weight(bold);
@@ -55,5 +56,14 @@
 				font-size: 2.5em;
 			}
 		}
+	}
+
+	.footer {
+		margin-top: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		color: darken($text, 30%);
+		// opacity: 0.6;
 	}
 }

@@ -201,6 +201,12 @@ const NewTabModule = () => {
 					<div class='button'>Find setlister fra Songdriver</div>
 				</div>
 			</div>
+			<div class='footer'>
+				<span>{NL_APPVERSION}</span>
+				<span>
+					{NL_VERSION} / {NL_CVERSION}
+				</span>
+			</div>
 		</div>
 	);
 };
