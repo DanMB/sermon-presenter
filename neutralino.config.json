@@ -11,7 +11,7 @@
 		"enabled": true,
 		"writeToLogFile": true
 	},
-	"nativeAllowList": ["app.exit", "debug.log", "window.*", "events.*", "computer.*"],
+	"nativeAllowList": ["app.exit", "os.execCommand", "debug.log", "window.*", "events.*", "computer.*"],
 	"modes": {
 		"window": {
 			"title": "Sermon Presenter",
