@@ -21,7 +21,7 @@
 			"minHeight": 200,
 			"fullScreen": false,
 			"alwaysOnTop": false,
-			"icon": "/src/public/icons/appIcon.png",
+			"icon": "/src/public/icons/app.png",
 			"enableInspector": true,
 			"maximize": true,
 			"hidden": false,
