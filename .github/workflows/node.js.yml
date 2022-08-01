@@ -6,11 +6,10 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
+    name: Setup, Build, Deploy
 
     runs-on: ubuntu-latest
 
@@ -20,7 +19,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout 🛎️
+      uses: actions/checkout@v3
     - name: Set up Node.js ${{ matrix.node-version }} ⚙️
       uses: actions/setup-node@v3
       with:
@@ -29,7 +29,7 @@ jobs:
     - name: Install dependencies 📦
       run: yarn install --frozen-lockfile
     - name: Build src with Vite 🛠️
-      run: yarn build:src
+      run: yarn build:github
     - name: Deploy to GH Page ✨
       uses: peaceiris/actions-gh-pages@v3
       with:
