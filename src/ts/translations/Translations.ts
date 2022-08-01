@@ -24,11 +24,11 @@ const Translations = {
 		en: 'Add',
 		da: 'Tilføj',
 	},
-	SONGDRIVER: 'Songdriver',
-	SONGDRIVER_WEBSITE: 'https://songdriver.com',
+	SONGDRIVER: 'OurPraise',
+	SONGDRIVER_WEBSITE: 'https://ourpraise.dk/',
 	FIND_SETLISTS: {
-		en: 'Find setlists from Songdriver',
-		da: 'Find setliste fra Songdriver',
+		en: 'Find setlists from OurPraise',
+		da: 'Find setliste fra OurPraise',
 	},
 	SERMON: 'Sermon',
 	SERMON_WEBSITE: {

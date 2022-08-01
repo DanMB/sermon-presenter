@@ -197,8 +197,8 @@ const NewTabModule = () => {
 					<div class='logo'>
 						<Music />
 					</div>
-					<div class='groupName'>Songdriver</div>
-					<div class='button'>Find setlister fra Songdriver</div>
+					<div class='groupName'>OurPraise</div>
+					<div class='button'>Find setlister fra OurPraise</div>
 				</div>
 			</div>
 			<div class='footer'>
