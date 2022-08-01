@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite';
-import reactSvgPlugin from 'vite-plugin-react-svg';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import preact from '@preact/preset-vite';
 import path from 'path';
@@ -18,9 +17,6 @@ export default defineConfig({
 			root: '../../',
 		}),
 		preact(),
-		reactSvgPlugin({
-			defaultExport: 'component',
-		}),
 		VitePWA({
 			includeAssets: ['icons/appIcon.png', 'robots.txt'],
 			manifest: {
