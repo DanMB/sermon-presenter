@@ -1,3 +1,18 @@
+# Developer tools' files
+.lite_workspace.lua
+
+# Neutralinojs binaries and builds
+bin
+dist
+.tmp
+
+# Neutralinojs client (minified)
+neutralino.js
+
+# Neutralinojs related files
+.storage
+*.log
+
 
 .idea
 .sasslintrc
@@ -5,6 +20,8 @@
 .DS_Store
 
 build/
+
+package.lock.json
 
 # Logs
 logs
@@ -48,9 +65,6 @@ bower_components
 
 # node-waf configuration
 .lock-wscript
-
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
 
 # Dependency directories
 node_modules/

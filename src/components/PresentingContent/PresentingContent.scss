@@ -1,0 +1,27 @@
+@import 'src/style/shared.scss';
+
+.PresentingContent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #000;
+	color: #fff;
+	height: 100vh;
+	width: 100%;
+
+	.text {
+		$min_width: 480px;
+		$max_width: 3840px;
+		$min_font: 30px;
+		$max_font: 110px;
+		@include fluid-type($min_width, $max_width, $min_font, $max_font);
+		font-weight: 500;
+		line-height: 1.4em;
+		text-align: center;
+		white-space: pre;
+		overflow: hidden;
+		max-height: 100%;
+		width: 100%;
+	}
+}

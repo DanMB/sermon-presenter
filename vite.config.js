@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import reactSvgPlugin from 'vite-plugin-react-svg';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import preact from '@preact/preset-vite';
 import path from 'path';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -10,32 +12,51 @@ require('dotenv').config({ path: envFile });
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	root: './src/client',
+	root: './src',
 	plugins: [
+		tsconfigPaths({
+			root: '../../',
+		}),
 		preact(),
 		reactSvgPlugin({
 			defaultExport: 'component',
+		}),
+		VitePWA({
+			includeAssets: ['icons/appIcon.png', 'robots.txt'],
+			manifest: {
+				name: 'Sermon Presenter',
+				short_name: 'Sermon',
+				theme_color: '#ffffff',
+				icons: [
+					{
+						src: 'icons/appIcon.png',
+						sizes: '200x200',
+						type: 'image/png',
+					},
+				],
+			},
 		}),
 	],
 	esbuild: {
 		minify: isProd,
 		sourcemap: !isProd,
-		target: 'es2020',
+		target: 'esnext',
 	},
 	server: {
-		port: process.env['PORT'] || 3000,
+		port: process.env['VITE_PORT'] || 3000,
 		open: false,
 		host: true,
 	},
-	logLevel: isProd ? 'info' : 'warn',
+	logLevel: 'info',
+	clearScreen: false,
 	build: {
 		outDir: '../../build',
 		emptyOutDir: true,
-		target: 'es2020',
+		target: 'esnext',
 		sourcemap: !isProd,
 		minify: isProd,
 	},
 	cssPreprocessOptions: {
-		includePaths: [path.resolve(__dirname, 'src/client/style/')],
+		includePaths: [path.resolve(__dirname, 'src/style/')],
 	},
 });
