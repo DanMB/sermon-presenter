@@ -5,7 +5,7 @@
 		"moduleResolution": "node",
 		"jsx": "preserve",
 		"jsxFactory": "h",
-		"lib": ["dom", "dom.iterable", "esnext"],
+		"lib": ["dom", "dom.iterable", "esnext", "webworker"],
 		"strict": true,
 		"noEmit": true,
 		"allowJs": true,

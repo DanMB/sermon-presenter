@@ -20,6 +20,7 @@ neutralino.js
 .DS_Store
 
 build/
+src/dev-dist
 
 package.lock.json
 

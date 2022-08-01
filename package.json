@@ -3,6 +3,8 @@
 	"version": "0.0.1",
 	"description": "",
 	"scripts": {
+		"preview": "node scripts/set-config.js --dev && concurrently \"yarn preview:src\" \"yarn start:neu\" -c gray,white -n src,neu",
+		"preview:src": "vite preview",
 		"start": "node scripts/set-config.js --dev && concurrently \"yarn start:src\" \"yarn start:neu\" -c gray,white -n src,neu",
 		"start:src": "vite",
 		"start:neu": "neu run",
@@ -39,6 +41,8 @@
 		"vite-plugin-react-svg": "^0.2.0",
 		"vite-plugin-svgr": "^1.1.0",
 		"vite-tsconfig-paths": "^3.4.1",
+		"workbox-core": "^6.5.4",
+		"workbox-precaching": "^6.5.4",
 		"workbox-window": "^6.5.3"
 	}
 }

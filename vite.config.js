@@ -22,6 +22,17 @@ export default defineConfig({
 			defaultExport: 'component',
 		}),
 		VitePWA({
+			mode: 'development',
+			devOptions: {
+				enabled: true,
+				navigateFallback: 'index.html',
+			},
+			base: '/',
+			// strategies: 'injectManifest',
+			// registerType: 'autoUpdate',
+			// srcDir: 'src',
+			// filename: 'worker.ts',
+
 			includeAssets: ['icons/appIcon.png', 'robots.txt'],
 			manifest: {
 				name: 'Sermon Presenter',
