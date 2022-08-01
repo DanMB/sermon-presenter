@@ -50,7 +50,7 @@ export default defineConfig({
 	logLevel: 'info',
 	clearScreen: false,
 	build: {
-		outDir: '../../build',
+		outDir: '../build',
 		emptyOutDir: true,
 		target: 'esnext',
 		sourcemap: !isProd,
