@@ -12,11 +12,3 @@ Packaged with [Neutralinojs](https://neutralino.js.org/)
 ###### Compile a client and Neutralino build for distribution:
 
 - `yarn build`
-
-###### Compile a release build:
-
-- `npm run build`
-
-## Icon credits
-
-- `trayIcon.png` - Made by [Freepik](https://www.freepik.com) and downloaded from [Flaticon](https://www.flaticon.com)
