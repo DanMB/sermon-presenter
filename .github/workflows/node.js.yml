@@ -29,7 +29,7 @@ jobs:
     - name: Install dependencies 📦
       run: yarn install --frozen-lockfile
     - name: Build src with Vite 🛠️
-      run: yarn build:src --if-present
+      run: yarn build:src
     - name: Deploy to GH Page ✨
       uses: peaceiris/actions-gh-pages@v3
       with:
