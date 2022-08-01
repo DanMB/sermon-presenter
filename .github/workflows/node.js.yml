@@ -21,14 +21,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Set up Node.js ${{ matrix.node-version }} ⚙️
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build:src --if-present
-    - name: Deploy
+        cache: 'yarn'
+    - name: Install dependencies 📦
+      run: yarn install --frozen-lockfile
+    - name: Build src with Vite 🛠️
+      run: yarn build:src --if-present
+    - name: Deploy to GH Page ✨
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
