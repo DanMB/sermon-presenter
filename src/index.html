@@ -17,12 +17,13 @@
 				script.src = 'http://localhost:' + REF_PORT + '/neutralino.js';
 
 				script.onload = () => {
-					console.log('LOADED');
+					console.log('Neutralino client loaded');
 					window.dispatchEvent(new CustomEvent('onNeuLoaded'));
-					window.NEU_LOADED = true;
 				};
 
 				document.getElementsByTagName('head')[0].appendChild(script);
+			} else {
+				console.error('No Neutralino client port found');
 			}
 		</script>
 	</head>

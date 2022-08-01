@@ -1,51 +1,28 @@
 import CustomMap, { ReadonlyCustomMap } from '@src/types/CustomMap';
-import { h } from 'preact';
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 
 export default class Client {
-	private static _isNeu: boolean | null = null;
-	public static async isNeu(): Promise<boolean> {
-		console.log('Window.isNeu', Client._isNeu);
-		if (Client._isNeu !== null) {
-			return Client._isNeu;
-		}
-
-		// @ts-ignore
-		if (!window.REF_PORT) {
-			Client._isNeu = false;
-			return Client._isNeu;
-		}
-
-		// @ts-ignore
-		if (window.NEU_LOADED) {
-			Client._isNeu = true;
-			return Client._isNeu;
-		} else {
-			return new Promise(resolve => {
-				window.addEventListener('onNeuLoaded', () => {
-					Client._isNeu = typeof Neutralino !== 'undefined';
-					resolve(Client._isNeu);
-				});
-			});
-		}
-	}
-
-	public static useIsNeu(): boolean {
-		const [isNeuState, setIsNeuState] = useState<boolean>(Client._isNeu ?? false);
-
-		useEffect(() => {
-			Client.isNeu()
-				.then(isNeu => {
-					setIsNeuState(isNeu);
-				})
-				.catch(() => {
-					setIsNeuState(false);
+	public static async init(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			if (typeof Neutralino !== 'undefined') {
+				Neutralino.events.on('ready', () => {
+					resolve();
 				});
 
-			return () => {};
-		}, []);
+				Neutralino.init();
+			} else {
+				window.addEventListener('onNeuLoaded', async () => {
+					if (typeof Neutralino !== 'undefined') {
+						Neutralino.events.on('ready', () => {
+							resolve();
+						});
 
-		return isNeuState;
+						Neutralino.init();
+					} else {
+						reject();
+					}
+				});
+			}
+		});
 	}
 
 	private static argsMap: CustomMap<string> | null = null;
@@ -102,5 +79,3 @@ export default class Client {
 		window.removeEventListener(`ws:${name}`, fnc as EventListenerOrEventListenerObject);
 	}
 }
-
-export const useIsNeu = Client.useIsNeu;

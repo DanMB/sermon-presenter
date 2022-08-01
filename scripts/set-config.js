@@ -14,10 +14,8 @@ htmlData = htmlData.replaceAll(/(?<=localhost:)\d+(?=\/.+neutralino\.js")/gi, pr
 fs.writeFileSync(htmlPath, htmlData);
 console.log('updated html');
 
-const url = new URL(process.env['URL']);
-url.searchParams.set('isneu', 'true');
-
 // if (parseInt(config.port) !== parseInt(process.env['NEU_PORT']) || config.url !== url.toString()) {
+// 	const url = new URL(process.env['URL']);
 // 	config.port = parseInt(process.env['NEU_PORT']);
 // 	config.url = url.toString();
 

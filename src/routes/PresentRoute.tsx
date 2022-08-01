@@ -6,6 +6,12 @@ import { Events } from '@src/ts/PresentWindow';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
 
+const show = async () => {
+	await Neutralino.window.move(-500, -500);
+	await Neutralino.window.maximize();
+	await Neutralino.window.show();
+};
+
 const PresentRoute = () => {
 	const [presenting, setPresenting] = useState<{
 		uri: CustomURI | null;
@@ -19,14 +25,12 @@ const PresentRoute = () => {
 	useEffect(() => {
 		const onWindowClose = () => {
 			console.log('onWindowClose');
-			if (!Neutralino) return;
 			// Stop presenting state
 			// Neutralino.app.broadcast('setPresenting', null);
 		};
 
 		const onWindowFocus = () => {
 			console.log('onWindowFocus');
-			if (!Neutralino) return;
 			// Focus control window
 			Neutralino.events.broadcast('setFocus', 'control');
 		};
@@ -39,26 +43,20 @@ const PresentRoute = () => {
 			setPresenting(e.detail);
 		};
 
-		const onInit = async () => {
-			if (Neutralino) {
-				const controlPort = Client.getArgs().get('control-port');
+		const controlPort = Client.getArgs().get('control-port');
 
-				if (controlPort) {
-					Client.connect(controlPort);
-					Client.listen(Events.STOP, onStopPresenting);
-					Client.listen(Events.SET, onSetPresenting);
-				}
+		if (controlPort) {
+			Client.connect(controlPort);
+			Client.listen(Events.STOP, onStopPresenting);
+			Client.listen(Events.SET, onSetPresenting);
+		}
 
-				Neutralino.events.on('windowClose', onWindowClose);
-				Neutralino.events.on('windowFocus', onWindowFocus);
+		Neutralino.events.on('windowClose', onWindowClose);
+		Neutralino.events.on('windowFocus', onWindowFocus);
 
-				await Neutralino.window.move(-500, -500);
-				await Neutralino.window.maximize();
-				await Neutralino.window.show();
-			}
-		};
-
-		onInit();
+		setTimeout(() => {
+			show();
+		}, 1000);
 
 		return function () {
 			if (Neutralino) {

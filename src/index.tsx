@@ -13,31 +13,19 @@ const App = () => {
 
 	useEffect(() => {
 		const ready = () => {
-			if (Neutralino) {
-				Neutralino.init();
-				const args = Client.getArgs();
-				if (args.get('route') === 'present') {
-					setRoute(<PresentRoute />);
-				} else {
-					setRoute(<ControlRoute />);
-				}
-			}
-		};
-
-		// @ts-ignore
-		if (!window.REF_PORT) {
-			const params = new URLSearchParams(window.location.search);
-			if (params.get('route') === 'present') {
+			const args = Client.getArgs();
+			if (args.get('route') === 'present') {
 				setRoute(<PresentRoute />);
 			} else {
 				setRoute(<ControlRoute />);
 			}
-			// @ts-ignore
-		} else if (window.NEU_LOADED) {
-			ready();
-		} else {
-			window.addEventListener('onNeuLoaded', ready);
-		}
+		};
+
+		const failed = () => {
+			console.error('Failed to initialize Neutralino');
+		};
+
+		Client.init().then(ready).catch(failed);
 
 		return function () {};
 	}, []);

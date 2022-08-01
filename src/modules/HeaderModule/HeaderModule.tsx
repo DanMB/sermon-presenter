@@ -10,7 +10,6 @@ import TabStore, { useTabs } from '@src/ts/TabStore';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
-import { useIsNeu } from '@src/ts/Client';
 import { usePresent } from '@src/ts/PresentStore';
 
 const digitExp = /^Digit\d+$/i;
