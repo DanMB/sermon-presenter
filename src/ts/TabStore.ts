@@ -10,6 +10,7 @@ export interface ITabState {
 	active: CustomURI;
 
 	setTabs: (tabs: CustomMap<ITabData>) => void;
+	remove: (tab: UriString) => void;
 	setActive: (active: UriString) => void;
 	moveActive: (movement: '+' | '-' | number) => void;
 }
@@ -39,6 +40,21 @@ export class Tabs extends Store<ITabState> {
 				set({
 					tabs: tabs.getValues().map(tab => tab.uri),
 				});
+			},
+
+			remove: tab => {
+				const uri = new CustomURI(tab);
+				const uriString = uri.toString();
+
+				if (uriString === newtabUri) return;
+
+				if (get().tabs.includes(uriString)) {
+					this.removeTab(uriString);
+
+					if (get().active.toString() === uriString) {
+						get().moveActive(1);
+					}
+				}
 			},
 
 			setActive: active => {

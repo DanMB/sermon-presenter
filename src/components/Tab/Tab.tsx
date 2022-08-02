@@ -9,12 +9,14 @@ import TabStore, { useTabs } from '@src/ts/TabStore';
 import { UriString } from '@src/types/CustomURI';
 import { UriParts } from '@src/types/URIParts';
 import { usePresent } from '@src/ts/PresentStore';
+import Close from '../icons/Close';
 
 const Tab = ({ uri }: { uri: UriString }) => {
 	const active = useTabs(state => state.active);
 	const isPresenting = usePresent(state => state.isPresenting);
 	const presenting = usePresent(state => state.presenting);
 	const setActive = useTabs(state => state.setActive);
+	const remove = useTabs(state => state.remove);
 
 	const presentingTab: string | undefined = presenting?.parts[UriParts.ID];
 	const activeTab: string | undefined = active?.limit(UriParts.ID)?.toString();
@@ -27,6 +29,10 @@ const Tab = ({ uri }: { uri: UriString }) => {
 		// if ((e.target as HTMLElement).classList.contains('menu')) return;
 		// setActive((e.currentTarget as HTMLElement).getAttribute('data-uri'));
 		setActive(uri);
+	};
+
+	const closeTab = () => {
+		remove(uri);
 	};
 
 	return (
@@ -43,6 +49,9 @@ const Tab = ({ uri }: { uri: UriString }) => {
 			<span class='name'>{tab.name}</span>
 			<span class='indicator'>
 				<Live />
+			</span>
+			<span class='close' onClick={closeTab}>
+				<Close />
 			</span>
 		</div>
 	);

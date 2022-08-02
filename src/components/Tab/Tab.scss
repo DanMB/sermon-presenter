@@ -53,18 +53,14 @@
 		// text-transform: uppercase;
 	}
 
-	.indicator {
+	.indicator,
+	.close {
 		display: none;
 		height: 1.1em;
 		width: 1.1em;
 		margin-left: 0.5em;
 		box-sizing: content-box !important;
 		flex: 0 0 auto;
-		position: absolute;
-		top: 0.5em;
-		left: -0.3em;
-		z-index: 1;
-		background-color: $offset;
 		border-radius: 50%;
 
 		svg {
@@ -72,7 +68,26 @@
 			height: 100%;
 			width: 100%;
 			pointer-events: none;
+			fill: currentColor;
+		}
+
+		&:hover {
+			background-color: $offset;
+		}
+	}
+
+	.indicator {
+		svg {
 			fill: $green;
+		}
+	}
+
+	&:hover {
+		.indicator {
+			display: none;
+		}
+		.close {
+			display: grid;
 		}
 	}
 
