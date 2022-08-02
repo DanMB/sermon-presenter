@@ -16,25 +16,10 @@ const ControlRoute = () => {
 			Neutralino.app.exit();
 		};
 
-		const ready = () => {
-			if (Neutralino) {
-				Neutralino.init();
-
-				Neutralino.events.on('windowClose', onWindowClose);
-			}
-		};
-
-		// @ts-ignore
-		if (window.NEU_LOADED) {
-			ready();
-		} else {
-			window.addEventListener('onNeuLoaded', ready);
-		}
+		Neutralino.events.on('windowClose', onWindowClose);
 
 		return function () {
-			if (Neutralino) {
-				Neutralino.events.off('windowClose', onWindowClose);
-			}
+			Neutralino.events.off('windowClose', onWindowClose);
 		};
 	}, []);
 

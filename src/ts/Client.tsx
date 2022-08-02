@@ -65,7 +65,6 @@ export default class Client {
 	}
 
 	public static async broadcast<T = any>(name: string, data?: T) {
-		if (!Neutralino) return;
 		await Neutralino.events.broadcast(name, data);
 	}
 

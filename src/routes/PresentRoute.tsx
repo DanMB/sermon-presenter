@@ -59,12 +59,10 @@ const PresentRoute = () => {
 		}, 1000);
 
 		return function () {
-			if (Neutralino) {
-				Client.remove(Events.STOP, onStopPresenting);
-				Client.remove(Events.SET, onSetPresenting);
-				Neutralino.events.off('windowClose', onWindowClose);
-				Neutralino.events.off('windowFocus', onWindowFocus);
-			}
+			Client.remove(Events.STOP, onStopPresenting);
+			Client.remove(Events.SET, onSetPresenting);
+			Neutralino.events.off('windowClose', onWindowClose);
+			Neutralino.events.off('windowFocus', onWindowFocus);
 		};
 	}, []);
 
