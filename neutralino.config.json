@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"defaultMode": "window",
 	"documentRoot": "/src/public/",
-	"url": "/",
+	"url": "/client.html",
 	"enableServer": true,
 	"enableNativeAPI": true,
 	"tokenSecurity": "none",
