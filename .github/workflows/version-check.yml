@@ -1,0 +1,35 @@
+name: Version check
+
+on:
+  pull_request:
+    branches: ['main']
+
+jobs:
+  check:
+    name: Check if version is bumped
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - id: client
+        name: Checking client... 🔎
+        uses: thebongy/version-check@v1
+        with:
+          file: package.json
+          failBuild: false
+
+      - id: app
+        if: ${{ !<steps.client.outputs.versionChanged> }}
+        name: Checking app... 🔎
+        uses: thebongy/version-check@v1
+        with:
+          file: neutralino.config.json
+          failBuild: false
+      - name:
+        if: ${{ !(<steps.client.outputs.versionChanged> || <steps.app.outputs.versionChanged>) }}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Version number of package or neutralino config has not changed')
