@@ -5,30 +5,40 @@ on:
     branches: ['main']
 
 jobs:
-  check:
-    name: Check if version is bumped
-
+  client:
+    name: Check client version
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v3
-      - id: client
-        name: Checking client... 🔎
-        uses: thebongy/version-check@v1
+      - uses: actions/checkout@v3
+      - name: Checking app... 🔎
+        uses: avides/actions-project-version-check@v1.3.0
         with:
-          file: package.json
-          failBuild: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          file-to-check: package.json
 
-      - id: app
-        if: ${{ !steps.client.outputs.versionChanged }}
-        name: Checking app... 🔎
-        uses: thebongy/version-check@v1
+  app:
+    name: Check app version
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checking app... 🔎
+        uses: avides/actions-project-version-check@v1.3.0
         with:
-          file: neutralino.config.json
-          failBuild: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          file-to-check: neutralino.config.json
+
+  validate:
+    if: ${{ always() }}
+    needs: [client, app]
+    name: Validate version bumped
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
       - name: Validating ✨
-        if: ${{ !(steps.client.outputs.versionChanged || steps.app.outputs.versionChanged) }}
+        if: ${{ !(needs.client.outputs || needs.app.outputs) }}
         uses: actions/github-script@v3
         with:
           script: |
