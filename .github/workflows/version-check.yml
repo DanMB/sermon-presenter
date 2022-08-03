@@ -21,14 +21,14 @@ jobs:
           failBuild: false
 
       - id: app
-        if: ${{ !<steps.client.outputs.versionChanged> }}
+        if: ${{ !steps.client.outputs.versionChanged }}
         name: Checking app... 🔎
         uses: thebongy/version-check@v1
         with:
           file: neutralino.config.json
           failBuild: false
-      - name:
-        if: ${{ !(<steps.client.outputs.versionChanged> || <steps.app.outputs.versionChanged>) }}
+      - name: Validating ✨
+        if: ${{ !(steps.client.outputs.versionChanged || steps.app.outputs.versionChanged) }}
         uses: actions/github-script@v3
         with:
           script: |
