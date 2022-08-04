@@ -29,6 +29,9 @@
 			"exitProcessOnClose": true
 		}
 	},
+	"globalVariables": {
+		"--id": "controller"
+	},
 	"cli": {
 		"binaryName": "sermon-app",
 		"resourcesPath": "/src/public/",
