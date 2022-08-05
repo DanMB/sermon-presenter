@@ -9,7 +9,7 @@
 		"build": "node scripts/set-config.js && yarn build:src && yarn build:app && node scripts/post-build.js",
 		"build:src": "vite build",
 		"build:app": "neu build",
-		"build:github": "node scripts/set-config.js && vite build --base=/sermon-presenter",
+		"build:github": "node scripts/set-config.js && vite build --base=/sermon-presenter && node scripts/post-build.js",
 		"type-check": "tsc --noEmit",
 		"upgrade:neu": "yarn upgrade @neutralinojs/neu neutralinojs-types && neu update && neu version"
 	},

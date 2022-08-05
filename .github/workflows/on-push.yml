@@ -1,0 +1,89 @@
+name: Build page if versions updated
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  live:
+    name: Get current live versions
+    runs-on: ubuntu-latest
+
+    outputs:
+      client: ${{ steps.client.outputs.prop }}
+      app: ${{ steps.app.outputs.prop }}
+
+    steps:
+      - name: Checkout gh-pages branch 🛎️
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+      - name: Get client version 🔎
+        id: client
+        uses: notiz-dev/github-action-json-property@v0.1.0
+        with:
+          path: manifest.webmanifest
+          prop_path: version
+      - run: echo ${{ steps.client.outputs.prop }}
+      - name: Get app version 🔎
+        id: app
+        uses: notiz-dev/github-action-json-property@v0.1.0
+        with:
+          path: ver/manifest.json
+          prop_path: version
+      - run: echo ${{ steps.app.outputs.prop }}
+
+  new:
+    name: Get new versions
+    runs-on: ubuntu-latest
+
+    outputs:
+      client: ${{ steps.client.outputs.prop }}
+      app: ${{ steps.app.outputs.prop }}
+
+    steps:
+      - name: Checkout main branch 🛎️
+        uses: actions/checkout@v3
+      - name: Get client version 🔎
+        id: client
+        uses: notiz-dev/github-action-json-property@v0.1.0
+        with:
+          path: package.json
+          prop_path: version
+      - run: echo ${{ steps.client.outputs.prop }}
+      - name: Get app version 🔎
+        id: app
+        uses: notiz-dev/github-action-json-property@v0.1.0
+        with:
+          path: neutralino.config.json
+          prop_path: version
+      - run: echo ${{ steps.app.outputs.prop }}
+
+  build:
+    name: Build and Deploy
+    needs: [live, new]
+    if: ${{ (needs.live.outputs.client != needs.new.outputs.client) || (needs.live.outputs.app != needs.new.outputs.app) }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Set up Node.js ${{ matrix.node-version }} ⚙️
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - name: Install dependencies 📦
+        run: yarn install --frozen-lockfile
+      - name: Build src with Vite 🛠️
+        run: yarn build:github
+      - name: Deploy to gh-pages ✨
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
