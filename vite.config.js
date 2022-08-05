@@ -20,6 +20,7 @@ export default defineConfig({
 		VitePWA({
 			includeAssets: ['icons/appIcon.png', 'robots.txt'],
 			manifest: {
+				version: process.env.npm_package_version,
 				name: 'Sermon Presenter',
 				short_name: 'Sermon',
 				theme_color: '#ffffff',
