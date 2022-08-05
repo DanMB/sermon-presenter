@@ -51,6 +51,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           file-to-check: package.json
           only-return-version: true
+      - run: echo ${{ steps.client.outputs.version }}
       - name: Get app version 🔎
         id: app
         uses: avides/actions-project-version-check@v1.3.0
@@ -58,6 +59,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           file-to-check: ver/manifest.json
           only-return-version: true
+      - run: echo ${{ steps.app.outputs.version }}
 
   check:
     name: Compare versions
@@ -84,7 +86,7 @@ jobs:
 
       - name: Validating versions ✨
         id: valid
-        run: echo ::set-output name=result::${{ steps.client_ver.outputs.comparison-result === ">" || steps.app_ver.outputs.comparison-result === ">" }}
+        run: echo ::set-output name=result::${{ steps.client_ver.outputs.comparison-result == ">" || steps.app_ver.outputs.comparison-result == ">" }}
 
   build:
     name: Build and Deploy
