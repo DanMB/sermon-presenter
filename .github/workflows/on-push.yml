@@ -1,0 +1,116 @@
+name: Build page if versions updated
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  live:
+    name: Get current live versions
+    runs-on: ubuntu-latest
+
+    outputs:
+      client: ${{ steps.client.outputs.version }}
+      app: ${{ steps.app.outputs.version }}
+
+    steps:
+      - name: Checkout gh-pages branch 🛎️
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+      - name: Get client version 🔎
+        id: client
+        uses: avides/actions-project-version-check@v1.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          file-to-check: package.json
+          only-return-version: true
+      - name: Get app version 🔎
+        id: app
+        uses: avides/actions-project-version-check@v1.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          file-to-check: ver/manifest.json
+          only-return-version: true
+
+  new:
+    name: Get new versions
+    runs-on: ubuntu-latest
+
+    outputs:
+      client: ${{ steps.client.outputs.version }}
+      app: ${{ steps.app.outputs.version }}
+
+    steps:
+      - name: Checkout main branch 🛎️
+        uses: actions/checkout@v3
+      - name: Get client version 🔎
+        id: client
+        uses: avides/actions-project-version-check@v1.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          file-to-check: package.json
+          only-return-version: true
+      - name: Get app version 🔎
+        id: app
+        uses: avides/actions-project-version-check@v1.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          file-to-check: ver/manifest.json
+          only-return-version: true
+
+  check:
+    name: Compare versions
+    needs: [live, new]
+    runs-on: ubuntu-latest
+
+    outputs:
+      valid: ${{ steps.valid.outputs.result }}
+
+    steps:
+      - name: Calculating client 🎓
+        uses: madhead/semver-utils@latest
+        id: client_ver
+        with:
+          version: ${{ needs.new.outputs.client }}
+          compare-to: ${{ needs.live.outputs.client }}
+
+      - name: Calculating app 🎓
+        uses: madhead/semver-utils@latest
+        id: app_ver
+        with:
+          version: ${{ needs.new.outputs.app }}
+          compare-to: ${{ needs.live.outputs.app }}
+
+      - name: Validating versions ✨
+        id: valid
+        run: echo ::set-output name=result::${{ steps.client_ver.outputs.comparison-result === ">" || steps.app_ver.outputs.comparison-result === ">" }}
+
+  build:
+    name: Build and Deploy
+    needs: check
+    if: ${{ needs.check.outputs.valid }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Set up Node.js ${{ matrix.node-version }} ⚙️
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - name: Install dependencies 📦
+        run: yarn install --frozen-lockfile
+      - name: Build src with Vite 🛠️
+        run: yarn build:github
+      - name: Deploy to gh-pages ✨
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
