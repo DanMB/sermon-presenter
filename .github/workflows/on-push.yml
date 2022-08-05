@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      client: ${{ steps.client.outputs.version }}
-      app: ${{ steps.app.outputs.version }}
+      client: ${{ steps.client.outputs.prop }}
+      app: ${{ steps.app.outputs.prop }}
 
     steps:
       - name: Checkout gh-pages branch 🛎️
@@ -20,46 +20,44 @@ jobs:
           ref: gh-pages
       - name: Get client version 🔎
         id: client
-        uses: avides/actions-project-version-check@v1.3.0
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          file-to-check: package.json
-          only-return-version: true
+          path: manifest.webmanifest
+          prop_path: version
+      - run: echo ${{ steps.client.outputs.prop }}
       - name: Get app version 🔎
         id: app
-        uses: avides/actions-project-version-check@v1.3.0
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          file-to-check: ver/manifest.json
-          only-return-version: true
+          path: ver/manifest.json
+          prop_path: version
+      - run: echo ${{ steps.app.outputs.prop }}
 
   new:
     name: Get new versions
     runs-on: ubuntu-latest
 
     outputs:
-      client: ${{ steps.client.outputs.version }}
-      app: ${{ steps.app.outputs.version }}
+      client: ${{ steps.client.outputs.prop }}
+      app: ${{ steps.app.outputs.prop }}
 
     steps:
       - name: Checkout main branch 🛎️
         uses: actions/checkout@v3
       - name: Get client version 🔎
         id: client
-        uses: avides/actions-project-version-check@v1.3.0
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          file-to-check: package.json
-          only-return-version: true
-      - run: echo ${{ steps.client.outputs.version }}
+          path: package.json
+          prop_path: version
+      - run: echo ${{ steps.client.outputs.prop }}
       - name: Get app version 🔎
         id: app
-        uses: avides/actions-project-version-check@v1.3.0
+        uses: notiz-dev/github-action-json-property@v0.1.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          file-to-check: ver/manifest.json
-          only-return-version: true
-      - run: echo ${{ steps.app.outputs.version }}
+          path: neutralino.config.json
+          prop_path: version
+      - run: echo ${{ steps.app.outputs.prop }}
 
   build:
     name: Build and Deploy
