@@ -61,37 +61,10 @@ jobs:
           only-return-version: true
       - run: echo ${{ steps.app.outputs.version }}
 
-  check:
-    name: Compare versions
-    needs: [live, new]
-    runs-on: ubuntu-latest
-
-    outputs:
-      valid: ${{ steps.valid.outputs.result }}
-
-    steps:
-      - name: Calculating client 🎓
-        uses: madhead/semver-utils@latest
-        id: client_ver
-        with:
-          version: ${{ needs.new.outputs.client }}
-          compare-to: ${{ needs.live.outputs.client }}
-
-      - name: Calculating app 🎓
-        uses: madhead/semver-utils@latest
-        id: app_ver
-        with:
-          version: ${{ needs.new.outputs.app }}
-          compare-to: ${{ needs.live.outputs.app }}
-
-      - name: Validating versions ✨
-        id: valid
-        run: echo ::set-output name=result::${{ steps.client_ver.outputs.comparison-result == ">" || steps.app_ver.outputs.comparison-result == ">" }}
-
   build:
     name: Build and Deploy
-    needs: check
-    if: ${{ needs.check.outputs.valid }}
+    needs: [live, new]
+    if: ${{ (needs.live.outputs.client !== needs.new.outputs.client) || (needs.live.outputs.app !== needs.new.outputs.app) }}
     runs-on: ubuntu-latest
 
     strategy:
