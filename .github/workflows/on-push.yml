@@ -64,7 +64,7 @@ jobs:
   build:
     name: Build and Deploy
     needs: [live, new]
-    if: ${{ (needs.live.outputs.client !== needs.new.outputs.client) || (needs.live.outputs.app !== needs.new.outputs.app) }}
+    if: ${{ (needs.live.outputs.client != needs.new.outputs.client) || (needs.live.outputs.app != needs.new.outputs.app) }}
     runs-on: ubuntu-latest
 
     strategy:
