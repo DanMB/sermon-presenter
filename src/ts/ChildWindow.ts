@@ -4,6 +4,8 @@ import Client from './Client';
 export enum Events {
 	CLOSE = 'window:close',
 	FOCUS = 'window:focus',
+	SET = 'presenter:set',
+	STYLE = 'presenter:style',
 }
 
 export interface IWindowProps extends Neutralino.window.WindowOptions {
@@ -27,12 +29,11 @@ export default class ChildWindow {
 			...options,
 			hidden: true,
 			exitProcessOnClose: true,
-			enableInspector: true,
 			processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
 		});
 	}
 
-	public async send(name: Event, data?: any) {
+	public async send(name: string, data?: any) {
 		await Client.broadcast(`${name}`, data, this._id);
 		await Neutralino.events.broadcast(`${name}`, data);
 	}
