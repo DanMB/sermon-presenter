@@ -27,6 +27,7 @@ export default class ChildWindow {
 			maximizable: true,
 			resizable: true,
 			...options,
+			enableInspector: true,
 			hidden: true,
 			exitProcessOnClose: true,
 			processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
