@@ -78,7 +78,7 @@ export default class Client {
 	}
 
 	public static getId(): string {
-		return Client.getArgs().get('id') ?? '*';
+		return Client.getArgs().get('id') ?? 'client';
 	}
 
 	private static _ws: WebSocket | null = null;
