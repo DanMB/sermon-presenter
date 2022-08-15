@@ -8,6 +8,7 @@ import TabStore from '@src/ts/TabStore';
 import CustomURI from '@src/types/CustomURI';
 import { TabType } from '@src/types/URIParts';
 import ISongData from '@src/types/ISongData';
+import Client from '@src/ts/Client';
 
 const NewTabModule = () => {
 	const newSetListTab = () => {
@@ -202,10 +203,16 @@ const NewTabModule = () => {
 				</div>
 			</div>
 			<div class='footer'>
-				<span>{NL_APPVERSION}</span>
-				<span>
-					{NL_VERSION} / {NL_CVERSION}
-				</span>
+				{Client.isNeu ? (
+					<>
+						<span>{NL_APPVERSION}</span>
+						<span>
+							{NL_VERSION} / {NL_CVERSION}
+						</span>
+					</>
+				) : (
+					<></>
+				)}
 			</div>
 		</div>
 	);

@@ -23,6 +23,7 @@ const App = () => {
 
 		const failed = () => {
 			console.error('Failed to initialize Neutralino');
+			ready();
 		};
 
 		Client.init().then(ready).catch(failed);

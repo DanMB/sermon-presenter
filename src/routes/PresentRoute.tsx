@@ -6,12 +6,6 @@ import { Events } from '@src/ts/ChildWindow';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
 
-const show = async () => {
-	await Neutralino.window.move(-500, -500);
-	await Neutralino.window.maximize();
-	await Neutralino.window.show();
-};
-
 const PresentRoute = () => {
 	const [presenting, setPresenting] = useState<{
 		uri: CustomURI | null;
@@ -23,6 +17,12 @@ const PresentRoute = () => {
 	// const style = Storage.use(Events.STYLE);
 
 	useEffect(() => {
+		const show = async () => {
+			await Neutralino.window.move(-500, -500);
+			await Neutralino.window.maximize();
+			await Neutralino.window.show();
+		};
+
 		const onWindowClose = () => {
 			// console.log('onWindowClose');
 			// Stop presenting state
@@ -31,25 +31,34 @@ const PresentRoute = () => {
 
 		const onWindowFocus = () => {
 			// Focus control window
-			Neutralino.events.broadcast('setFocus', 'control');
+			Client.broadcast('setFocus', 'control');
 		};
 
 		const onSetPresenting = (e: CustomEvent<any>) => {
 			setPresenting(e.detail);
 		};
 
-		Neutralino.events.on('windowClose', onWindowClose);
-		Neutralino.events.on('windowFocus', onWindowFocus);
+		Client.on('windowClose', onWindowClose);
+		Client.on('windowFocus', onWindowFocus);
 
-		setTimeout(() => {
-			show();
-		}, 1000);
+		if (Client.isNeu) {
+			setTimeout(() => {
+				show();
+			}, 1000);
+		} else {
+			const docElm = document.documentElement;
+
+			docElm.addEventListener('click', () => {
+				window.moveTo(-500, -500);
+				docElm.requestFullscreen();
+			});
+		}
 
 		return function () {
 			// Client.remove(Events.STOP, onStopPresenting);
 			// Client.remove(Events.SET, onSetPresenting);
-			Neutralino.events.off('windowClose', onWindowClose);
-			Neutralino.events.off('windowFocus', onWindowFocus);
+			Client.off('windowClose', onWindowClose);
+			Client.off('windowFocus', onWindowFocus);
 		};
 	}, []);
 
