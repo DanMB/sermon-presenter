@@ -1,25 +1,22 @@
 # Developer tools' files
 .lite_workspace.lua
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.sasslintrc
 
-# Neutralinojs binaries and builds
+# Binaries and builds
 bin
 dist
+build
 .tmp
-
-# Neutralinojs client (minified)
-neutralino.js
-
-# Neutralinojs related files
-.storage
-*.log
-
-
-.idea
-.sasslintrc
-.vscode
-.DS_Store
-
-build/
+*.local
 
 package.lock.json
 
@@ -31,6 +28,8 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Firebase cache
 .firebase/

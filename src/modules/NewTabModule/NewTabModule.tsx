@@ -203,7 +203,7 @@ const NewTabModule = () => {
 				</div>
 			</div>
 			<div class='footer'>
-				{Client.isNeu ? (
+				{/* {Client.isTau ? (
 					<>
 						<span>{NL_APPVERSION}</span>
 						<span>
@@ -212,7 +212,7 @@ const NewTabModule = () => {
 					</>
 				) : (
 					<></>
-				)}
+				)} */}
 			</div>
 		</div>
 	);

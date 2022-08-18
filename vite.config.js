@@ -18,19 +18,26 @@ export default defineConfig({
 		}),
 		preact(),
 		VitePWA({
-			includeAssets: ['icons/appIcon.png', 'robots.txt'],
+			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
 			manifest: {
 				version: process.env.npm_package_version,
 				name: 'Sermon Presenter',
 				short_name: 'Sermon',
-				theme_color: '#ffffff',
 				icons: [
 					{
-						src: 'icons/appIcon.png',
-						sizes: '200x200',
+						src: '/icons/logo-192x192.png',
+						sizes: '192x192',
+						type: 'image/png',
+					},
+					{
+						src: '/icons/logo-512x512.png',
+						sizes: '512x512',
 						type: 'image/png',
 					},
 				],
+				theme_color: '#10141d',
+				background_color: '#10141d',
+				display: 'standalone',
 			},
 		}),
 	],

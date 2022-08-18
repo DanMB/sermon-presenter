@@ -4,9 +4,9 @@ import Store from '@src/types/Store';
 import CustomMap from '@src/types/CustomMap';
 import { newtabUri, UriParts } from '@src/types/URIParts';
 import Storage from './Storage';
-import Client from './Client';
 import TabStore from './TabStore';
 import ChildWindow, { Events } from './ChildWindow';
+import PresentWindow from './PresentWindow';
 
 export interface IPresenterOptions {
 	scale: number;
@@ -33,7 +33,7 @@ export interface IPresentState {
 }
 
 export class Presenter extends Store<IPresentState> {
-	private window: ChildWindow | null = null;
+	private window: PresentWindow | null = null;
 
 	constructor() {
 		const options: IPresenterOptions = Storage.get('presenterOptions') || DefaultPresentingState;
@@ -46,14 +46,7 @@ export class Presenter extends Store<IPresentState> {
 			setIsPresenting: isPresenting => {
 				if (isPresenting) {
 					if (!this.window) {
-						this.window = new ChildWindow({
-							id: 'present',
-							title: 'Presenter',
-							fullScreen: true,
-							maximizable: true,
-							borderless: true,
-							maximize: false,
-						});
+						this.window = new PresentWindow();
 					}
 
 					set({
@@ -61,7 +54,7 @@ export class Presenter extends Store<IPresentState> {
 					});
 				} else {
 					if (this.window) {
-						this.window?.destroy();
+						this.window?.close();
 						this.window = null;
 					}
 
@@ -81,19 +74,9 @@ export class Presenter extends Store<IPresentState> {
 						uri: presenting,
 						data: slide,
 					});
-					this.window.send(Events.SET, {
-						uri: presenting,
-						data: slide,
-					});
+					this.window.set(slide);
 				} else if (presenting) {
-					this.window = new ChildWindow({
-						id: 'present',
-						title: 'Presenter',
-						fullScreen: true,
-						maximizable: true,
-						borderless: true,
-						maximize: false,
-					});
+					this.window = new PresentWindow();
 				}
 
 				set({
@@ -107,7 +90,7 @@ export class Presenter extends Store<IPresentState> {
 				};
 
 				if (this.window) {
-					this.window.send(Events.STYLE, newOptions);
+					this.window.style(newOptions);
 				}
 
 				Storage.set('presenterOptions', newOptions);

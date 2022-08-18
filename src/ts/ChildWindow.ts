@@ -1,6 +1,7 @@
 import WindowFeatures from '@src/utils/WindowFeatures';
-import 'neutralinojs-types';
 import Client from './Client';
+import { WebviewWindow, WindowOptions } from '@tauri-apps/api/window';
+import { EventCallback, UnlistenFn } from '@tauri-apps/api/event';
 
 export enum Events {
 	CLOSE = 'window:close',
@@ -9,7 +10,7 @@ export enum Events {
 	STYLE = 'presenter:style',
 }
 
-export interface IWindowProps extends Neutralino.window.WindowOptions {
+export interface IWindowProps extends WindowOptions {
 	id: string;
 	route?: string;
 }
@@ -21,19 +22,24 @@ export default class ChildWindow {
 	}
 
 	private _native: Window | null = null;
+	private _window: WebviewWindow | null = null;
+
+	public get window() {
+		return this._window ?? this._native;
+	}
 
 	constructor({ id, route, ...options }: IWindowProps) {
 		this._id = id;
-		if (Client.isNeu) {
-			Neutralino.window.create('/client.html', {
+		if (Client.isTau) {
+			this._window = new WebviewWindow(id, {
 				title: id,
-				maximizable: true,
-				resizable: true,
+				fileDropEnabled: false,
+				focus: true,
+				visible: true,
+				minHeight: 300,
+				minWidth: 500,
 				...options,
-				enableInspector: true,
-				hidden: true,
-				exitProcessOnClose: true,
-				processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
+				// processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
 			});
 		} else {
 			const query = new URLSearchParams();
@@ -57,18 +63,43 @@ export default class ChildWindow {
 					fullscreen: true,
 				})
 			);
+			if (this._native) this._native.addEventListener('unload', this.destroy);
 		}
 	}
 
 	public async send(name: string, data?: any) {
-		await Client.broadcast(`${name}`, data, this._id);
+		if (this._window) this._window.emit(name, data);
+		// else if(this._native) this._native
 	}
 
 	public async destroy() {
-		await Client.broadcast(`${Events.CLOSE}`, null, this._id);
+		if (this._window) {
+			this._window.close();
+			this._window = null;
+		}
+		if (this._native) {
+			this._native.removeEventListener('unload', this.destroy);
+			this._native.close();
+			this._native = null;
+		}
 	}
 
 	public async focus() {
-		await Client.broadcast(`${Events.FOCUS}`, null, this._id);
+		if (this._window) this._window.setFocus();
+		else if (this._native) this._native.focus();
+	}
+
+	public async listen<T>(event: string, handler: EventCallback<T>): Promise<UnlistenFn> {
+		if (this._window) {
+			return this._window.listen(event, handler);
+		} else if (this._native) {
+			// onunload => close
+			// @ts-ignore
+			this._native.addEventListener(event, handler);
+			// @ts-ignore
+			return () => this._native?.removeEventListener(event, handler);
+		} else {
+			return () => null;
+		}
 	}
 }

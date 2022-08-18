@@ -2,69 +2,51 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import Storage from '@src/ts/Storage';
 import CustomURI from '@src/types/CustomURI';
-import { Events } from '@src/ts/ChildWindow';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
+import { WebviewWindow } from '@tauri-apps/api/window';
+import { Event, UnlistenFn } from '@tauri-apps/api/event';
+import { IPresenterOptions } from '@src/ts/PresentWindow';
+import ISongSlide from '@src/types/ISongSlide';
+import { EventNames } from '@src/types/EventNames';
 
 const PresentRoute = () => {
-	const [presenting, setPresenting] = useState<{
-		uri: CustomURI | null;
-		data: any | null;
-	}>({
-		uri: null,
-		data: null,
-	});
+	const [presenting, setPresenting] = useState<ISongSlide | null>(null);
 	// const style = Storage.use(Events.STYLE);
 
 	useEffect(() => {
-		const show = async () => {
-			await Neutralino.window.move(-500, -500);
-			await Neutralino.window.maximize();
-			await Neutralino.window.show();
+		const onSetPresenting = (e: Event<string>) => {
+			const data: ISongSlide | null = e.payload ? JSON.parse(e.payload) : null;
+			setPresenting(data);
 		};
 
-		const onWindowClose = () => {
-			// console.log('onWindowClose');
-			// Stop presenting state
-			// Neutralino.app.broadcast('setPresenting', null);
+		const onStyle = (e: Event<IPresenterOptions>) => {
+			// setPresenting(e.payload);
 		};
 
-		const onWindowFocus = () => {
-			// Focus control window
-			Client.broadcast('setFocus', 'control');
+		// Client.on('windowClose', onWindowClose);
+		// Client.on('windowFocus', onWindowFocus);
+
+		let offSet: UnlistenFn = () => null;
+		let offStyle: UnlistenFn = () => null;
+
+		const setup = async () => {
+			const window = WebviewWindow.getByLabel('control');
+			if (window) offSet = await window.listen(EventNames.PRESENT, onSetPresenting);
+			if (window) offStyle = await window.listen(EventNames.STYLE, onSetPresenting);
 		};
 
-		const onSetPresenting = (e: CustomEvent<any>) => {
-			setPresenting(e.detail);
-		};
-
-		Client.on('windowClose', onWindowClose);
-		Client.on('windowFocus', onWindowFocus);
-
-		if (Client.isNeu) {
-			setTimeout(() => {
-				show();
-			}, 1000);
-		} else {
-			const docElm = document.documentElement;
-
-			docElm.addEventListener('click', () => {
-				window.moveTo(-500, -500);
-				docElm.requestFullscreen();
-			});
-		}
+		setup();
 
 		return function () {
-			// Client.remove(Events.STOP, onStopPresenting);
-			// Client.remove(Events.SET, onSetPresenting);
-			Client.off('windowClose', onWindowClose);
-			Client.off('windowFocus', onWindowFocus);
+			offSet();
+			offStyle();
 		};
 	}, []);
 
-	if (!presenting.data?.text) return <div class='Present'></div>;
+	if (!presenting?.text) return <div class='Present'></div>;
 
-	return <PresentingContent data={presenting.data} />;
+	return <PresentingContent data={presenting} />;
 };
 
 export default PresentRoute;
