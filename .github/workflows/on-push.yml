@@ -29,8 +29,8 @@ jobs:
         id: app
         uses: notiz-dev/github-action-json-property@v0.1.0
         with:
-          path: ver/manifest.json
-          prop_path: version
+          path: manifest.webmanifest
+          prop_path: app
       - run: echo ${{ steps.app.outputs.prop }}
 
   new:
@@ -55,12 +55,12 @@ jobs:
         id: app
         uses: notiz-dev/github-action-json-property@v0.1.0
         with:
-          path: neutralino.config.json
-          prop_path: version
+          path: tauri/tauri.conf.json
+          prop_path: package.version
       - run: echo ${{ steps.app.outputs.prop }}
 
   build:
-    name: Build and Deploy
+    name: Build and Deploy website
     needs: [live, new]
     if: ${{ (needs.live.outputs.client != needs.new.outputs.client) || (needs.live.outputs.app != needs.new.outputs.app) }}
     runs-on: ubuntu-latest
@@ -73,7 +73,7 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
-      - name: Set up Node.js ${{ matrix.node-version }} ⚙️
+      - name: Set up Node.js ${{ matrix.node-version }} 🚀
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -87,3 +87,53 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
+
+  publish:
+    name: Build and Deploy app
+    needs: [live, new]
+    if: ${{ needs.live.outputs.app != needs.new.outputs.app }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Set up Node.js ${{ matrix.node-version }} 🚀
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      - name: Install Rust stable ⚙️
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install Ubuntu dependencies 🐧
+        if: matrix.platform == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+      - name: Install dependencies 📦
+        run: yarn install --frozen-lockfile
+      - name: Build app 🛠️
+        run: yarn build:github
+      - name: Deploy to gh-pages ✨
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'App v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false

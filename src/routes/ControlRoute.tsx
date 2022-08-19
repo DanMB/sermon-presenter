@@ -11,17 +11,7 @@ const ControlRoute = () => {
 	const active = useTabs(state => state.active);
 	const activeType = active.parts[UriParts.TYPE];
 
-	useEffect(() => {
-		const onWindowClose = () => {
-			Neutralino.app.exit();
-		};
-
-		Neutralino.events.on('windowClose', onWindowClose);
-
-		return function () {
-			Neutralino.events.off('windowClose', onWindowClose);
-		};
-	}, []);
+	useEffect(() => {}, []);
 
 	return (
 		<div class='Control'>

@@ -1,7 +1,17 @@
 import { CustomProtocol, UriString } from '@src/types/CustomURI';
 import { TabType } from '@src/types/URIParts';
-import 'neutralinojs-types';
 import Storage from './Storage';
+import {
+	WebviewWindow,
+	WindowOptions,
+	availableMonitors,
+	currentMonitor,
+	appWindow,
+	PhysicalPosition,
+} from '@tauri-apps/api/window';
+import { EventCallback, UnlistenFn } from '@tauri-apps/api/event';
+import ISongSlide from '@src/types/ISongSlide';
+import { EventNames } from '@src/types/EventNames';
 
 export interface IPresenterOptions {
 	scale: number;
@@ -12,13 +22,6 @@ export interface IPresenterOptions {
 
 export interface IPresenterProps extends Partial<IPresenterOptions> {
 	uri?: UriString;
-}
-
-export enum Events {
-	SET = 'presenter:set',
-	CLEAR = 'presenter:clear',
-	STOP = 'presenter:stop',
-	STYLE = 'presenter:style',
 }
 
 export const DefaultPresentingState: IPresenterOptions = {
@@ -33,43 +36,87 @@ export default class PresentWindow {
 	public static get(): PresentWindow | null {
 		return this._instance;
 	}
-	public static open(uri?: UriString): PresentWindow | null {
-		try {
-			this._instance = new PresentWindow({ uri });
-		} catch (e) {
-			console.error('Failed to open presenter window');
-			this._instance = null;
+
+	private _window: WebviewWindow;
+	public get webview() {
+		return this._window;
+	}
+
+	private _unlistenWindowClose: UnlistenFn = () => null;
+	private _unlistenAppClose: UnlistenFn = () => null;
+
+	constructor() {
+		if (PresentWindow._instance !== null) {
+			PresentWindow._instance.destroy();
 		}
-		return this._instance;
-	}
-	public static close() {
-		this._instance = null;
-	}
 
-	constructor({ uri, ...options }: IPresenterProps) {
-		const params = new URLSearchParams();
-		params.set('route', uri ?? `${CustomProtocol}://${TabType.PRESENT}`);
-
-		const path = `/#?${params.toString()}`;
-		Neutralino.window.create(path, {
-			title: 'Presenter',
-			fullScreen: true,
-			enableInspector: true,
-			exitProcessOnClose: true,
-			maximizable: true,
-			borderless: true,
+		this._window = new WebviewWindow('present', {
+			fileDropEnabled: false,
+			focus: false,
+			minHeight: 300,
+			minWidth: 500,
+			title: 'Sermon Presenter',
+			visible: false,
+			decorations: false,
+			skipTaskbar: false,
 			resizable: true,
-			maximize: false,
-			hidden: true,
-			processArgs: `--route=present --control-port=${NL_PORT}`,
+			url: window.location.origin + window.location.pathname,
+			// processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
 		});
+
+		this._window.once('tauri://created', this.init);
+
+		this._window.once('tauri://error', e => {
+			console.error(e);
+			this.close();
+		});
+
+		PresentWindow._instance = this;
 	}
 
-	public async send(name: Event, data: any) {
-		await Neutralino.events.broadcast(`${name}`, data);
-	}
+	private init = async () => {
+		this._unlistenAppClose = await appWindow.onCloseRequested(this.close);
+		this._unlistenWindowClose = await this._window.onCloseRequested(this.destroy);
 
-	public async destroy() {
-		await Neutralino.events.broadcast(Events.STOP);
-	}
+		const monitors = await availableMonitors();
+		const current = await currentMonitor();
+
+		if (monitors.length <= 0 || !current) {
+			console.log('no monitors');
+			this.close();
+			return;
+		}
+
+		const other = monitors.find(m => m.name !== current.name);
+
+		if (!other) {
+			console.log('no 2nd monitor');
+			this.close();
+			return;
+		}
+
+		await this._window.setPosition(new PhysicalPosition(other.position.x, other.position.y));
+		await this._window.maximize();
+		await this._window.setFullscreen(true);
+		// await this._window.show();
+	};
+
+	public set = async (slide?: ISongSlide | null) => {
+		await this._window.emit(EventNames.PRESENT, slide);
+	};
+
+	public style = async (style: IPresenterOptions) => {
+		await this._window.emit(EventNames.STYLE, style);
+	};
+
+	public close = () => {
+		this.destroy();
+		this._window.close();
+	};
+
+	private destroy = () => {
+		this._unlistenWindowClose();
+		this._unlistenAppClose();
+		appWindow.emit(EventNames.STOPPED);
+	};
 }

@@ -4,9 +4,23 @@ import Store from '@src/types/Store';
 import CustomMap from '@src/types/CustomMap';
 import { newtabUri, UriParts } from '@src/types/URIParts';
 import Storage from './Storage';
-import PresentWindow, { DefaultPresentingState, Events, IPresenterOptions, IPresenterProps } from './PresentWindow';
-import Client from './Client';
 import TabStore from './TabStore';
+import ChildWindow, { Events } from './ChildWindow';
+import PresentWindow from './PresentWindow';
+
+export interface IPresenterOptions {
+	scale: number;
+	font: string;
+	background: string;
+	text: string;
+}
+
+export const DefaultPresentingState: IPresenterOptions = {
+	scale: 1,
+	font: "'Open Sans', Roboto, Arial, sans-serif",
+	background: '#000',
+	text: '#fff',
+};
 
 export interface IPresentState {
 	isPresenting: boolean;
@@ -19,35 +33,29 @@ export interface IPresentState {
 }
 
 export class Presenter extends Store<IPresentState> {
-	private presentWindow: PresentWindow | null = null;
+	private window: PresentWindow | null = null;
 
-	constructor(props: IPresenterProps = {}) {
-		const { uri, ...options } = props;
-
-		let fullOptions: IPresenterOptions = Storage.get('presenterOptions') || DefaultPresentingState;
-		if (options) {
-			fullOptions = {
-				...fullOptions,
-				...options,
-			};
-		}
+	constructor() {
+		const options: IPresenterOptions = Storage.get('presenterOptions') || DefaultPresentingState;
 
 		super((set, get) => ({
-			isPresenting: !!uri,
-			presenting: uri ? new CustomURI(uri) : undefined,
-			options: fullOptions,
+			isPresenting: false,
+			presenting: undefined,
+			options,
 
 			setIsPresenting: isPresenting => {
 				if (isPresenting) {
-					if (!this.presentWindow) this.presentWindow = new PresentWindow(get().options);
+					if (!this.window) {
+						this.window = new PresentWindow();
+					}
 
 					set({
 						isPresenting,
 					});
 				} else {
-					if (this.presentWindow) {
-						this.presentWindow?.destroy();
-						this.presentWindow = null;
+					if (this.window) {
+						this.window?.close();
+						this.window = null;
 					}
 
 					set({
@@ -58,7 +66,7 @@ export class Presenter extends Store<IPresentState> {
 			},
 			setPresenting: presenting => {
 				const uri = presenting ? new CustomURI(presenting) : undefined;
-				if (this.presentWindow) {
+				if (this.window) {
 					const tab = uri ? TabStore.getTab(uri.limit(UriParts.ID)?.toString() ?? '') : undefined;
 					const song = uri && tab ? tab.songs.find(s => s.id === uri.parts[UriParts.SONG]) : null;
 					const slide = uri && song ? song.slides[uri.parts[UriParts.SLIDE] as unknown as number] : null;
@@ -66,12 +74,9 @@ export class Presenter extends Store<IPresentState> {
 						uri: presenting,
 						data: slide,
 					});
-					Client.broadcast(Events.SET, {
-						uri: presenting,
-						data: slide,
-					});
+					this.window.set(slide);
 				} else if (presenting) {
-					this.presentWindow = new PresentWindow({ uri: presenting, ...get().options });
+					this.window = new PresentWindow();
 				}
 
 				set({
@@ -84,8 +89,8 @@ export class Presenter extends Store<IPresentState> {
 					...options,
 				};
 
-				if (this.presentWindow) {
-					Client.broadcast(Events.STYLE, newOptions);
+				if (this.window) {
+					this.window.style(newOptions);
 				}
 
 				Storage.set('presenterOptions', newOptions);
@@ -95,10 +100,6 @@ export class Presenter extends Store<IPresentState> {
 				});
 			},
 		}));
-
-		if (uri) {
-			this.presentWindow = new PresentWindow({ uri, ...fullOptions });
-		}
 	}
 }
 
