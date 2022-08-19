@@ -5,9 +5,9 @@
 	"scripts": {
 		"start": "tauri dev",
 		"start:src": "vite",
-		"build": "tauri build && node scripts/post-build.js",
-		"build:src": "vite build --base=/sermon-presenter",
-		"build:github": "tauri build && node scripts/post-build.js",
+		"build": "tauri build",
+		"build:src": "vite build",
+		"build:github": "vite build --base=/sermon-presenter",
 		"type-check": "tsc --noEmit",
 		"tauri": "tauri"
 	},

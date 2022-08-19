@@ -2,7 +2,7 @@
 	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
 	"build": {
 		"withGlobalTauri": true,
-		"beforeBuildCommand": "yarn build:src",
+		"beforeBuildCommand": "yarn build:github",
 		"beforeDevCommand": "yarn start:src",
 		"devPath": "http://localhost:3000/",
 		"distDir": "https://danmb.github.io/sermon-presenter/"
