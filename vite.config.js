@@ -3,11 +3,15 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import preact from '@preact/preset-vite';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
+import { resolve } from 'path';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 let envFile = './.env.' + (isProd ? 'prod' : 'dev');
 require('dotenv').config({ path: envFile });
+
+const fileName = resolve(__dirname, './tauri/tauri.conf.json');
+const config = require(fileName);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,6 +25,7 @@ export default defineConfig({
 			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
 			manifest: {
 				version: process.env.npm_package_version,
+				app: config.package.version,
 				name: 'Sermon Presenter',
 				short_name: 'Sermon',
 				icons: [
