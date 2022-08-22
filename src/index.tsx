@@ -6,12 +6,14 @@ import { useState, useEffect } from 'preact/hooks';
 import Client from './ts/Client';
 import PWA from './modules/PWA/PWA';
 import { appWindow } from '@tauri-apps/api/window';
+import Cache from './ts/Cache';
 
 const App = () => {
 	const [Route, setRoute] = useState<h.JSX.Element>(<></>);
 
 	useEffect(() => {
 		const ready = () => {
+			Cache.clean();
 			if (appWindow.label === 'present') {
 				setRoute(<PresentRoute />);
 			} else {
