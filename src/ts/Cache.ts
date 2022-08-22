@@ -9,6 +9,8 @@ export type CacheItem<T = StorageItem> = {
 };
 
 export default class Cache {
+	public static enabled: boolean = true;
+
 	public static clean(): void {
 		const now = Date.now();
 
@@ -26,6 +28,7 @@ export default class Cache {
 	}
 
 	public static get<T = StorageItem>(key: string): T | undefined {
+		if (!Cache.enabled) return;
 		const data = localStorage.getItem(key);
 		if (!data) return;
 		try {
@@ -46,7 +49,8 @@ export default class Cache {
 	}
 
 	public static set<T = StorageItem>(key: string, value: T, maxAge: number = 36000): void {
-		// 10 hours
+		// 10 hours default
+		if (!Cache.enabled) return;
 		try {
 			const now = Date.now();
 
@@ -69,6 +73,8 @@ export default class Cache {
 	}
 
 	public static use<T = StorageItem>(key: string, initialValue?: T): [T | undefined, (newValue: T) => void] {
+		if (!Cache.enabled) return [initialValue, () => undefined];
+
 		const [storedValue, internalSetValue] = useState<T | undefined>(Cache.get(key) || initialValue);
 
 		const handleStorageChange = (event: StorageEvent) => {
