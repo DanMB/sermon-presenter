@@ -23,6 +23,7 @@ const App = () => {
 
 		const failed = () => {
 			console.error('Failed to initialize Tauri client');
+			setRoute(<ControlRoute />);
 		};
 
 		Client.init().then(ready).catch(failed);

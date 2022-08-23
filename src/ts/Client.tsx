@@ -2,13 +2,15 @@ import { appWindow } from '@tauri-apps/api/window';
 import { invoke } from '@tauri-apps/api/tauri';
 import { getTauriVersion, getVersion } from '@tauri-apps/api/app';
 import Cache from './Cache';
+import OurPraise from './OurPraise';
 
 export default class Client {
 	public static isTau: boolean | undefined = undefined;
 
 	public static versions = {
 		tauri: '',
-		client: '',
+		// @ts-ignore
+		client: __VERSION__,
 		app: '',
 	};
 
@@ -26,6 +28,7 @@ export default class Client {
 					});
 			} else {
 				Client.isTau = false;
+				this.setup();
 				reject();
 			}
 		});
@@ -34,12 +37,19 @@ export default class Client {
 	private static setup = async () => {
 		Cache.enabled = import.meta.env.APP_CACHE ?? true;
 
-		this.versions = {
-			tauri: await getTauriVersion(),
-			// @ts-ignore
-			client: __VERSION__,
-			app: await getVersion(),
-		};
+		OurPraise.init({
+			apiKey: 'AIzaSyCBfNSkzwlXjavTRNq-TmVo7QpcHrZYvgE',
+			authDomain: 'ourpraise-fb.firebaseapp.com',
+			projectId: 'ourpraise-fb',
+			storageBucket: 'ourpraise-fb.appspot.com',
+			messagingSenderId: '485823144275',
+			appId: '1:485823144275:web:a6eae91b382d7ebefc41a6',
+		});
+
+		if (typeof window.__TAURI__ == 'undefined' || !window.__TAURI__) return;
+
+		this.versions.tauri = await getTauriVersion();
+		this.versions.app = await getVersion();
 
 		setTimeout(async () => {
 			appWindow.show();

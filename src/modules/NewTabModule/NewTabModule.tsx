@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import './NewTabModule.scss';
 
-import { useContext } from 'preact/hooks';
+import { useContext, useEffect, useState } from 'preact/hooks';
 
 import Music from '@src/components/icons/Music';
 import TabStore from '@src/ts/TabStore';
@@ -9,9 +9,10 @@ import CustomURI from '@src/types/CustomURI';
 import { TabType } from '@src/types/URIParts';
 import ISongData from '@src/types/ISongData';
 import Client from '@src/ts/Client';
+import OurPraise, { IEvent, IOrganisation } from '@src/ts/OurPraise';
 
 const NewTabModule = () => {
-	const newSetListTab = () => {
+	const newSetListTab = async () => {
 		const id = Date.now().toString(36).toUpperCase();
 		const uri = new CustomURI([TabType.SETLIST, id]).toString();
 
@@ -180,20 +181,52 @@ const NewTabModule = () => {
 			},
 		];
 
-		TabStore.setTab({
-			id,
-			uri,
-			songs,
-			name: 'Test setlist',
-			activeSong: songs[0] ? songs[0].id : undefined,
-			activeSlide: 0,
-		});
+		// TabStore.setTab({
+		// 	id,
+		// 	uri,
+		// 	songs,
+		// 	name: 'Test setlist',
+		// 	activeSong: songs[0] ? songs[0].id : undefined,
+		// 	activeSlide: 0,
+		// });
 	};
+
+	const clickEvent = async (e: MouseEvent) => {
+		const id = (e.currentTarget as HTMLElement)?.getAttribute('data-id');
+		if (!id) return;
+		const event = await OurPraise.get()?.event(id, true);
+		console.log(event);
+	};
+
+	const [orgEvents, setOrgEvents] = useState<{ id: string; name: string; events: IEvent<string>[] }[]>([]);
+
+	useEffect(() => {
+		OurPraise.get()
+			?.events(true)
+			.then(data => {
+				const map = data.reduce<Record<string, IEvent<string>[]>>((map, e) => {
+					(map[e.organisation] = map[e.organisation] || []).push(e);
+					return map;
+				}, {});
+
+				setOrgEvents(
+					Object.values(map).map(events => {
+						const first = events[0];
+
+						return {
+							events,
+							id: first.organisation,
+							name: first.organisationName,
+						};
+					})
+				);
+			});
+	}, []);
 
 	return (
 		<div class='page NewTab'>
 			<div class='title'>SERMON</div>
-			<div class='groups'>
+			{/* <div class='groups'>
 				<div class='group' onClick={newSetListTab}>
 					<div class='logo'>
 						<Music />
@@ -201,18 +234,30 @@ const NewTabModule = () => {
 					<div class='groupName'>OurPraise</div>
 					<div class='button'>Find setlister fra OurPraise</div>
 				</div>
+			</div> */}
+			<div class='events'>
+				{orgEvents.map(org => (
+					<div key={org.id} class='org' data-id={org.id}>
+						<div class='orgName'>{org.name}</div>
+						{org.events.map(event => (
+							<div class='event' key={event.id} data-id={event.id} onClick={clickEvent}>
+								<span class='evTitle'>{event.title}</span>
+								<span class='evDate'>{event.date}</span>
+								<span class='evLength'>{event.songs.length}</span>
+							</div>
+						))}
+					</div>
+				))}
 			</div>
 			<div class='footer'>
-				{/* {Client.isTau ? (
-					<>
-						<span>{NL_APPVERSION}</span>
-						<span>
-							{NL_VERSION} / {NL_CVERSION}
-						</span>
-					</>
+				<span>ver {Client.versions.client}</span>
+				{Client.isTau ? (
+					<span>
+						{Client.versions.tauri} / {Client.versions.app}
+					</span>
 				) : (
 					<></>
-				)} */}
+				)}
 			</div>
 		</div>
 	);

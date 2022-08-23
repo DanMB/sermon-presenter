@@ -9,7 +9,7 @@
 
 	.title {
 		font-weight: weight(bold);
-		font-size: 5em;
+		font-size: 3.5em;
 	}
 
 	.groups {
@@ -54,6 +54,54 @@
 			.groupName {
 				color: var(--color);
 				font-size: 2.5em;
+			}
+		}
+	}
+
+	.events {
+		width: 100%;
+		max-width: 50em;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: start;
+		gap: 1.5rem;
+
+		.org {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: stretch;
+			justify-content: start;
+
+			.orgName {
+				font-weight: weight(bold);
+				font-size: 1.5em;
+				padding: 0.5rem 1rem;
+				margin-bottom: 0.5em;
+				border-bottom: 1px solid lighten($border, 12%);
+			}
+
+			.event {
+				width: 100%;
+				display: flex;
+				flex-direction: row;
+				align-items: stretch;
+				justify-content: center;
+				cursor: pointer;
+				gap: 1.5em;
+				padding: 0.5rem 1rem;
+				border-radius: 6px;
+
+				&:hover {
+					background-color: $box;
+					box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.6);
+				}
+
+				.evTitle {
+					flex-grow: 1;
+					font-weight: weight(bold);
+				}
 			}
 		}
 	}

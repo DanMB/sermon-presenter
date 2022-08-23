@@ -34,6 +34,7 @@ const HeaderModule = () => {
 		if (!e.ctrlKey) return;
 
 		if (e.key === 'Tab') {
+			e.preventDefault();
 			// if ctrl + tab
 			// should move backward or forward
 			if (e.shiftKey) {
@@ -42,6 +43,7 @@ const HeaderModule = () => {
 				moveActive('+');
 			}
 		} else if (digitExp.test(e.code)) {
+			e.preventDefault();
 			// if ctrl + number
 			let tab = parseInt(e.key) - 1;
 			if (tab === -1) tab = 9;
