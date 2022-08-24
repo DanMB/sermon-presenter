@@ -1,7 +1,7 @@
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
 import { FirebaseApp, initializeApp, FirebaseOptions } from 'firebase/app';
-import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, DocumentSnapshot } from 'firebase/firestore';
 import Cache from './Cache';
 
 export interface IOrganisation {
@@ -22,7 +22,7 @@ export interface ISong {
 	id: string;
 	title: string;
 	authors: string;
-	body: string;
+	slides: string[];
 }
 
 export default class OurPraise {
@@ -58,7 +58,11 @@ export default class OurPraise {
 				id: value.id,
 				title: data.title,
 				authors: data.authors,
-				body: data.body,
+				slides: (data.body as string)
+					.replace(/\n\s+\n/g, '\n\n')
+					.split('\n\n')
+					.map(part => part.replace(/\/\/.*(\n|$)/g, ''))
+					.filter(Boolean),
 			};
 		});
 
