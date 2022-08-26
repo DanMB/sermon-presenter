@@ -1,5 +1,6 @@
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
+import ISongData from '@src/types/ISongData';
 import { FirebaseApp, initializeApp, FirebaseOptions } from 'firebase/app';
 import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, DocumentSnapshot } from 'firebase/firestore';
 import Cache from './Cache';
@@ -9,20 +10,13 @@ export interface IOrganisation {
 	name: string;
 }
 
-export interface IEvent<T = ISong> {
+export interface ISetList<T = ISongData> {
 	id: string;
 	title: string;
 	date: string;
 	organisation: string;
 	organisationName: string;
 	songs: Array<T>;
-}
-
-export interface ISong {
-	id: string;
-	title: string;
-	authors: string;
-	slides: string[];
 }
 
 export default class OurPraise {
@@ -44,9 +38,9 @@ export default class OurPraise {
 		this._app = initializeApp(config);
 	}
 
-	public song = async (id: string, force: boolean = false): Promise<ISong | null> => {
+	public song = async (id: string, force: boolean = false): Promise<ISongData | null> => {
 		if (!force) {
-			const cached = Cache.get<ISong>(`OurPraise.song.${id}`);
+			const cached = Cache.get<ISongData>(`OurPraise.song.${id}`);
 			if (cached) return cached;
 		}
 
@@ -72,7 +66,7 @@ export default class OurPraise {
 
 	public event = async (id: string, force: boolean = false) => {
 		if (!force) {
-			const cached = Cache.get<IEvent[]>(`OurPraise.event.${id}`);
+			const cached = Cache.get<ISetList>(`OurPraise.event.${id}`);
 			if (cached) return cached;
 		}
 
@@ -87,14 +81,14 @@ export default class OurPraise {
 		const event = value.data();
 		const org = orgs.find(o => o.id === event.organisation)?.name ?? 'UNKNOWN';
 
-		const songs: ISong[] = [];
+		const songs: ISongData[] = [];
 
 		for (const song of event.songs) {
 			const songData = await this.song(song.id, force);
 			if (songData) songs.push(songData);
 		}
 
-		const data: IEvent = {
+		const data: ISetList = {
 			id: value.id,
 			organisation: event.organisation,
 			organisationName: org,
@@ -108,16 +102,16 @@ export default class OurPraise {
 		return data;
 	};
 
-	public events = async (force: boolean = false): Promise<IEvent<string>[]> => {
+	public events = async (force: boolean = false): Promise<ISetList<string>[]> => {
 		if (!force) {
-			const cached = Cache.get<IEvent<string>[]>('OurPraise.events');
+			const cached = Cache.get<ISetList<string>[]>('OurPraise.events');
 			if (cached) return cached;
 		}
 
 		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc')));
 		const orgs = await this.organisations();
 
-		const result = data.docs.map<IEvent<string>>(value => {
+		const result = data.docs.map<ISetList<string>>(value => {
 			const ev = value.data();
 			const org = orgs.find(o => o.id === ev.organisation)?.name ?? 'UNKNOWN';
 

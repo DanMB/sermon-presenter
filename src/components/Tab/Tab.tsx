@@ -6,12 +6,11 @@ import Live from '@src/components/icons/Live';
 
 import GroupIcon from '@src/components/icons/GroupIcon';
 import TabStore, { useTabs } from '@src/ts/TabStore';
-import { UriString } from '@src/types/CustomURI';
 import { UriParts } from '@src/types/URIParts';
 import { usePresent } from '@src/ts/PresentStore';
 import Close from '../icons/Close';
 
-const Tab = ({ uri }: { uri: UriString }) => {
+const Tab = ({ uri }: { uri: string }) => {
 	const active = useTabs(state => state.active);
 	const isPresenting = usePresent(state => state.isPresenting);
 	const presenting = usePresent(state => state.presenting);
@@ -19,7 +18,6 @@ const Tab = ({ uri }: { uri: UriString }) => {
 	const remove = useTabs(state => state.remove);
 
 	const presentingTab: string | undefined = presenting?.parts[UriParts.ID];
-	const activeTab: string | undefined = active?.limit(UriParts.ID)?.toString();
 
 	const tab = TabStore.getTab(uri);
 
@@ -37,7 +35,7 @@ const Tab = ({ uri }: { uri: UriString }) => {
 
 	return (
 		<div
-			class={`Tab ${uri === activeTab ? 'active' : ''} ${isPresenting && uri === presentingTab ? 'live' : ''}`}
+			class={`Tab ${uri === active ? 'active' : ''} ${isPresenting && uri === presentingTab ? 'live' : ''}`}
 			key={tab.id}
 			data-id={tab.id}
 			data-uri={uri}

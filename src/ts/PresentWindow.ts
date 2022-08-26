@@ -1,4 +1,3 @@
-import { CustomProtocol, UriString } from '@src/types/CustomURI';
 import { TabType } from '@src/types/URIParts';
 import Storage from './Storage';
 import {
@@ -21,7 +20,7 @@ export interface IPresenterOptions {
 }
 
 export interface IPresenterProps extends Partial<IPresenterOptions> {
-	uri?: UriString;
+	uri?: string;
 }
 
 export const DefaultPresentingState: IPresenterOptions = {

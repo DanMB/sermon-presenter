@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import Storage from '@src/ts/Storage';
-import CustomURI from '@src/types/CustomURI';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
 import { WebviewWindow } from '@tauri-apps/api/window';

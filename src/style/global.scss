@@ -44,11 +44,20 @@ body {
 
 .Control {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: stretch;
 	justify-content: flex-start;
 	height: 100vh;
 	width: 100%;
+
+	.main {
+		flex: 1 0 auto;
+
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: flex-start;
+	}
 }
 
 .Present {

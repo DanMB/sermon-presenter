@@ -1,0 +1,38 @@
+@import 'src/style/shared.scss';
+
+.Sidebar {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: start;
+	height: 100vh;
+	width: 15vw;
+	background-color: $offset;
+	padding: 1rem;
+	gap: 1rem;
+
+	.present {
+		padding: 0.5em 0.8em;
+		font-weight: weight(bold);
+		background-color: $green;
+		color: $offset;
+		cursor: pointer;
+		line-height: 1.25em;
+		max-width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		min-width: 4.2em;
+
+		span {
+			font-size: 0.9em;
+		}
+
+		&.isPresenting {
+			background-color: $background;
+			color: $red;
+			box-shadow: inset 0 0 0 3px $offset, inset 0 0 0 5px $red;
+		}
+	}
+}

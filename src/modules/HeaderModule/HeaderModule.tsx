@@ -79,14 +79,6 @@ const HeaderModule = () => {
 					<Plus />
 				</div>
 			</div>
-			<div
-				class={`present ${isPresenting ? 'isPresenting' : ''}`}
-				onClick={() => {
-					setIsPresenting(!isPresenting);
-				}}
-			>
-				<span>{isPresenting ? 'Stop' : 'Start'}</span>
-			</div>
 		</div>
 	);
 };

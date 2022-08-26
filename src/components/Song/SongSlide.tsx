@@ -10,7 +10,7 @@ import CustomURI from '@src/types/CustomURI';
 import ISongSlide from '@src/types/ISongSlide';
 
 export interface ISongSlideProps extends h.JSX.HTMLAttributes<HTMLDivElement> {
-	slide: ISongSlide;
+	slide: string;
 	listId: string;
 	songId: string;
 	index: number;
@@ -29,7 +29,7 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 	const [presentingSlide, setPresentingSlide] = useState<boolean>(false);
 
 	useEffect(() => {
-		const uri = new CustomURI([TabType.SETLIST, listId, songId, `${index}`]).toString();
+		// const uri = new CustomURI([TabType.SETLIST, listId, songId, `${index}`]).toString();
 
 		let key: number | undefined = index + 1;
 		let shift = false;
@@ -46,19 +46,19 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 		setSlideData({
 			key,
 			shift,
-			uri,
+			uri: `${index}`,
 		});
 	}, [listId, songId, index]);
 
 	useEffect(() => {
-		setActiveSlide(active.parts[UriParts.SONG] === songId && active.parts[UriParts.SLIDE] === `${index}`);
+		// setActiveSlide(active.parts[UriParts.SONG] === songId && active.parts[UriParts.SLIDE] === `${index}`);
 	}, [active]);
 
 	useEffect(() => {
 		if (!presenting) {
 			setPresentingSlide(false);
 		} else {
-			setPresentingSlide(presenting.parts[UriParts.SONG] === songId && presenting.parts[UriParts.SLIDE] === `${index}`);
+			// setPresentingSlide(presenting.parts[UriParts.SONG] === songId && presenting.parts[UriParts.SLIDE] === `${index}`);
 		}
 	}, [presenting]);
 
@@ -78,7 +78,7 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 			)}
 			<div class='preview'>
 				<div class='textContent'>
-					<div class='inner'>{cleanMultiline(slide.text)}</div>
+					<div class='inner'>{cleanMultiline(slide)}</div>
 				</div>
 			</div>
 		</div>

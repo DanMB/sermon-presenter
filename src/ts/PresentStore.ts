@@ -1,4 +1,3 @@
-import CustomURI, { UriString } from '@src/types/CustomURI';
 import ITabData from '@src/types/ITabData';
 import Store from '@src/types/Store';
 import CustomMap from '@src/types/CustomMap';
@@ -24,11 +23,11 @@ export const DefaultPresentingState: IPresenterOptions = {
 
 export interface IPresentState {
 	isPresenting: boolean;
-	presenting?: CustomURI;
+	presenting?: string;
 	options: IPresenterOptions;
 
 	setIsPresenting: (isPresenting: boolean) => void;
-	setPresenting: (presenting?: UriString) => void;
+	setPresenting: (presenting?: string) => void;
 	setPresenterOptions: (options: Partial<IPresenterOptions>) => void;
 }
 
@@ -65,22 +64,21 @@ export class Presenter extends Store<IPresentState> {
 				}
 			},
 			setPresenting: presenting => {
-				const uri = presenting ? new CustomURI(presenting) : undefined;
-				if (this.window) {
-					const tab = uri ? TabStore.getTab(uri.limit(UriParts.ID)?.toString() ?? '') : undefined;
-					const song = uri && tab ? tab.songs.find(s => s.id === uri.parts[UriParts.SONG]) : null;
-					const slide = uri && song ? song.slides[uri.parts[UriParts.SLIDE] as unknown as number] : null;
-					console.log({
-						uri: presenting,
-						data: slide,
-					});
-					this.window.set(slide);
-				} else if (presenting) {
-					this.window = new PresentWindow();
-				}
+				// if (this.window) {
+				// 	const tab = uri ? TabStore.getTab(uri.limit(UriParts.ID)?.toString() ?? '') : undefined;
+				// 	const song = uri && tab ? tab.songs.find(s => s.id === uri.parts[UriParts.SONG]) : null;
+				// 	const slide = uri && song ? song.slides[uri.parts[UriParts.SLIDE] as unknown as number] : null;
+				// 	console.log({
+				// 		uri: presenting,
+				// 		data: slide,
+				// 	});
+				// 	this.window.set(slide);
+				// } else if (presenting) {
+				// 	this.window = new PresentWindow();
+				// }
 
 				set({
-					presenting: uri,
+					presenting,
 				});
 			},
 			setPresenterOptions: options => {

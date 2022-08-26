@@ -4,18 +4,22 @@ import { useEffect } from 'preact/hooks';
 import HeaderModule from '@src/modules/HeaderModule/HeaderModule';
 import TabStore, { useTabs } from '@src/ts/TabStore';
 import NewTabModule from '@src/modules/NewTabModule/NewTabModule';
-import { TabType, UriParts } from '@src/types/URIParts';
+import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
 import SetListModule from '@src/modules/SetListModule/SetListModule';
 import OurPraise from '@src/ts/OurPraise';
+import SidebarModule from '@src/modules/SidebarModule/SidebarModule';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
-	const activeType = active.parts[UriParts.TYPE];
 
 	return (
 		<div class='Control'>
-			<HeaderModule />
-			{activeType === TabType.SETLIST ? <SetListModule uri={active} /> : <NewTabModule />}
+			<SidebarModule />
+			<div class='main'>
+				<HeaderModule />
+				{active == newtabUri ? <NewTabModule /> : <SetListModule id={active} />}
+			</div>
+
 			{/* <ContextMenu /> */}
 		</div>
 	);
