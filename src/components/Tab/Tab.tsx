@@ -17,7 +17,9 @@ const Tab = ({ uri }: { uri: string }) => {
 	const setActive = useTabs(state => state.setActive);
 	const remove = useTabs(state => state.remove);
 
-	const presentingTab: string | undefined = presenting?.parts[UriParts.ID];
+	const parts = presenting ? presenting.split('/') : [];
+
+	const presentingTab: string | undefined = parts[0];
 
 	const tab = TabStore.getTab(uri);
 

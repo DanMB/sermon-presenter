@@ -35,8 +35,8 @@ const Input = ({
 
 	return (
 		<input
-			class={`Input ${className}`}
 			{...restProps}
+			class={`Input ${className}`}
 			autoComplete={autoComplete ?? 'off'}
 			type={type ?? 'text'}
 			ref={inputRef}

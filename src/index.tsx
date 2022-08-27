@@ -5,7 +5,6 @@ import '@src/style/global.scss';
 import { useState, useEffect } from 'preact/hooks';
 import Client from './ts/Client';
 import PWA from './modules/PWA/PWA';
-import { appWindow } from '@tauri-apps/api/window';
 import Cache from './ts/Cache';
 
 const App = () => {
@@ -14,7 +13,7 @@ const App = () => {
 	useEffect(() => {
 		const ready = () => {
 			Cache.clean();
-			if (appWindow.label === 'present') {
+			if (Client.getLabel() === 'present') {
 				setRoute(<PresentRoute />);
 			} else {
 				setRoute(<ControlRoute />);
@@ -23,12 +22,14 @@ const App = () => {
 
 		const failed = () => {
 			console.error('Failed to initialize Tauri client');
-			setRoute(<ControlRoute />);
+			ready();
 		};
 
 		Client.init().then(ready).catch(failed);
 
-		return function () {};
+		return function () {
+			Client.destroy();
+		};
 	}, []);
 
 	return (

@@ -64,18 +64,19 @@ export class Presenter extends Store<IPresentState> {
 				}
 			},
 			setPresenting: presenting => {
-				// if (this.window) {
-				// 	const tab = uri ? TabStore.getTab(uri.limit(UriParts.ID)?.toString() ?? '') : undefined;
-				// 	const song = uri && tab ? tab.songs.find(s => s.id === uri.parts[UriParts.SONG]) : null;
-				// 	const slide = uri && song ? song.slides[uri.parts[UriParts.SLIDE] as unknown as number] : null;
-				// 	console.log({
-				// 		uri: presenting,
-				// 		data: slide,
-				// 	});
-				// 	this.window.set(slide);
-				// } else if (presenting) {
-				// 	this.window = new PresentWindow();
-				// }
+				if (this.window) {
+					const parts = presenting ? presenting.split('/') : [];
+					const tab = parts[0] ? TabStore.getTab(parts[0]) : undefined;
+					const song = parts[1] && tab ? tab.data.songs.find(s => s.id === parts[1]) : null;
+					const slide = parts[2] && song ? song.slides[parseInt(parts[2])] : null;
+					console.log({
+						uri: presenting,
+						data: slide,
+					});
+					this.window.set(slide);
+				} else if (presenting) {
+					this.window = new PresentWindow();
+				}
 
 				set({
 					presenting,

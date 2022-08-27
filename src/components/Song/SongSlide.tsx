@@ -65,7 +65,7 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 	return (
 		<div
 			{...restProps}
-			id={slideData.uri}
+			id={`${listId}/${songId}/${index}`}
 			tabIndex={-1}
 			role='listitem'
 			class={`slide ${presentingSlide ? 'active' : activeSlide ? 'subActive' : ''}`}

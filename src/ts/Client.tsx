@@ -46,7 +46,7 @@ export default class Client {
 			appId: '1:485823144275:web:a6eae91b382d7ebefc41a6',
 		});
 
-		if (typeof window.__TAURI__ == 'undefined' || !window.__TAURI__) return;
+		if (!Client.isTau) return;
 
 		this.versions.tauri = await getTauriVersion();
 		this.versions.app = await getVersion();
@@ -61,5 +61,17 @@ export default class Client {
 
 	public static destroy = () => {
 		// if (this._ws) this._ws.removeEventListener('message', this.onMessage);
+	};
+
+	public static getLabel = () => {
+		let label = 'control';
+		if (Client.isTau) {
+			if (appWindow.label) label = appWindow.label;
+		} else {
+			const query = new URLSearchParams(window.location.search);
+			const queryLabel = query.get('label');
+			if (queryLabel) label = queryLabel;
+		}
+		return label;
 	};
 }

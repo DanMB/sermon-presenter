@@ -10,12 +10,13 @@ import ISongSlide from '@src/types/ISongSlide';
 import { EventNames } from '@src/types/EventNames';
 
 const PresentRoute = () => {
-	const [presenting, setPresenting] = useState<ISongSlide | null>(null);
+	const [presenting, setPresenting] = useState<string | null>(null);
 	// const style = Storage.use(Events.STYLE);
 
 	useEffect(() => {
 		const onSetPresenting = (e: Event<string>) => {
-			const data: ISongSlide | null = e.payload ? JSON.parse(e.payload) : null;
+			const data: string | null = e.payload ? JSON.parse(e.payload) : null;
+			console.log(e, data);
 			setPresenting(data);
 		};
 
@@ -29,10 +30,23 @@ const PresentRoute = () => {
 		let offSet: UnlistenFn = () => null;
 		let offStyle: UnlistenFn = () => null;
 
+		const onMsg = (e: MessageEvent<{ event: string; payload: any }>) => {
+			if (e.data.event === EventNames.PRESENT) {
+				onSetPresenting(e.data as unknown as Event<any>);
+			} else if (e.data.event === EventNames.PRESENT) {
+				onStyle(e.data as unknown as Event<any>);
+			}
+		};
+
 		const setup = async () => {
-			const window = WebviewWindow.getByLabel('control');
-			if (window) offSet = await window.listen(EventNames.PRESENT, onSetPresenting);
-			if (window) offStyle = await window.listen(EventNames.STYLE, onSetPresenting);
+			if (Client.isTau) {
+				const window = WebviewWindow.getByLabel('control');
+				if (window) offSet = await window.listen(EventNames.PRESENT, onSetPresenting);
+				if (window) offStyle = await window.listen(EventNames.STYLE, onStyle);
+			} else {
+				window.addEventListener('message', onMsg, false);
+				offSet = () => window.removeEventListener('message', onMsg);
+			}
 		};
 
 		setup();
@@ -43,7 +57,9 @@ const PresentRoute = () => {
 		};
 	}, []);
 
-	if (!presenting?.text) return <div class='Present'></div>;
+	console.log(presenting);
+
+	if (!presenting) return <div class='Present'></div>;
 
 	return <PresentingContent data={presenting} />;
 };

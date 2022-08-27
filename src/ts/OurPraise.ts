@@ -2,7 +2,17 @@ import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
 import ISongData from '@src/types/ISongData';
 import { FirebaseApp, initializeApp, FirebaseOptions } from 'firebase/app';
-import { collection, doc, getDoc, getDocs, getFirestore, orderBy, query, DocumentSnapshot } from 'firebase/firestore';
+import {
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	getFirestore,
+	orderBy,
+	query,
+	DocumentSnapshot,
+	where,
+} from 'firebase/firestore';
 import Cache from './Cache';
 
 export interface IOrganisation {
@@ -38,6 +48,19 @@ export default class OurPraise {
 		this._app = initializeApp(config);
 	}
 
+	private parseSong = (id: string, data: any): ISongData => {
+		return {
+			id,
+			title: data.title,
+			authors: data.authors,
+			slides: (data.body as string)
+				.replace(/\n\s+\n/g, '\n\n')
+				.split('\n\n')
+				.map(part => part.replace(/\/\/.*(\n|$)/g, ''))
+				.filter(Boolean),
+		};
+	};
+
 	public song = async (id: string, force: boolean = false): Promise<ISongData | null> => {
 		if (!force) {
 			const cached = Cache.get<ISongData>(`OurPraise.song.${id}`);
@@ -46,18 +69,7 @@ export default class OurPraise {
 
 		const result = await getDoc(doc(getFirestore(), `songs/${id}`)).then(value => {
 			if (!value.exists()) return null;
-			const data = value.data();
-
-			return {
-				id: value.id,
-				title: data.title,
-				authors: data.authors,
-				slides: (data.body as string)
-					.replace(/\n\s+\n/g, '\n\n')
-					.split('\n\n')
-					.map(part => part.replace(/\/\/.*(\n|$)/g, ''))
-					.filter(Boolean),
-			};
+			return this.parseSong(value.id, value.data());
 		});
 
 		Cache.set(`OurPraise.song.${id}`, result);
@@ -147,6 +159,43 @@ export default class OurPraise {
 		});
 
 		Cache.set('OurPraise.organisations', result);
+
+		return result;
+	};
+
+	public search = async (q: string, force: boolean = false): Promise<ISongData[]> => {
+		const norm = q.trim().toUpperCase();
+
+		if (!force) {
+			const cached = Cache.get<ISongData[]>('OurPraise.search.' + norm);
+			if (cached) return cached;
+		}
+
+		// const data = await getDocs(query(collection(getFirestore(), 'organisations')));
+
+		// const result = data.docs.map<IOrganisation>(value => {
+		// 	const org = value.data();
+		// 	return {
+		// 		id: value.id,
+		// 		name: org.name,
+		// 	};
+		// });
+
+		let result: ISongData[] = [];
+
+		if (norm !== '') {
+			const data = await getDocs(
+				query(collection(getFirestore(), 'songs'), where('title', '>=', norm), where('title', '<=', norm + '\uf8ff'))
+			);
+			result = data.docs
+				.map(value => {
+					if (!value.exists()) return null;
+					return this.parseSong(value.id, value.data());
+				})
+				.filter(Boolean) as ISongData[];
+		}
+
+		Cache.set('OurPraise.search.' + norm, result);
 
 		return result;
 	};
