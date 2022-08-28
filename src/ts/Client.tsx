@@ -35,7 +35,7 @@ export default class Client {
 	}
 
 	private static setup = async () => {
-		Cache.enabled = import.meta.env.APP_CACHE ?? true;
+		Cache.enabled = !!(import.meta.env.APP_CACHE ?? true);
 
 		OurPraise.init({
 			apiKey: 'AIzaSyCBfNSkzwlXjavTRNq-TmVo7QpcHrZYvgE',
