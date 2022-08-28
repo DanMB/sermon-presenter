@@ -1,80 +1,77 @@
-import CustomMap, { ReadonlyCustomMap } from '@src/types/CustomMap';
+import { appWindow } from '@tauri-apps/api/window';
+import { invoke } from '@tauri-apps/api/tauri';
+import { getTauriVersion, getVersion } from '@tauri-apps/api/app';
+import Cache from './Cache';
+import OurPraise from './OurPraise';
 
 export default class Client {
+	public static isTau: boolean | undefined = undefined;
+
+	public static versions = {
+		tauri: '',
+		// @ts-ignore
+		client: __VERSION__,
+		app: '',
+	};
+
 	public static async init(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			if (typeof Neutralino !== 'undefined') {
-				Neutralino.events.on('ready', () => {
-					resolve();
-				});
-
-				Neutralino.init();
-			} else {
-				window.addEventListener('onNeuLoaded', async () => {
-					if (typeof Neutralino !== 'undefined') {
-						Neutralino.events.on('ready', () => {
-							resolve();
-						});
-
-						Neutralino.init();
-					} else {
+			// @ts-ignore
+			if (typeof window.__TAURI__ !== 'undefined' && window.__TAURI__) {
+				Client.isTau = true;
+				this.setup()
+					.then(() => {
+						resolve();
+					})
+					.catch(() => {
 						reject();
-					}
-				});
+					});
+			} else {
+				Client.isTau = false;
+				this.setup();
+				reject();
 			}
 		});
 	}
 
-	private static argsMap: CustomMap<string> | null = null;
-	private static argRegex = /^--([a-z-_\d]*)=?(.*)$/;
+	private static setup = async () => {
+		Cache.enabled = !!(import.meta.env.APP_CACHE ?? true);
 
-	public static getArgs(args?: string[]): ReadonlyCustomMap<string> {
-		if (this.argsMap !== null) return this.argsMap.readonly;
+		OurPraise.init({
+			apiKey: 'AIzaSyCBfNSkzwlXjavTRNq-TmVo7QpcHrZYvgE',
+			authDomain: 'ourpraise-fb.firebaseapp.com',
+			projectId: 'ourpraise-fb',
+			storageBucket: 'ourpraise-fb.appspot.com',
+			messagingSenderId: '485823144275',
+			appId: '1:485823144275:web:a6eae91b382d7ebefc41a6',
+		});
 
-		const map = new CustomMap<string>();
+		if (!Client.isTau) return;
 
-		if (!args && !NL_ARGS) return map;
-		const cleanedArray = (args || NL_ARGS).filter(a => a.length > 0 && a.startsWith('--'));
+		this.versions.tauri = await getTauriVersion();
+		this.versions.app = await getVersion();
 
-		for (const arg of cleanedArray) {
-			const match = arg.match(this.argRegex);
-			if (match && match[1]) {
-				map.set(match[1], match[2] ?? '');
+		setTimeout(async () => {
+			appWindow.show();
+			if (appWindow.label === 'control') {
+				invoke('close_splash');
 			}
+		}, 800);
+	};
+
+	public static destroy = () => {
+		// if (this._ws) this._ws.removeEventListener('message', this.onMessage);
+	};
+
+	public static getLabel = () => {
+		let label = 'control';
+		if (Client.isTau) {
+			if (appWindow.label) label = appWindow.label;
+		} else {
+			const query = new URLSearchParams(window.location.search);
+			const queryLabel = query.get('label');
+			if (queryLabel) label = queryLabel;
 		}
-
-		this.argsMap = map;
-		return map;
-	}
-
-	private static _ws: WebSocket | null = null;
-
-	public static connect(port: number | string, host: string = 'localhost') {
-		this._ws = new WebSocket(`ws:${host}:${port}`);
-
-		this._ws.addEventListener('message', event => {
-			try {
-				const data = event?.data ? JSON.parse(event.data) : null;
-				if (data?.event) {
-					window.dispatchEvent(new CustomEvent(`ws:${data.event}`, { detail: data.data }));
-				}
-			} catch (e) {
-				console.warn('Failed to parse socket event', e);
-			}
-		});
-	}
-
-	public static async broadcast<T = any>(name: string, data?: T) {
-		await Neutralino.events.broadcast(name, data);
-	}
-
-	public static listen<T = any>(name: string, fnc: (e: CustomEvent<T>) => void) {
-		if (!this._ws) return;
-		window.addEventListener(`ws:${name}`, fnc as EventListenerOrEventListenerObject);
-	}
-
-	public static remove<T = any>(name: string, fnc: (e: CustomEvent<T>) => void) {
-		if (!this._ws) return;
-		window.removeEventListener(`ws:${name}`, fnc as EventListenerOrEventListenerObject);
-	}
+		return label;
+	};
 }

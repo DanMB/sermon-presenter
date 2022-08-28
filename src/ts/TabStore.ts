@@ -1,4 +1,3 @@
-import CustomURI, { UriString } from '@src/types/CustomURI';
 import ITabData from '@src/types/ITabData';
 import Store from '@src/types/Store';
 import CustomMap from '@src/types/CustomMap';
@@ -6,12 +5,12 @@ import { newtabUri, UriParts } from '@src/types/URIParts';
 import Storage from './Storage';
 
 export interface ITabState {
-	tabs: UriString[];
-	active: CustomURI;
+	tabs: string[];
+	active: string;
 
 	setTabs: (tabs: CustomMap<ITabData>) => void;
-	remove: (tab: UriString) => void;
-	setActive: (active: UriString) => void;
+	remove: (tab: string) => void;
+	setActive: (active: string) => void;
 	moveActive: (movement: '+' | '-' | number) => void;
 }
 
@@ -22,50 +21,44 @@ export class Tabs extends Store<ITabState> {
 		const savedTabs = Storage.get<ITabData[]>('tabs') || [];
 		const tabs = [...savedTabs, ...presetTabs];
 
-		let active = Storage.get<UriString>('active_tab');
+		let active = Storage.get<string>('active_tab');
 
 		const map = new CustomMap<ITabData>();
 		for (const tab of tabs) {
-			map.set(tab.uri, tab);
+			map.set(tab.id, tab);
 		}
 
 		if (active && !map.get(active)) active = newtabUri;
 
 		super((set, get) => ({
-			tabs: [...tabs.map(tab => tab.uri), newtabUri],
-			active: new CustomURI(active ?? newtabUri),
+			tabs: [...tabs.map(tab => tab.id), newtabUri],
+			active: active ?? newtabUri,
 			setTabs: tabs => {
 				this.allTabs = tabs;
 
 				set({
-					tabs: tabs.getValues().map(tab => tab.uri),
+					tabs: tabs.getValues().map(tab => tab.id),
 				});
 			},
 
 			remove: tab => {
-				const uri = new CustomURI(tab);
-				const uriString = uri.toString();
+				if (tab === newtabUri) return;
 
-				if (uriString === newtabUri) return;
+				if (get().tabs.includes(tab)) {
+					this.removeTab(tab);
 
-				if (get().tabs.includes(uriString)) {
-					this.removeTab(uriString);
-
-					if (get().active.toString() === uriString) {
+					if (get().active.toString() === tab) {
 						get().moveActive(1);
 					}
 				}
 			},
 
 			setActive: active => {
-				const uri = new CustomURI(active);
-				const uriString = uri.toString();
-
-				if (get().tabs.includes(uriString) || uriString === newtabUri) {
-					this.saveActive(uriString);
+				if (get().tabs.includes(active) || active === newtabUri) {
+					this.saveActive(active);
 
 					set({
-						active: uri,
+						active,
 					});
 				}
 			},
@@ -85,8 +78,7 @@ export class Tabs extends Store<ITabState> {
 
 					get().setActive(newTab);
 				} else {
-					const activeTab = get().active?.limit(UriParts.ID)?.toString();
-					let index = get().tabs.findIndex(tab => tab === activeTab);
+					let index = get().tabs.findIndex(tab => tab === get().active);
 
 					if (movement === '+') {
 						index--;
@@ -109,19 +101,19 @@ export class Tabs extends Store<ITabState> {
 
 	public setTab = (tab: ITabData): void => {
 		if (!tab) return;
-		const isNewTab = !this.allTabs.has(tab.uri);
-		this.allTabs.set(tab.uri, tab);
+		const isNewTab = !this.allTabs.has(tab.id);
+		this.allTabs.set(tab.id, tab);
 
 		if (isNewTab) this.state.setTabs(this.allTabs);
 		this.saveTabs();
 	};
 
-	public getTab = (uri: UriString): ITabData | undefined => {
+	public getTab = (uri: string): ITabData | undefined => {
 		if (!uri) return;
 		return this.allTabs.get(uri);
 	};
 
-	public removeTab = (uri: UriString): void => {
+	public removeTab = (uri: string): void => {
 		if (!uri) return;
 		const isTab = this.allTabs.has(uri);
 		this.allTabs.delete(uri);
@@ -136,7 +128,7 @@ export class Tabs extends Store<ITabState> {
 		Storage.set('tabs', this.allTabs.getValues());
 	}
 
-	private saveActive(activeTab?: UriString): void {
+	private saveActive(activeTab?: string): void {
 		if (!activeTab) activeTab = this.state.active.toString();
 		Storage.set('active_tab', activeTab);
 	}

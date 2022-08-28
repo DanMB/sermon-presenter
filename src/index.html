@@ -8,24 +8,10 @@
 		<meta name="google" content="notranslate" />
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, shrink-to-fit=no" />
-		<script>
-			const urlParams = new URLSearchParams(window.location.search);
-			window.REF_PORT = urlParams.get('port') || undefined;
-			window.NEU_LOADED = false;
-			if (window.REF_PORT) {
-				const script = document.createElement('script');
-				script.src = 'http://localhost:' + REF_PORT + '/neutralino.js';
 
-				script.onload = () => {
-					console.log('Neutralino client loaded');
-					window.dispatchEvent(new CustomEvent('onNeuLoaded'));
-				};
-
-				document.getElementsByTagName('head')[0].appendChild(script);
-			} else {
-				console.error('No Neutralino client port found');
-			}
-		</script>
+		<link rel="icon" type="image/png" sizes="32x32" href="/icons/logo-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/icons/logo-16x16.png" />
+		<meta name="theme-color" content="#10141d" />
 	</head>
 	<body style="background-color: #000000">
 		<div id="wrapper"></div>

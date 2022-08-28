@@ -1,20 +1,19 @@
 import { h, render } from 'preact';
-import CustomURI from '@src/types/CustomURI';
-import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
 import ControlRoute from '@src/routes/ControlRoute';
 import PresentRoute from '@src/routes/PresentRoute';
 import '@src/style/global.scss';
 import { useState, useEffect } from 'preact/hooks';
 import Client from './ts/Client';
 import PWA from './modules/PWA/PWA';
+import Cache from './ts/Cache';
 
 const App = () => {
 	const [Route, setRoute] = useState<h.JSX.Element>(<></>);
 
 	useEffect(() => {
 		const ready = () => {
-			const args = Client.getArgs();
-			if (args.get('route') === 'present') {
+			Cache.clean();
+			if (Client.getLabel() === 'present') {
 				setRoute(<PresentRoute />);
 			} else {
 				setRoute(<ControlRoute />);
@@ -22,12 +21,15 @@ const App = () => {
 		};
 
 		const failed = () => {
-			console.error('Failed to initialize Neutralino');
+			console.error('Failed to initialize Tauri client');
+			ready();
 		};
 
 		Client.init().then(ready).catch(failed);
 
-		return function () {};
+		return function () {
+			Client.destroy();
+		};
 	}, []);
 
 	return (
