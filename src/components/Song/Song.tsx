@@ -4,24 +4,19 @@ import './Song.scss';
 import { useContext, useEffect, useRef } from 'preact/hooks';
 import ISongData from '@src/types/ISongData';
 import { useTabs } from '@src/ts/TabStore';
-import { TabType, UriParts } from '@src/types/URIParts';
 import { cleanMultiline } from '@src/utils/textUtils';
 import { usePresent } from '@src/ts/PresentStore';
-import CustomURI from '@src/types/CustomURI';
 import SongSlide from './SongSlide';
 
 const digitExp = /^Digit\d+$/i;
 
 const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId: string }) => {
-	const active = useTabs(state => state.active);
 	const setActive = useTabs(state => state.setActive);
 	const isPresenting = usePresent(state => state.isPresenting);
 	const setPresenting = usePresent(state => state.setPresenting);
-	const activeSong = active.parts[UriParts.SONG];
-	const activeSlide = active.parts[UriParts.SLIDE];
 
-	const isActive = useRef<boolean>(activeSong === song.id);
-	const slideI = useRef<number>(activeSong === song.id ? parseInt(activeSlide) : -1);
+	// const isActive = useRef<boolean>(activeSong === song.id);
+	// const slideI = useRef<number>(activeSong === song.id ? parseInt(activeSlide) : -1);
 
 	const slidesRef = useRef<HTMLDivElement | null>(null);
 	const container = useRef<HTMLDivElement | null>(null);
@@ -106,7 +101,7 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 		<div class='SongComponent' ref={container} tabIndex={0} role='list'>
 			<div class='title'>
 				{index && `#${index} `}
-				{song.name}
+				{song.title}
 			</div>
 			<div class='slides' ref={slidesRef}>
 				{song.slides.map((slide, index) => (

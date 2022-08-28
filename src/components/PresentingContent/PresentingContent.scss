@@ -9,12 +9,13 @@
 	color: #fff;
 	height: 100vh;
 	width: 100%;
+	padding: 2.5vw;
 
 	.text {
 		$min_width: 480px;
 		$max_width: 3840px;
 		$min_font: 30px;
-		$max_font: 110px;
+		$max_font: 130px;
 		@include fluid-type($min_width, $max_width, $min_font, $max_font);
 		font-weight: 500;
 		line-height: 1.4em;
@@ -23,5 +24,14 @@
 		overflow: hidden;
 		max-height: 100%;
 		width: 100%;
+		white-space: pre-wrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		overflow-wrap: break-word;
+		-ms-word-wrap: break-word;
+		word-wrap: break-word;
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		hyphens: auto;
 	}
 }
