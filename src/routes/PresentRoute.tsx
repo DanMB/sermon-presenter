@@ -16,7 +16,6 @@ const PresentRoute = () => {
 	useEffect(() => {
 		const onSetPresenting = (e: Event<string>) => {
 			const data: string | null = e.payload ? JSON.parse(e.payload) : null;
-			console.log(e, data);
 			setPresenting(data);
 		};
 
@@ -56,8 +55,6 @@ const PresentRoute = () => {
 			offStyle();
 		};
 	}, []);
-
-	console.log(presenting);
 
 	if (!presenting) return <div class='Present'></div>;
 
