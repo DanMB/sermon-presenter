@@ -13,6 +13,7 @@ const digitExp = /^Digit\d+$/i;
 const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId: string }) => {
 	const setActive = useTabs(state => state.setActive);
 	const isPresenting = usePresent(state => state.isPresenting);
+	const presenting = usePresent(state => state.presenting);
 	const setPresenting = usePresent(state => state.setPresenting);
 
 	// const isActive = useRef<boolean>(activeSong === song.id);
@@ -79,7 +80,14 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 				if (e.shiftKey) focusOn = +10;
 				if (focusOn > items.length - 1) focusOn = items.length - 1;
 				if (focusOn < 0) focusOn = 0;
-				(items[focusOn] as HTMLElement)?.focus();
+				const el = items[focusOn] as HTMLElement;
+				if (el) {
+					if (el == document.activeElement) {
+						el.click();
+					} else {
+						el.focus();
+					}
+				}
 			}
 		};
 
@@ -90,9 +98,16 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 		};
 	}, []);
 
-	const onFocusOrClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
-		setActive(e.currentTarget.id);
+	const onClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+		console.log('onClick', e.currentTarget.id);
 		if (isPresenting) {
+			setPresenting(e.currentTarget.id);
+		}
+	};
+
+	const onFocus = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+		console.log('onFocus', e.currentTarget.id, presenting !== e.currentTarget.id);
+		if (isPresenting && presenting !== e.currentTarget.id) {
 			setPresenting(e.currentTarget.id);
 		}
 	};
@@ -109,8 +124,8 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 						key={`${song.id}_sld${index}`}
 						{...{ slide, index, listId }}
 						songId={song.id}
-						onClick={onFocusOrClick}
-						onFocus={onFocusOrClick}
+						onClick={onClick}
+						onFocus={onFocus}
 					/>
 				))}
 			</div>

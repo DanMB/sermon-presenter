@@ -69,12 +69,10 @@ export class Presenter extends Store<IPresentState> {
 					const tab = parts[0] ? TabStore.getTab(parts[0]) : undefined;
 					const song = parts[1] && tab ? tab.data.songs.find(s => s.id === parts[1]) : null;
 					const slide = parts[2] && song ? song.slides[parseInt(parts[2])] : null;
-					console.log({
-						uri: presenting,
-						data: slide,
-					});
+					console.log('setPresenting', presenting, true);
 					this.window.set(slide);
 				} else if (presenting) {
+					console.log('setPresenting', presenting, true);
 					this.window = new PresentWindow();
 				}
 
