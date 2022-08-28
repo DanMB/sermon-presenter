@@ -20,10 +20,10 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 	const active = useTabs(state => state.active);
 	const presenting = usePresent(state => state.presenting);
 
-	const [slideData, setSlideData] = useState<{ key?: number; shift: boolean; uri: string }>({
+	const [slideData, setSlideData] = useState<{ key?: number; shift: boolean; id: string }>({
 		key: undefined,
 		shift: false,
-		uri: `${index}`,
+		id: `${index}`,
 	});
 	const [activeSlide, setActiveSlide] = useState<boolean>(false);
 	const [presentingSlide, setPresentingSlide] = useState<boolean>(false);
@@ -46,7 +46,7 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 		setSlideData({
 			key,
 			shift,
-			uri: `${index}`,
+			id: `${listId}/${songId}/${index}`,
 		});
 	}, [listId, songId, index]);
 
@@ -65,10 +65,10 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 	return (
 		<div
 			{...restProps}
-			id={`${listId}/${songId}/${index}`}
+			id={slideData.id}
 			tabIndex={-1}
 			role='listitem'
-			class={`slide ${presentingSlide ? 'active' : activeSlide ? 'subActive' : ''}`}
+			class={`slide ${presenting === slideData.id ? 'active' : activeSlide ? 'subActive' : ''}`}
 		>
 			{slideData.key !== undefined && (
 				<div class='hotkey'>
