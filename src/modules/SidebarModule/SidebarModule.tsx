@@ -42,14 +42,6 @@ const SidebarModule = () => {
 
 	return (
 		<div class='Sidebar'>
-			<div
-				class={`present ${isPresenting ? 'isPresenting' : ''}`}
-				onClick={() => {
-					setIsPresenting(!isPresenting);
-				}}
-			>
-				<span>{isPresenting ? 'Stop' : 'Start'}</span>
-			</div>
 			<SearchInput label='Search' placeholder='Search' onChange={onSearch} />
 		</div>
 	);

@@ -1,7 +1,7 @@
 @import 'src/style/shared.scss';
 
 .Tab {
-	padding: 0.8em;
+	padding: $gap;
 	font-weight: weight(bold);
 	position: relative;
 	flex-grow: 1;
@@ -15,6 +15,8 @@
 	grid-row: 1;
 	line-height: 1.25em;
 	cursor: pointer;
+	border-radius: $radius $radius 0 0;
+	height: $header-size;
 
 	&::after {
 		content: '';
@@ -31,9 +33,9 @@
 
 	.icon {
 		display: grid;
-		height: 1.2em;
-		width: 1.2em;
-		margin-right: 0.35em;
+		height: 1.15em;
+		width: 1.15em;
+		margin-right: $gap;
 		flex: 0 0 auto;
 
 		svg {
@@ -56,9 +58,9 @@
 	.indicator,
 	.close {
 		display: none;
-		height: 1.1em;
-		width: 1.1em;
-		margin-left: 0.5em;
+		height: 100%;
+		width: 1.15em;
+		margin-left: $gap;
 		box-sizing: content-box !important;
 		flex: 0 0 auto;
 		border-radius: 50%;
@@ -72,13 +74,17 @@
 		}
 
 		&:hover {
-			background-color: $offset;
+			color: $primary;
 		}
 	}
 
 	.indicator {
-		svg {
-			fill: $green;
+		color: $primary;
+	}
+
+	&.live {
+		.indicator {
+			display: grid;
 		}
 	}
 
@@ -91,55 +97,6 @@
 		}
 	}
 
-	&.live {
-		.indicator {
-			display: grid;
-		}
-		&:hover .indicator {
-			background-color: rgba($background, 0.5);
-		}
-		&.active .indicator {
-			background-color: $background;
-		}
-	}
-
-	.menu {
-		display: grid;
-		height: 0.8em;
-		width: 0.8em;
-		margin-left: 0.5em;
-		box-sizing: content-box !important;
-		flex: 0 0 auto;
-		opacity: 0;
-
-		svg {
-			margin: auto;
-			height: 100%;
-			width: 100%;
-			pointer-events: none;
-		}
-	}
-
-	.menu {
-		border-radius: 50%;
-		cursor: pointer;
-		height: 1em;
-		width: 1em;
-
-		svg {
-			color: darken($text, 20%);
-		}
-
-		&:hover {
-			background-color: lighten($background, 3.5%);
-			box-shadow: 0 0 0 0.15em lighten($background, 3.5%);
-
-			svg {
-				color: $text;
-			}
-		}
-	}
-
 	&:focus {
 		text-decoration: underline;
 		outline: none;
@@ -147,15 +104,16 @@
 
 	&:hover,
 	&:focus {
-		background-color: rgba($background, 0.5);
-
-		.menu {
-			opacity: 1;
+		.icon path {
+			fill: $primary;
 		}
 	}
 
 	&.active {
-		background-color: $background;
-		color: var(--color);
+		background-color: rgba(227, 226, 233, 0.08);
+
+		.icon path {
+			fill: $primary;
+		}
 	}
 }

@@ -61,7 +61,6 @@ const HeaderModule = () => {
 
 	return (
 		<div class='Header'>
-			<div class={`background ${isFocused ? 'focused' : ''}`}></div>
 			<div class='nav'>
 				<div class='tabs'>
 					{tabs.map(tab => {
@@ -77,6 +76,16 @@ const HeaderModule = () => {
 					}}
 				>
 					<Plus />
+				</div>
+			</div>
+			<div class='control'>
+				<div
+					class={`present ${isPresenting ? 'isPresenting' : ''}`}
+					onClick={() => {
+						setIsPresenting(!isPresenting);
+					}}
+				>
+					<span>{isPresenting ? 'Stop' : 'Start'}</span>
 				</div>
 			</div>
 		</div>
