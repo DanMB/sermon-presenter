@@ -2,7 +2,6 @@
 
 .Tab {
 	padding: $gap;
-	font-weight: weight(bold);
 	position: relative;
 	flex-grow: 1;
 	cursor: default;
@@ -110,7 +109,7 @@
 	}
 
 	&.active {
-		background-color: rgba(227, 226, 233, 0.08);
+		background-color: $offset;
 
 		.icon path {
 			fill: $primary;
