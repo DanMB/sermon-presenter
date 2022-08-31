@@ -8,24 +8,30 @@ import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
 import SetListModule from '@src/modules/SetListModule/SetListModule';
 import OurPraise from '@src/ts/OurPraise';
 import SidebarModule from '@src/modules/SidebarModule/SidebarModule';
-import { usePresent } from '@src/ts/PresentStore';
+import CustomEvents, { Events } from '@src/ts/CustomEvents';
+import PresentWindow from '@src/ts/presenter/PresentWindow';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
-	const setPresenting = usePresent(state => state.setPresenting);
 
 	const keyDown = (e: KeyboardEvent) => {
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			setPresenting(undefined);
+			CustomEvents.dispatch(Events.CLEAR);
 		}
+	};
+
+	const startShow = () => {
+		new PresentWindow();
 	};
 
 	useEffect(() => {
 		window.addEventListener('keydown', keyDown);
+		CustomEvents.listen(Events.START, startShow);
 
 		return function () {
 			window.removeEventListener('keydown', keyDown);
+			CustomEvents.remove(Events.START, startShow);
 		};
 	}, []);
 

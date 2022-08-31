@@ -1,5 +1,7 @@
 export enum Events {
 	SLIDE = 'sermon://custom/slide',
+	CLEAR = 'sermon://custom/clear',
+	BLACKOUT = 'sermon://custom/blackout',
 	START = 'sermon://custom/start',
 	STOP = 'sermon://custom/start',
 	OPTIONS = 'sermon://custom/options',
@@ -8,6 +10,11 @@ export enum Events {
 export default class CustomEvents {
 	public static dispatch(name: Events, data?: any) {
 		var ev = new CustomEvent(name, data ? { detail: data } : undefined);
+		if (data) {
+			console.log(name, data);
+		} else {
+			console.log(name);
+		}
 		window.dispatchEvent(ev);
 	}
 

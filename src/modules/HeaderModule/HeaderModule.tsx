@@ -10,7 +10,8 @@ import TabStore, { useTabs } from '@src/ts/TabStore';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
-import { usePresent } from '@src/ts/PresentStore';
+import CustomEvents, { Events } from '@src/ts/CustomEvents';
+import { isOpen } from '@src/ts/presenter/hooks';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -21,8 +22,7 @@ const HeaderModule = () => {
 	const moveActive = useTabs(state => state.moveActive);
 	const tabData = useRef<CustomMap<ITabData>>(TabStore.allTabs);
 
-	const isPresenting = usePresent(state => state.isPresenting);
-	const setIsPresenting = usePresent(state => state.setIsPresenting);
+	const presentingIsOpen = isOpen.use();
 
 	useEffect(() => {
 		tabData.current = TabStore.allTabs;
@@ -80,12 +80,12 @@ const HeaderModule = () => {
 			</div>
 			<div class='control'>
 				<div
-					class={`present ${isPresenting ? 'isPresenting' : ''}`}
+					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
 					onClick={() => {
-						setIsPresenting(!isPresenting);
+						CustomEvents.dispatch(Events.START);
 					}}
 				>
-					<span>{isPresenting ? 'Stop' : 'Start'}</span>
+					<span>{presentingIsOpen ? 'Stop' : 'Start'}</span>
 				</div>
 			</div>
 		</div>

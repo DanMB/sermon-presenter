@@ -7,19 +7,16 @@ import Live from '@src/components/icons/Live';
 import GroupIcon from '@src/components/icons/GroupIcon';
 import TabStore, { useTabs } from '@src/ts/TabStore';
 import { UriParts } from '@src/types/URIParts';
-import { usePresent } from '@src/ts/PresentStore';
 import Close from '../icons/Close';
+import { currentTab, isOpen } from '@src/ts/presenter/hooks';
 
 const Tab = ({ uri }: { uri: string }) => {
 	const active = useTabs(state => state.active);
-	const isPresenting = usePresent(state => state.isPresenting);
-	const presenting = usePresent(state => state.presenting);
 	const setActive = useTabs(state => state.setActive);
 	const remove = useTabs(state => state.remove);
 
-	const parts = presenting ? presenting.split('/') : [];
-
-	const presentingTab: string | undefined = parts[0];
+	const presentingTab = currentTab.use();
+	const presentingIsOpen = isOpen.use();
 
 	const tab = TabStore.getTab(uri);
 
@@ -37,7 +34,7 @@ const Tab = ({ uri }: { uri: string }) => {
 
 	return (
 		<div
-			class={`Tab ${uri === active ? 'active' : ''} ${isPresenting && uri === presentingTab ? 'live' : ''}`}
+			class={`Tab ${uri === active ? 'active' : ''} ${presentingIsOpen && uri === presentingTab ? 'live' : ''}`}
 			key={tab.id}
 			data-id={tab.id}
 			data-uri={uri}

@@ -5,16 +5,14 @@ import { useContext, useEffect, useRef } from 'preact/hooks';
 import ISongData from '@src/types/ISongData';
 import { useTabs } from '@src/ts/TabStore';
 import { cleanMultiline } from '@src/utils/textUtils';
-import { usePresent } from '@src/ts/PresentStore';
 import SongSlide from './SongSlide';
+import CustomEvents, { Events } from '@src/ts/CustomEvents';
+import PresentWindow from '@src/ts/presenter/PresentWindow';
 
 const digitExp = /^Digit\d+$/i;
 
 const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId: string }) => {
 	const setActive = useTabs(state => state.setActive);
-	const isPresenting = usePresent(state => state.isPresenting);
-	const presenting = usePresent(state => state.presenting);
-	const setPresenting = usePresent(state => state.setPresenting);
 
 	// const isActive = useRef<boolean>(activeSong === song.id);
 	// const slideI = useRef<number>(activeSong === song.id ? parseInt(activeSlide) : -1);
@@ -99,16 +97,14 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 	}, []);
 
 	const onClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
-		console.log('onClick', e.currentTarget.id);
-		if (isPresenting) {
-			setPresenting(e.currentTarget.id);
-		}
+		// console.log('onClick', e.currentTarget.id);
+		CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
 	};
 
 	const onFocus = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
-		console.log('onFocus', e.currentTarget.id, presenting !== e.currentTarget.id);
-		if (isPresenting && presenting !== e.currentTarget.id) {
-			setPresenting(e.currentTarget.id);
+		// console.log('onFocus', e.currentTarget.id, PresentWindow.get()?.current !== e.currentTarget.id);
+		if (PresentWindow.get()?.current !== e.currentTarget.id) {
+			CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
 		}
 	};
 

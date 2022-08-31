@@ -14,8 +14,10 @@ export default class Client {
 	};
 
 	public static async init(): Promise<void> {
+		console.log('INIT');
 		return new Promise((resolve, reject) => {
 			if (typeof window.__TAURI__ !== 'undefined' && window.__TAURI__) {
+				console.log('TRUE');
 				Client.isTau = true;
 				this.setup()
 					.then(() => {
@@ -25,6 +27,7 @@ export default class Client {
 						reject();
 					});
 			} else {
+				console.log('FALSE');
 				Client.isTau = false;
 				this.setup();
 				reject();

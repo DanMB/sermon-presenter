@@ -5,7 +5,7 @@ import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
 import { WebviewWindow } from '@tauri-apps/api/window';
 import { Event, UnlistenFn } from '@tauri-apps/api/event';
-import { IPresenterOptions } from '@src/ts/PresentWindow';
+import { IPresenterOptions } from '@src/ts/presenter/PresentWindow';
 import ISongSlide from '@src/types/ISongSlide';
 import { EventNames } from '@src/types/EventNames';
 

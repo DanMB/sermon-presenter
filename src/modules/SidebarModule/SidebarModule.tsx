@@ -10,16 +10,12 @@ import TabStore, { useTabs } from '@src/ts/TabStore';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
-import { usePresent } from '@src/ts/PresentStore';
 import SearchInput from '@src/components/Input/SearchInput';
 import OurPraise from '@src/ts/OurPraise';
 
 const SidebarModule = () => {
 	const tabs = useTabs(state => state.tabs);
 	const active = useTabs(state => state.active);
-
-	const isPresenting = usePresent(state => state.isPresenting);
-	const setIsPresenting = usePresent(state => state.setIsPresenting);
 
 	const keyDown = (e: KeyboardEvent) => {};
 

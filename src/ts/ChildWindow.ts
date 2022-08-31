@@ -1,54 +1,51 @@
-import WindowFeatures from '@src/utils/WindowFeatures';
-import Client from './Client';
-import { WebviewWindow, WindowOptions } from '@tauri-apps/api/window';
+import { WebviewWindow } from '@tauri-apps/api/window';
 import { EventCallback, UnlistenFn } from '@tauri-apps/api/event';
-
-export enum Events {
-	CLOSE = 'window:close',
-	FOCUS = 'window:focus',
-	SET = 'presenter:set',
-	STYLE = 'presenter:style',
-}
-
-export interface IWindowProps extends WindowOptions {
-	id: string;
-	route?: string;
-}
+import Client from './Client';
+import WindowFeatures from '@src/utils/WindowFeatures';
 
 export default class ChildWindow {
-	private _id: string;
-	public get id() {
-		return this._id;
+	private _window: WebviewWindow | null = null;
+	public get webview() {
+		return this._window;
 	}
+
+	private _unlistenWindowClose: UnlistenFn = () => null;
+	private _unlistenAppClose: UnlistenFn = () => null;
 
 	private _native: Window | null = null;
-	private _window: WebviewWindow | null = null;
-
-	public get window() {
-		return this._window ?? this._native;
+	public get native() {
+		return this._native;
 	}
 
-	constructor({ id, route, ...options }: IWindowProps) {
-		this._id = id;
+	constructor() {
 		if (Client.isTau) {
-			this._window = new WebviewWindow(id, {
-				title: id,
+			this._window = new WebviewWindow('present', {
 				fileDropEnabled: false,
-				focus: true,
-				visible: true,
+				focus: false,
 				minHeight: 300,
 				minWidth: 500,
-				...options,
+				title: 'Sermon Presenter',
+				visible: false,
+				decorations: false,
+				skipTaskbar: false,
+				resizable: true,
+				url: window.location.origin + window.location.pathname,
 				// processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
+			});
+
+			this._window.once('tauri://created', this.init);
+
+			this._window.once('tauri://error', e => {
+				console.error(e);
+				this.close();
 			});
 		} else {
 			const query = new URLSearchParams();
-			query.set('id', id);
-			query.set('route', route ?? id);
+			query.set('label', 'present');
 
 			this._native = window.open(
 				`${window.location.pathname}?${query.toString()}`,
-				id,
+				'present',
 				WindowFeatures.settingsToString({
 					width: 500,
 					height: 500,
@@ -67,39 +64,16 @@ export default class ChildWindow {
 		}
 	}
 
-	public async send(name: string, data?: any) {
-		if (this._window) this._window.emit(name, data);
-		// else if(this._native) this._native
-	}
+	private init = async () => {};
 
-	public async destroy() {
-		if (this._window) {
-			this._window.close();
-			this._window = null;
-		}
-		if (this._native) {
-			this._native.removeEventListener('unload', this.destroy);
-			this._native.close();
-			this._native = null;
-		}
-	}
+	public close = () => {
+		this.destroy();
+		if (this._window) this._window.close();
+		if (this._native) this._native.close();
+	};
 
-	public async focus() {
-		if (this._window) this._window.setFocus();
-		else if (this._native) this._native.focus();
-	}
-
-	public async listen<T>(event: string, handler: EventCallback<T>): Promise<UnlistenFn> {
-		if (this._window) {
-			return this._window.listen(event, handler);
-		} else if (this._native) {
-			// onunload => close
-			// @ts-ignore
-			this._native.addEventListener(event, handler);
-			// @ts-ignore
-			return () => this._native?.removeEventListener(event, handler);
-		} else {
-			return () => null;
-		}
-	}
+	private destroy = () => {
+		this._unlistenWindowClose();
+		this._unlistenAppClose();
+	};
 }
