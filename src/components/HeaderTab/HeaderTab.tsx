@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import './Tab.scss';
+import './HeaderTab.scss';
 
 import { useEffect } from 'preact/hooks';
 import Live from '@src/components/icons/Live';
@@ -10,7 +10,7 @@ import { UriParts } from '@src/types/URIParts';
 import Close from '../icons/Close';
 import { currentTab, isOpen } from '@src/ts/presenter/hooks';
 
-const Tab = ({ uri }: { uri: string }) => {
+const HeaderTab = ({ uri }: { uri: string }) => {
 	const active = useTabs(state => state.active);
 	const setActive = useTabs(state => state.setActive);
 	const remove = useTabs(state => state.remove);
@@ -34,7 +34,7 @@ const Tab = ({ uri }: { uri: string }) => {
 
 	return (
 		<div
-			class={`Tab ${uri === active ? 'active' : ''} ${presentingIsOpen && uri === presentingTab ? 'live' : ''}`}
+			class={`HeaderTab ${uri === active ? 'active' : ''} ${presentingIsOpen && uri === presentingTab ? 'live' : ''}`}
 			key={tab.id}
 			data-id={tab.id}
 			data-uri={uri}
@@ -54,4 +54,4 @@ const Tab = ({ uri }: { uri: string }) => {
 	);
 };
 
-export default Tab;
+export default HeaderTab;

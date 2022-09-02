@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
-import Tab from '@src/components/Tab/Tab';
+import HeaderTab from '@src/components/HeaderTab/HeaderTab';
 import TabStore, { useTabs } from '@src/ts/TabStore';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
@@ -66,7 +66,7 @@ const HeaderModule = () => {
 					{tabs.map(tab => {
 						if (tab === newtabUri) return null;
 
-						return <Tab key={tab} uri={tab} />;
+						return <HeaderTab key={tab} uri={tab} />;
 					})}
 				</div>
 				<div
