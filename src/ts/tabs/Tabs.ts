@@ -24,14 +24,29 @@ export class TabsStore extends Store<ITabState> {
 		);
 
 		const map = new Map<TabUid, Tab>();
+		const state = this.get();
+		let adjusted = false;
 
-		for (const tabId of this.get().tabs) {
+		for (const tabId of state.tabs) {
 			const saved = Storage.get<ITabConfig>(tabId);
 			if (saved) {
 				map.set(tabId, new Tab(saved));
 			} else {
-				this.remove(tabId);
+				const foundI = this.get().tabs.indexOf(tabId);
+
+				if (foundI >= 0) {
+					state.tabs = [...this.get().tabs].splice(foundI, 1);
+					adjusted = true;
+				}
 			}
+		}
+
+		if (!this.get().tabs.includes(this.get().active)) {
+			state.active = newtabUri;
+		}
+
+		if (adjusted) {
+			this.set(state);
 		}
 
 		this.map = map;
