@@ -4,11 +4,12 @@ import './NewTabModule.scss';
 import { useContext, useEffect, useState } from 'preact/hooks';
 
 import Music from '@src/components/icons/Music';
-import TabStore from '@src/ts/TabStore';
+import Tabs from '@src/ts/tabs/Tabs';
 import { TabType } from '@src/types/URIParts';
 import ISongData from '@src/types/ISongData';
 import Client from '@src/ts/Client';
 import OurPraise, { ISetList, IOrganisation } from '@src/ts/OurPraise';
+import Tab, { TabTypes } from '@src/ts/tabs/Tab';
 
 const NewTabModule = () => {
 	const newSetListTab = async () => {};
@@ -19,12 +20,20 @@ const NewTabModule = () => {
 		const event = await OurPraise.get()?.event(id, true);
 		if (!event) return;
 		console.log(event);
-		TabStore.setTab({
-			id: `tab.ourpraise.${event.id}`,
-			name: event.title,
-			data: event,
-			type: 'setlist',
-			active: '',
+
+		const tabId = `tab.ourpraise.${event.id}`;
+		Tabs.map.set(
+			tabId,
+			new Tab({
+				id: `tab.ourpraise.${event.id}`,
+				title: event.title,
+				data: event,
+				type: TabTypes.SETLIST,
+				active: '',
+			})
+		);
+		Tabs.set({
+			tabs: [...Tabs.get().tabs, tabId],
 		});
 	};
 

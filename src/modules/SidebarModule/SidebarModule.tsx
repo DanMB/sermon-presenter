@@ -6,7 +6,7 @@ import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
 import HeaderTab from '@src/components/HeaderTab/HeaderTab';
-import TabStore, { useTabs } from '@src/ts/TabStore';
+import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';

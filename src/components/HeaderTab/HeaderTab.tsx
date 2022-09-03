@@ -1,53 +1,45 @@
 import { h } from 'preact';
 import './HeaderTab.scss';
-
-import { useEffect } from 'preact/hooks';
 import Live from '@src/components/icons/Live';
-
 import GroupIcon from '@src/components/icons/GroupIcon';
-import TabStore, { useTabs } from '@src/ts/TabStore';
-import { UriParts } from '@src/types/URIParts';
+import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
 import Close from '../icons/Close';
 import { currentTab, isOpen } from '@src/ts/presenter/hooks';
+import Tab from '@src/ts/tabs/Tab';
 
-const HeaderTab = ({ uri }: { uri: string }) => {
+const HeaderTab = ({ tab }: { tab: Tab }) => {
 	const active = useTabs(state => state.active);
-	const setActive = useTabs(state => state.setActive);
-	const remove = useTabs(state => state.remove);
 
 	const presentingTab = currentTab.use();
 	const presentingIsOpen = isOpen.use();
 
-	const tab = TabStore.getTab(uri);
-
-	if (!tab) return null;
-
-	const clickTab = (e: MouseEvent) => {
-		// if ((e.target as HTMLElement).classList.contains('menu')) return;
-		// setActive((e.currentTarget as HTMLElement).getAttribute('data-uri'));
-		setActive(uri);
-	};
-
-	const closeTab = () => {
-		remove(uri);
-	};
+	const id = tab.use(state => state.id);
+	const title = tab.use(state => state.title);
 
 	return (
 		<div
-			class={`HeaderTab ${uri === active ? 'active' : ''} ${presentingIsOpen && uri === presentingTab ? 'live' : ''}`}
-			key={tab.id}
-			data-id={tab.id}
-			data-uri={uri}
-			onClick={clickTab}
+			class={`HeaderTab ${id === active ? 'active' : ''} ${presentingIsOpen && id === presentingTab ? 'live' : ''}`}
+			key={id}
+			data-id={id}
+			onClick={() => {
+				Tabs.set({
+					active: id,
+				});
+			}}
 		>
 			<span class='icon'>
 				<GroupIcon />
 			</span>
-			<span class='name'>{tab.name}</span>
+			<span class='name'>{title}</span>
 			<span class='indicator'>
 				<Live />
 			</span>
-			<span class='close' onClick={closeTab}>
+			<span
+				class='close'
+				onClick={() => {
+					Tabs.remove(id);
+				}}
+			>
 				<Close />
 			</span>
 		</div>

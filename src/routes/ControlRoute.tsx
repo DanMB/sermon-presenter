@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 import { useEffect } from 'preact/hooks';
 import HeaderModule from '@src/modules/HeaderModule/HeaderModule';
-import TabStore, { useTabs } from '@src/ts/TabStore';
+import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
 import NewTabModule from '@src/modules/NewTabModule/NewTabModule';
 import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
 import SetListModule from '@src/modules/SetListModule/SetListModule';

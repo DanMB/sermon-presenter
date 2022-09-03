@@ -2,7 +2,7 @@ import { h } from 'preact';
 import './Song.scss';
 
 import { useEffect, useState } from 'preact/hooks';
-import { useTabs } from '@src/ts/TabStore';
+import { useTabs } from '@src/ts/tabs/Tabs';
 import { cleanMultiline } from '@src/utils/textUtils';
 import ISongSlide from '@src/types/ISongSlide';
 import { current } from '@src/ts/presenter/hooks';

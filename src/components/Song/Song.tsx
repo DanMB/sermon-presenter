@@ -3,7 +3,7 @@ import './Song.scss';
 
 import { useContext, useEffect, useRef } from 'preact/hooks';
 import ISongData from '@src/types/ISongData';
-import { useTabs } from '@src/ts/TabStore';
+import { useTabs } from '@src/ts/tabs/Tabs';
 import { cleanMultiline } from '@src/utils/textUtils';
 import SongSlide from './SongSlide';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
@@ -12,8 +12,6 @@ import PresentWindow from '@src/ts/presenter/PresentWindow';
 const digitExp = /^Digit\d+$/i;
 
 const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId: string }) => {
-	const setActive = useTabs(state => state.setActive);
-
 	// const isActive = useRef<boolean>(activeSong === song.id);
 	// const slideI = useRef<number>(activeSong === song.id ? parseInt(activeSlide) : -1);
 

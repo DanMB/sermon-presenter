@@ -19,15 +19,8 @@ export interface ITabConfig<T = unknown> {
 export type IShallowTab = Omit<ITabConfig, 'data'>;
 
 export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
-	private _data: T;
-	public get data() {
-		return this._data;
-	}
-
 	constructor(config: ITabConfig<T>) {
 		super(config);
-
-		this._data = config.data;
 	}
 
 	public static isSetList(data: any): data is ISetList {

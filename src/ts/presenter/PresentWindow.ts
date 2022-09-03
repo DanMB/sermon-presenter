@@ -4,9 +4,10 @@ import { EventNames } from '@src/types/EventNames';
 import Client from '../Client';
 import WindowFeatures from '@src/utils/WindowFeatures';
 import CustomEvents, { Events } from '../CustomEvents';
-import TabStore from '../TabStore';
+import Tabs from '../tabs/Tabs';
 import { useState } from 'preact/hooks';
 import { current, currentTab, isOpen } from './hooks';
+import ISetList from '@src/types/ISetList';
 
 export interface IPresenterOptions {
 	scale: number;
@@ -117,13 +118,13 @@ export default class PresentWindow {
 		this._current = e.detail;
 
 		const parts = e.detail ? e.detail.split('/') : [];
-		const tab = parts[0] ? TabStore.getTab(parts[0]) : undefined;
-		const song = parts[1] && tab ? tab.data.songs.find(s => s.id === parts[1]) : null;
+		const tab = parts[0] ? Tabs.getTab<ISetList>(parts[0]) : undefined;
+		const song = parts[1] && tab ? tab.get().data.songs.find(s => s.id === parts[1]) : null;
 		const slide = parts[2] && song ? song.slides[parseInt(parts[2])] : null;
 
 		this.set(slide);
 		current.set(e.detail || null);
-		currentTab.set(tab?.id || null);
+		currentTab.set(tab?.get().id || null);
 	};
 
 	private init = async () => {
