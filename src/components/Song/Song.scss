@@ -37,7 +37,7 @@
 		background-color: rgba($offset, 0.8);
 		position: sticky;
 		top: -$gap;
-		backdrop-filter: blur(3px);
+		backdrop-filter: blur(10px);
 	}
 
 	.slides {
