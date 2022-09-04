@@ -5,25 +5,22 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
-import HeaderTab from '@src/components/HeaderTab/HeaderTab';
 import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
-import CustomMap from '@src/types/CustomMap';
-import ITabData from '@src/types/ITabData';
-import { newtabUri, UriParts } from '@src/types/URIParts';
 import SearchInput from '@src/components/Input/SearchInput';
 import OurPraise from '@src/ts/OurPraise';
+import Settings from '@src/ts/Settings';
+import Music from '@src/components/icons/Music';
+import SidebarTab from '@src/components/SidebarTab/SidebarTab';
+import Cog from '@src/components/icons/Cog';
 
 const SidebarModule = () => {
-	const tabs = useTabs(state => state.tabs);
-	const active = useTabs(state => state.active);
-
-	const keyDown = (e: KeyboardEvent) => {};
+	const sidebar = Settings.use(state => state.sidebar);
 
 	useEffect(() => {
-		window.addEventListener('keydown', keyDown);
+		// window.addEventListener('keydown', keyDown);
 
 		return function () {
-			window.removeEventListener('keydown', keyDown);
+			// window.removeEventListener('keydown', keyDown);
 		};
 	}, []);
 
@@ -38,7 +35,12 @@ const SidebarModule = () => {
 
 	return (
 		<div class='Sidebar'>
-			<SearchInput label='Search' placeholder='Search' onChange={onSearch} />
+			{/* <SearchInput label='Search' placeholder='Search' onChange={onSearch} /> */}
+			<div class='tabs'>
+				<SidebarTab id={'music'} icon={<Music />} />
+				<SidebarTab id={'settings'} icon={<Cog />} />
+			</div>
+			{sidebar ? <div class='content'></div> : <></>}
 		</div>
 	);
 };

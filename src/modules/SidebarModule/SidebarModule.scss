@@ -2,13 +2,29 @@
 
 .Sidebar {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: stretch;
 	justify-content: start;
-	width: 15vw;
-	padding: 1rem;
-	gap: 1rem;
-	padding: $gap;
-	border-radius: $radius;
-	background-color: $offset;
+	gap: $gap;
+
+	.tabs {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: start;
+		gap: $gap;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: start;
+		width: 15vw;
+		padding: 1rem;
+		gap: 1rem;
+		padding: $padding;
+		border-radius: $radius;
+		background-color: $offset;
+	}
 }
