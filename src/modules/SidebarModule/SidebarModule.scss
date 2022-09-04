@@ -26,5 +26,15 @@
 		padding: $padding;
 		border-radius: $radius;
 		background-color: $offset;
+		position: relative;
+
+		.resizer {
+			position: absolute;
+			height: 100%;
+			width: $gap;
+			top: 0;
+			right: -$gap;
+			cursor: w-resize;
+		}
 	}
 }
