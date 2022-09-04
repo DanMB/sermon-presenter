@@ -18,7 +18,7 @@
 	-webkit-app-region: drag;
 	$w: 1em;
 	$size: 1em;
-	padding: 0 $gap;
+	padding: 0 $padding;
 
 	.nav {
 		grid-column: 2;
@@ -45,24 +45,23 @@
 
 			height: $header-size;
 			width: $header-size;
+			color: darken($text, 30%);
 
 			svg {
 				margin: auto;
 				height: 1.25em;
 				width: 1.25em;
 				margin: auto;
-				color: darken($text, 30%);
 			}
 
 			&:hover,
-			&:focus {
+			&:focus,
+			&.active {
 				color: $primary;
 			}
 
 			&.active {
-				background-color: $background;
-				background-color: rgba(227, 226, 233, 0.08);
-				color: $text;
+				background-color: $offset;
 				// color: var(--color);
 			}
 		}
@@ -75,7 +74,7 @@
 		position: relative;
 
 		.present {
-			padding: 0 $gap;
+			padding: 0 $padding;
 			font-weight: weight(bold);
 			background-color: $green;
 			color: $offset;

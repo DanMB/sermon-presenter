@@ -39,7 +39,7 @@ body {
 	max-height: 100vh;
 	@include cleanScrollbar();
 	overflow-y: auto;
-	padding: $gap;
+	padding: $padding;
 	border-radius: $radius;
 	background-color: $offset;
 }
