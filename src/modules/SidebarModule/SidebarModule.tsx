@@ -15,7 +15,7 @@ import Cog from '@src/components/icons/Cog';
 
 const SidebarModule = () => {
 	const sidebar = Settings.use(state => state.sidebar);
-	const [size, setSize] = useState<number>(Settings.get().sidebarWidth);
+	const size = Settings.use(state => state.sidebarWidth);
 
 	const pos = useRef(0);
 	const holding = useRef(false);
@@ -31,13 +31,14 @@ const SidebarModule = () => {
 
 	const resizerMove = (e: MouseEvent) => {
 		if (!holding.current) return;
-		setSize(val => {
-			let newVal = val + e.movementX;
 
-			if (newVal < 100) newVal = 100;
-			if (newVal > 800) newVal = 800;
+		let newVal = Settings.get().sidebarWidth + e.movementX;
 
-			return newVal;
+		if (newVal < 100) newVal = 100;
+		if (newVal > 800) newVal = 800;
+
+		Settings.set({
+			sidebarWidth: newVal,
 		});
 	};
 

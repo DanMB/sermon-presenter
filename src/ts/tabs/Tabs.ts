@@ -31,7 +31,7 @@ export class TabsStore extends Store<ITabState> {
 			const saved = Storage.get<ITabConfig>(tabId);
 			if (saved) {
 				map.set(tabId, new Tab(saved));
-			} else {
+			} else if (tabId !== newtabUri) {
 				const foundI = this.get().tabs.indexOf(tabId);
 
 				if (foundI >= 0) {

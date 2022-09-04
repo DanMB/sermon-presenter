@@ -37,18 +37,21 @@ export default class Store<T extends object> {
 		this._maxAge = maxAge;
 
 		if (this._id) {
-			if (this._flush) {
+			let saved: T | undefined = undefined;
+			if (!this._flush) {
 				if (this._maxAge > 0) {
-					Cache.set<T>(`store/${this._id}`, state, this._maxAge);
+					saved = Cache.get<T>(this._id);
 				} else {
-					Storage.set<T>(`store/${this._id}`, state);
+					saved = Storage.get<T>(this._id) ?? state;
 				}
+			}
+
+			state = saved ?? state;
+
+			if (this._maxAge > 0) {
+				Cache.set<T>(this._id, state, this._maxAge);
 			} else {
-				if (this._maxAge > 0) {
-					state = Cache.get<T>(`store/${this._id}`) ?? state;
-				} else {
-					state = Storage.get<T>(`store/${this._id}`) ?? state;
-				}
+				Storage.set<T>(this._id, state);
 			}
 		}
 
@@ -68,9 +71,9 @@ export default class Store<T extends object> {
 
 		if (this._id) {
 			if (this._maxAge > 0) {
-				Cache.set<T>(`store/${this._id}`, this._store.getState(), this._maxAge);
+				Cache.set<T>(this._id, this._store.getState(), this._maxAge);
 			} else {
-				Storage.set<T>(`store/${this._id}`, this._store.getState());
+				Storage.set<T>(this._id, this._store.getState());
 			}
 		}
 	};

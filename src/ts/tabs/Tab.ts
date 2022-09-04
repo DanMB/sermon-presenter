@@ -20,7 +20,9 @@ export type IShallowTab = Omit<ITabConfig, 'data'>;
 
 export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
 	constructor(config: ITabConfig<T>) {
-		super(config);
+		super(config, {
+			id: config.id,
+		});
 	}
 
 	public static isSetList(data: any): data is ISetList {

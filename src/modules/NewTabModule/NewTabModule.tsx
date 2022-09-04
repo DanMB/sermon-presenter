@@ -25,7 +25,7 @@ const NewTabModule = () => {
 		Tabs.map.set(
 			tabId,
 			new Tab({
-				id: `tab.ourpraise.${event.id}`,
+				id: tabId,
 				title: event.title,
 				data: event,
 				type: TabTypes.SETLIST,
