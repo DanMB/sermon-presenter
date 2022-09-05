@@ -1,13 +1,17 @@
 @import 'src/style/shared.scss';
 
 .Input {
-	padding: 0.5em 0.8em;
+	padding: 0.3em 0.4em;
 	font-weight: weight(bold);
 	background-color: $offset;
 	color: $text;
-	cursor: pointer;
 	line-height: 1.25em;
 	max-width: 100%;
-	font-size: 0.9em;
 	border: 1px solid $border;
+	border-radius: $small-radius;
+
+	&:focus {
+		outline: none;
+		border-color: $borderLight;
+	}
 }

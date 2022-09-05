@@ -4,7 +4,6 @@ import './Input.scss';
 
 export interface IProps extends Omit<JSX.HTMLAttributes<HTMLInputElement>, 'onChange'> {
 	label: string;
-	id?: string;
 	defaultValue?: string;
 	hint?: string;
 	prefix?: string;
@@ -16,7 +15,6 @@ export interface IProps extends Omit<JSX.HTMLAttributes<HTMLInputElement>, 'onCh
 const Input = ({
 	className,
 	label,
-	id,
 	defaultValue,
 	hint,
 	prefix,
