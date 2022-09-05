@@ -10,11 +10,11 @@ export enum Events {
 export default class CustomEvents {
 	public static dispatch(name: Events, data?: any) {
 		var ev = new CustomEvent(name, data ? { detail: data } : undefined);
-		if (data) {
-			console.log(name, data);
-		} else {
-			console.log(name);
-		}
+		// if (data) {
+		// 	console.log(name, data);
+		// } else {
+		// 	console.log(name);
+		// }
 		window.dispatchEvent(ev);
 	}
 
