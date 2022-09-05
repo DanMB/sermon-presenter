@@ -4,13 +4,16 @@
 // $text: #f1f2f3;
 
 $background: #0f0f0f;
-$offset: #1c1d1f;
+$offset: #151617;
 $box: #27313b;
-$border: #2f363d;
+$border: rgba(227, 226, 233, 0.15);
+$borderLight: rgba(227, 226, 233, 0.4);
 $text: #f2f5f8;
-$scrollbar: lighten($box, 20%);
+$fadedText: #8594a3;
+$scrollbar: lighten($border, 20%);
 
 $primary: #24f091;
+$highlight: rgba(78, 160, 237, 0.6);
 
 // $primary: #8b4ec4;
 // $primary-dark: #5a2877;

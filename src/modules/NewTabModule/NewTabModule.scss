@@ -111,7 +111,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		color: darken($text, 30%);
+		color: $fadedText;
 		// opacity: 0.6;
 	}
 }
