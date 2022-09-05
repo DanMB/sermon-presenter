@@ -12,6 +12,7 @@ import Settings from '@src/ts/Settings';
 import Music from '@src/components/icons/Music';
 import SidebarTab from '@src/components/SidebarTab/SidebarTab';
 import Cog from '@src/components/icons/Cog';
+import SettingsModule from '../SettingsModule/SettingsModule';
 
 const SidebarModule = () => {
 	const sidebar = Settings.use(state => state.sidebar);
@@ -61,6 +62,7 @@ const SidebarModule = () => {
 			</div>
 			{sidebar ? (
 				<div class='content' style={{ width: `${size}px` }}>
+					{sidebar === 'settings' ? <SettingsModule /> : <></>}
 					<div class='resizer' onMouseDown={resizerDown} onMouseUp={resizerUp} onMouseMove={resizerMove}></div>
 				</div>
 			) : (

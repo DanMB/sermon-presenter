@@ -1,0 +1,19 @@
+@import 'src/style/shared.scss';
+
+.SettingsModule {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: start;
+	gap: $padding;
+	position: relative;
+
+	.setting {
+		display: flex;
+		flex-direction: column;
+
+		label {
+			line-height: 1.5em;
+		}
+	}
+}
