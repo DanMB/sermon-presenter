@@ -39,7 +39,7 @@
 
 			&:hover {
 				background-color: $border;
-				box-shadow: inset 0 0 0 calc(#{$gap / 2} - 1px) $background;
+				box-shadow: inset 0 0 0 calc(#{$gap * 0.5} - 1px) $background;
 				transition: background-color 0s 0.3s;
 			}
 		}
