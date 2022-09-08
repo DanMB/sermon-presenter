@@ -17,7 +17,7 @@ const config = require(fileName);
 export default defineConfig({
 	envPrefix: ['VITE_', 'APP_'],
 	define: {
-		'__VERSION__': JSON.stringify(process.env.npm_package_version),
+		__VERSION__: JSON.stringify(process.env.npm_package_version),
 	},
 	root: './src',
 	plugins: [
@@ -30,8 +30,8 @@ export default defineConfig({
 			manifest: {
 				version: process.env.npm_package_version,
 				app: config.package.version,
-				name: 'Sermon Presenter',
-				short_name: 'Sermon',
+				name: 'OurPresenter',
+				short_name: 'OurPresenter',
 				icons: [
 					{
 						src: '/icons/logo-192x192.png',

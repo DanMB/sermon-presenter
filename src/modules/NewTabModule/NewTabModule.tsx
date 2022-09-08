@@ -64,7 +64,7 @@ const NewTabModule = () => {
 
 	return (
 		<div class='page NewTab'>
-			<div class='title'>SERMON</div>
+			<div class='title'>OurPresenter</div>
 			{/* <div class='groups'>
 				<div class='group' onClick={newSetListTab}>
 					<div class='logo'>

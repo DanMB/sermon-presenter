@@ -1,6 +1,6 @@
 export type UriString = string;
 
-export const CustomProtocol = 'sermon';
+export const CustomProtocol = 'ourpres';
 
 export const UriProtocol = new RegExp(`^${CustomProtocol}:\/\/`);
 export const UriFakeProtocol = /^https:\/\//;

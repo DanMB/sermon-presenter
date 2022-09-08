@@ -24,7 +24,7 @@ export default class ChildWindow {
 				focus: false,
 				minHeight: 300,
 				minWidth: 500,
-				title: 'Sermon Presenter',
+				title: 'OurPresenter',
 				visible: false,
 				decorations: false,
 				skipTaskbar: false,
