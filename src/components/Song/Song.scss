@@ -46,10 +46,14 @@
 	.slides {
 		padding-top: 1rem;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(var(--minSize), 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 		grid-auto-rows: max-content;
 		grid-gap: $padding;
 		// -webkit-mask-image: -webkit-gradient(linear, left 90%, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(0, 0, 0, 0)));
+
+		@include breakpoint(ultra) {
+			grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		}
 
 		.slide {
 			display: flex;
