@@ -1,22 +1,13 @@
 import { h } from 'preact';
 import './SettingsModule.scss';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
-import Plus from '@src/components/icons/Plus';
-
-// import main from '../../ts/window';
-import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
-import SearchInput from '@src/components/Input/SearchInput';
-import OurPraise from '@src/ts/OurPraise';
 import Settings, { DefaultSettings } from '@src/ts/Settings';
-import Music from '@src/components/icons/Music';
-import SidebarTab from '@src/components/SidebarTab/SidebarTab';
-import Cog from '@src/components/icons/Cog';
 import Input from '@src/components/Input/Input';
 
 const SettingsModule = () => {
 	return (
 		<div class='SettingsModule'>
+			<div class='title'>Settings</div>
 			<div class='setting'>
 				<label for='font'>Font</label>
 				<Input

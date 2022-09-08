@@ -1,18 +1,13 @@
 import { h } from 'preact';
 import './SidebarModule.scss';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
-import Plus from '@src/components/icons/Plus';
-
-// import main from '../../ts/window';
-import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
-import SearchInput from '@src/components/Input/SearchInput';
-import OurPraise from '@src/ts/OurPraise';
+import { useEffect, useRef } from 'preact/hooks';
 import Settings from '@src/ts/Settings';
 import Music from '@src/components/icons/Music';
 import SidebarTab from '@src/components/SidebarTab/SidebarTab';
 import Cog from '@src/components/icons/Cog';
 import SettingsModule from '../SettingsModule/SettingsModule';
+import AddMusicModule from '../AddMusicModule/AddMusicModule';
 
 const SidebarModule = () => {
 	const sidebar = Settings.use(state => state.sidebar);
@@ -62,7 +57,7 @@ const SidebarModule = () => {
 			</div>
 			{sidebar ? (
 				<div class='content' style={{ width: `${size}px` }}>
-					{sidebar === 'settings' ? <SettingsModule /> : <></>}
+					{sidebar === 'settings' ? <SettingsModule /> : sidebar === 'music' ? <AddMusicModule /> : <></>}
 					<div class='resizer' onMouseDown={resizerDown} onMouseUp={resizerUp} onMouseMove={resizerMove}></div>
 				</div>
 			) : (
