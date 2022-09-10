@@ -8,26 +8,12 @@
 		<meta name="google" content="notranslate" />
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, shrink-to-fit=no" />
-		<script>
-			const urlParams = new URLSearchParams(window.location.search);
-			window.REF_PORT = urlParams.get('port') || undefined;
-			window.NEU_LOADED = false;
-			if (window.REF_PORT) {
-				const script = document.createElement('script');
-				script.src = 'http://localhost:' + REF_PORT + '/neutralino.js';
 
-				script.onload = () => {
-					console.log('Neutralino client loaded');
-					window.dispatchEvent(new CustomEvent('onNeuLoaded'));
-				};
-
-				document.getElementsByTagName('head')[0].appendChild(script);
-			} else {
-				console.error('No Neutralino client port found');
-			}
-		</script>
-		<script type="module" crossorigin src="/sermon-presenter/assets/index.9b0d8c03.js"></script>
-		<link rel="stylesheet" href="/sermon-presenter/assets/index.95b430a2.css">
+		<link rel="icon" type="image/png" sizes="32x32" href="/sermon-presenter/icons/logo-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/sermon-presenter/icons/logo-16x16.png" />
+		<meta name="theme-color" content="#10141d" />
+		<script type="module" crossorigin src="/sermon-presenter/assets/index.58ff2a62.js"></script>
+		<link rel="stylesheet" href="/sermon-presenter/assets/index.286c89b0.css">
 	<link rel="manifest" href="/sermon-presenter/manifest.webmanifest"></head>
 	<body style="background-color: #000000">
 		<div id="wrapper"></div>
