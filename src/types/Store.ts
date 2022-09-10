@@ -1,76 +1,84 @@
-import create, { UseBoundStore, StoreApi, StateCreator, StateSelector } from 'zustand';
+import Cache from '@src/ts/Cache';
+import Storage from '@src/ts/Storage';
+import create, { UseBoundStore, StoreApi, EqualityChecker, StateListener } from 'zustand';
 
-export type StateUsed<T> = {
-	[Property in keyof T]: T[keyof T];
+export interface IPersistConfig {
+	id: string | null;
+	flush: boolean;
+	maxAge: number;
+}
+
+export const DefaultPersist: IPersistConfig = {
+	id: null,
+	flush: false,
+	maxAge: 0,
 };
 
-export type FunctionalState<T> = {
-	[Property in keyof T]: () => T[keyof T];
-};
-
-export type UseState<T> = {
-	[Property in keyof T]: () => T[keyof T];
-};
-
-export default abstract class Store<T extends object> {
-	public store: UseBoundStore<StoreApi<T>>;
-	private _initialState: T | undefined = undefined;
-	// private _instance: Store<T> | undefined = undefined;
-	// public mapped: (() => T[keyof T])[];
-
-	// public setInstance(instance: Store<T>): void {
-	// 	this._instance = instance;
-	// }
-
-	// public get instance(): Store<T> {
-	// 	if (this._instance === undefined) {
-	// 		if (this._instance === undefined) {
-	// 			throw new Error('Store instance gotten before being constructed');
-	// 		}
-	// 	}
-	// 	return this._instance;
-	// }
-
-	private _keys: string[] = [];
-	private _reduced: FunctionalState<T> | undefined;
-
-	constructor(createState: StateCreator<T, [], [], T>) {
-		this.store = create<T>(createState);
-		this._initialState = this.store.getState();
-		this._keys = Object.keys(this._initialState);
-
-		// this._reduced = this._keys.reduce((obj: FunctionalState<T>, name: string) => {
-		// 	return { ...obj, [name]: () => this._internalUse(name) };
-		// }, {} as FunctionalState<T>);
-
-		// const useState = {...this._initialState};
+export default class Store<T extends object> {
+	private _store: UseBoundStore<StoreApi<T>>;
+	public get zustand() {
+		return this._store;
 	}
 
-	// private _internalUse = (key: string): T[keyof T] => {
-	// 	return this.store(state => state[key]);
-	// };
+	private _id: string | null = null;
+	private _flush: boolean = false;
+	private _maxAge: number = 0;
 
-	private _use = <U>(selector: (state: T) => U): U => {
-		return this.store(selector);
-	};
+	constructor(
+		state: T,
+		{
+			id = DefaultPersist.id,
+			flush = DefaultPersist.flush,
+			maxAge = DefaultPersist.maxAge,
+		}: Partial<IPersistConfig> = DefaultPersist
+	) {
+		this._id = id;
+		this._flush = flush;
+		this._maxAge = maxAge;
 
-	public get state(): T {
-		return this.store.getState();
+		if (this._id) {
+			let saved: T | undefined = undefined;
+			if (!this._flush) {
+				if (this._maxAge > 0) {
+					saved = Cache.get<T>(this._id);
+				} else {
+					saved = Storage.get<T>(this._id) ?? state;
+				}
+			}
+
+			state = saved ?? state;
+
+			if (this._maxAge > 0) {
+				Cache.set<T>(this._id, state, this._maxAge);
+			} else {
+				Storage.set<T>(this._id, state);
+			}
+		}
+
+		this._store = create<T>(() => state);
 	}
 
-	// public use = (): T => {
-	// 	return this._reduced as T;
-	// };
-
-	// public use = <U>(selector: (state: T) => U): U => {
-	// 	return this.store(selector);
-	// };
-
-	public use = <U>(selector: (state: T) => U): U => {
-		return this.store(selector);
+	public use = <U>(selector: (state: T) => U, equals?: EqualityChecker<U>): U => {
+		return this._store(selector, equals);
 	};
 
 	public get = (): T => {
-		return this.store.getState();
+		return this._store.getState();
+	};
+
+	public set = (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: boolean) => {
+		this._store.setState(partial, replace);
+
+		if (this._id) {
+			if (this._maxAge > 0) {
+				Cache.set<T>(this._id, this._store.getState(), this._maxAge);
+			} else {
+				Storage.set<T>(this._id, this._store.getState());
+			}
+		}
+	};
+
+	public sub = (listener: StateListener<T>): (() => void) => {
+		return this._store.subscribe(listener);
 	};
 }

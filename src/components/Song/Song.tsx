@@ -3,18 +3,15 @@ import './Song.scss';
 
 import { useContext, useEffect, useRef } from 'preact/hooks';
 import ISongData from '@src/types/ISongData';
-import { useTabs } from '@src/ts/TabStore';
+import { useTabs } from '@src/ts/tabs/Tabs';
 import { cleanMultiline } from '@src/utils/textUtils';
-import { usePresent } from '@src/ts/PresentStore';
 import SongSlide from './SongSlide';
+import CustomEvents, { Events } from '@src/ts/CustomEvents';
+import PresentWindow from '@src/ts/presenter/PresentWindow';
 
 const digitExp = /^Digit\d+$/i;
 
 const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId: string }) => {
-	const setActive = useTabs(state => state.setActive);
-	const isPresenting = usePresent(state => state.isPresenting);
-	const setPresenting = usePresent(state => state.setPresenting);
-
 	// const isActive = useRef<boolean>(activeSong === song.id);
 	// const slideI = useRef<number>(activeSong === song.id ? parseInt(activeSlide) : -1);
 
@@ -79,7 +76,14 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 				if (e.shiftKey) focusOn = +10;
 				if (focusOn > items.length - 1) focusOn = items.length - 1;
 				if (focusOn < 0) focusOn = 0;
-				(items[focusOn] as HTMLElement)?.focus();
+				const el = items[focusOn] as HTMLElement;
+				if (el) {
+					if (el == document.activeElement) {
+						el.click();
+					} else {
+						el.focus();
+					}
+				}
 			}
 		};
 
@@ -90,10 +94,15 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 		};
 	}, []);
 
-	const onFocusOrClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
-		setActive(e.currentTarget.id);
-		if (isPresenting) {
-			setPresenting(e.currentTarget.id);
+	const onClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+		// console.log('onClick', e.currentTarget.id);
+		CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
+	};
+
+	const onFocus = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+		// console.log('onFocus', e.currentTarget.id, PresentWindow.get()?.current !== e.currentTarget.id);
+		if (PresentWindow.get()?.current !== e.currentTarget.id) {
+			CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
 		}
 	};
 
@@ -109,8 +118,8 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 						key={`${song.id}_sld${index}`}
 						{...{ slide, index, listId }}
 						songId={song.id}
-						onClick={onFocusOrClick}
-						onFocus={onFocusOrClick}
+						onClick={onClick}
+						onFocus={onFocus}
 					/>
 				))}
 			</div>

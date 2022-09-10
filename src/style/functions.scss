@@ -23,3 +23,18 @@
 		}
 	}
 }
+
+$breakpoints: (
+	large: 900px,
+	ultra: 1750px,
+);
+
+@mixin breakpoint($key) {
+	@if map-get($breakpoints, $key) {
+		@media all and (min-width: map-get($breakpoints, $key)) {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}

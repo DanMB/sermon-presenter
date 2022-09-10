@@ -1,18 +1,13 @@
-import { TabType } from '@src/types/URIParts';
-import Storage from './Storage';
-import {
-	WebviewWindow,
-	WindowOptions,
-	availableMonitors,
-	currentMonitor,
-	appWindow,
-	PhysicalPosition,
-} from '@tauri-apps/api/window';
-import { EventCallback, UnlistenFn } from '@tauri-apps/api/event';
-import ISongSlide from '@src/types/ISongSlide';
+import { WebviewWindow, availableMonitors, currentMonitor, appWindow, PhysicalPosition } from '@tauri-apps/api/window';
+import { UnlistenFn } from '@tauri-apps/api/event';
 import { EventNames } from '@src/types/EventNames';
-import Client from './Client';
+import Client from '../Client';
 import WindowFeatures from '@src/utils/WindowFeatures';
+import CustomEvents, { Events } from '../CustomEvents';
+import Tabs from '../tabs/Tabs';
+import { useState } from 'preact/hooks';
+import { current, currentTab, isOpen } from './hooks';
+import ISetList from '@src/types/ISetList';
 
 export interface IPresenterOptions {
 	scale: number;
@@ -48,10 +43,18 @@ export default class PresentWindow {
 
 	private _native: Window | null = null;
 
+	private _current: string = '';
+	public get current() {
+		return this._current;
+	}
+
 	constructor() {
 		if (PresentWindow._instance !== null) {
 			PresentWindow._instance.close();
 		}
+
+		CustomEvents.listen(Events.SLIDE, this.onSlideEvent);
+		CustomEvents.listen(Events.STOP, this.onStopShow);
 
 		if (Client.isTau) {
 			this._window = new WebviewWindow('present', {
@@ -59,7 +62,7 @@ export default class PresentWindow {
 				focus: false,
 				minHeight: 300,
 				minWidth: 500,
-				title: 'Sermon Presenter',
+				title: 'OurPresenter',
 				visible: false,
 				decorations: false,
 				skipTaskbar: false,
@@ -95,11 +98,34 @@ export default class PresentWindow {
 					fullscreen: true,
 				})
 			);
-			if (this._native) this._native.addEventListener('unload', this.destroy);
+			if (this._native)
+				this._native.addEventListener('beforeunload', () => {
+					console.log('unload');
+					this.destroy();
+				});
 		}
 
 		PresentWindow._instance = this;
+		isOpen.set(true);
 	}
+
+	private onSlideEvent = (e: CustomEvent<string>) => {
+		if (!e.detail) {
+			current.set(null);
+			currentTab.set(null);
+			return;
+		}
+		this._current = e.detail;
+
+		const parts = e.detail ? e.detail.split('/') : [];
+		const tab = parts[0] ? Tabs.getTab<ISetList>(parts[0]) : undefined;
+		const song = parts[1] && tab ? tab.get().data.songs.find(s => s.id === parts[1]) : null;
+		const slide = parts[2] && song ? song.slides[parseInt(parts[2])] : null;
+
+		this.set(slide);
+		current.set(e.detail || null);
+		currentTab.set(tab?.get().id || null);
+	};
 
 	private init = async () => {
 		if (!this._window) return;
@@ -130,7 +156,6 @@ export default class PresentWindow {
 	};
 
 	public set = async (slide?: string | null) => {
-		console.log('set', slide);
 		if (this._window) {
 			await this._window.emit(EventNames.PRESENT, slide);
 		} else if (this._native) {
@@ -146,6 +171,10 @@ export default class PresentWindow {
 		}
 	};
 
+	private onStopShow = () => {
+		this.close();
+	};
+
 	public close = () => {
 		this.destroy();
 		if (this._window) this._window.close();
@@ -155,6 +184,9 @@ export default class PresentWindow {
 	private destroy = () => {
 		this._unlistenWindowClose();
 		this._unlistenAppClose();
+		CustomEvents.remove(Events.SLIDE, this.onSlideEvent);
+		CustomEvents.remove(Events.STOP, this.onStopShow);
 		appWindow.emit(EventNames.STOPPED);
+		isOpen.set(false);
 	};
 }

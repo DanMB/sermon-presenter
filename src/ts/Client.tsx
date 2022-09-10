@@ -9,14 +9,12 @@ export default class Client {
 
 	public static versions = {
 		tauri: '',
-		// @ts-ignore
-		client: __VERSION__,
+		client: window.__VERSION__,
 		app: '',
 	};
 
 	public static async init(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			// @ts-ignore
 			if (typeof window.__TAURI__ !== 'undefined' && window.__TAURI__) {
 				Client.isTau = true;
 				this.setup()

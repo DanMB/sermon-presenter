@@ -1,6 +1,6 @@
 {
-	"name": "sermon-presenter",
-	"version": "0.3.5",
+	"name": "ourpresenter",
+	"version": "0.3.6",
 	"description": "",
 	"scripts": {
 		"start": "tauri dev",

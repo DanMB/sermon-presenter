@@ -8,8 +8,8 @@
 		"distDir": "https://danmb.github.io/sermon-presenter/"
 	},
 	"package": {
-		"productName": "sermon-presenter",
-		"version": "0.3.1"
+		"productName": "ourpresenter",
+		"version": "0.3.2"
 	},
 	"tauri": {
 		"allowlist": {
@@ -22,7 +22,7 @@
 			"active": true,
 			"category": "Utility",
 			"icon": ["../src/public/icons/app.png", "../src/public/favicon.ico"],
-			"identifier": "sermon.presenter.tauri",
+			"identifier": "ourpresenter.tauri",
 			"resources": ["../src/public/splash.html"],
 			"targets": "all",
 			"windows": {
@@ -50,7 +50,7 @@
 		"windows": [
 			{
 				"label": "control",
-				"title": "Sermon Controller",
+				"title": "OurPresenter",
 				"minHeight": 300,
 				"minWidth": 500,
 				"resizable": true,

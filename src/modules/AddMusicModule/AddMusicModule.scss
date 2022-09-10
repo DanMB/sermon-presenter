@@ -1,0 +1,21 @@
+@import 'src/style/shared.scss';
+
+.AddMusicModule {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: start;
+	gap: $padding;
+	position: relative;
+
+	.title {
+		font-size: 1.1rem;
+		font-weight: 300;
+		color: $text;
+		border-bottom: 1px solid $border;
+		position: relative;
+		padding: 0.5rem #{$padding * 1.5};
+		margin: 0 #{-$padding};
+		padding-top: 0;
+	}
+}

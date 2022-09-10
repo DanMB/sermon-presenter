@@ -2,37 +2,46 @@
 
 .Sidebar {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: stretch;
 	justify-content: start;
-	height: 100vh;
-	width: 15vw;
-	background-color: $offset;
-	padding: 1rem;
-	gap: 1rem;
+	gap: $gap;
 
-	.present {
-		padding: 0.5em 0.8em;
-		font-weight: weight(bold);
-		background-color: $green;
-		color: $offset;
-		cursor: pointer;
-		line-height: 1.25em;
-		max-width: 100%;
+	.tabs {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
-		justify-content: center;
-		min-width: 4.2em;
+		justify-content: start;
+		gap: $gap;
+	}
 
-		span {
-			font-size: 0.9em;
-		}
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: start;
+		width: 15vw;
+		padding: 1rem;
+		gap: 1rem;
+		padding: $padding;
+		border-radius: $radius;
+		background-color: $offset;
+		position: relative;
 
-		&.isPresenting {
-			background-color: $background;
-			color: $red;
-			box-shadow: inset 0 0 0 3px $offset, inset 0 0 0 5px $red;
+		.resizer {
+			position: absolute;
+			height: 100%;
+			width: $gap;
+			top: 0;
+			right: -$gap;
+			cursor: ew-resize;
+			transition: background-color 0s;
+
+			&:hover {
+				background-color: $border;
+				box-shadow: inset 0 0 0 calc(#{$gap * 0.5} - 1px) $background;
+				transition: background-color 0s 0.3s;
+			}
 		}
 	}
 }

@@ -2,12 +2,10 @@ import { h } from 'preact';
 import './Song.scss';
 
 import { useEffect, useState } from 'preact/hooks';
-import { useTabs } from '@src/ts/TabStore';
-import { TabType, UriParts } from '@src/types/URIParts';
+import { useTabs } from '@src/ts/tabs/Tabs';
 import { cleanMultiline } from '@src/utils/textUtils';
-import { usePresent } from '@src/ts/PresentStore';
-import CustomURI from '@src/types/CustomURI';
 import ISongSlide from '@src/types/ISongSlide';
+import { current } from '@src/ts/presenter/hooks';
 
 export interface ISongSlideProps extends h.JSX.HTMLAttributes<HTMLDivElement> {
 	slide: string;
@@ -18,7 +16,7 @@ export interface ISongSlideProps extends h.JSX.HTMLAttributes<HTMLDivElement> {
 
 const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlideProps) => {
 	const active = useTabs(state => state.active);
-	const presenting = usePresent(state => state.presenting);
+	const presentingCurrent = current.use();
 
 	const [slideData, setSlideData] = useState<{ key?: number; shift: boolean; id: string }>({
 		key: undefined,
@@ -26,7 +24,6 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 		id: `${index}`,
 	});
 	const [activeSlide, setActiveSlide] = useState<boolean>(false);
-	const [presentingSlide, setPresentingSlide] = useState<boolean>(false);
 
 	useEffect(() => {
 		// const uri = new CustomURI([TabType.SETLIST, listId, songId, `${index}`]).toString();
@@ -54,21 +51,13 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 		// setActiveSlide(active.parts[UriParts.SONG] === songId && active.parts[UriParts.SLIDE] === `${index}`);
 	}, [active]);
 
-	useEffect(() => {
-		if (!presenting) {
-			setPresentingSlide(false);
-		} else {
-			// setPresentingSlide(presenting.parts[UriParts.SONG] === songId && presenting.parts[UriParts.SLIDE] === `${index}`);
-		}
-	}, [presenting]);
-
 	return (
 		<div
 			{...restProps}
 			id={slideData.id}
 			tabIndex={-1}
 			role='listitem'
-			class={`slide ${presenting === slideData.id ? 'active' : activeSlide ? 'subActive' : ''}`}
+			class={`slide ${presentingCurrent === slideData.id ? 'active' : activeSlide ? 'subActive' : ''}`}
 		>
 			{slideData.key !== undefined && (
 				<div class='hotkey'>

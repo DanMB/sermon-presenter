@@ -5,30 +5,21 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
-import Tab from '@src/components/Tab/Tab';
-import TabStore, { useTabs } from '@src/ts/TabStore';
+import HeaderTab from '@src/components/HeaderTab/HeaderTab';
+import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
 import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
-import { usePresent } from '@src/ts/PresentStore';
+import CustomEvents, { Events } from '@src/ts/CustomEvents';
+import { isOpen } from '@src/ts/presenter/hooks';
 
 const digitExp = /^Digit\d+$/i;
 
 const HeaderModule = () => {
 	const tabs = useTabs(state => state.tabs);
 	const active = useTabs(state => state.active);
-	const setActive = useTabs(state => state.setActive);
-	const moveActive = useTabs(state => state.moveActive);
-	const tabData = useRef<CustomMap<ITabData>>(TabStore.allTabs);
 
-	const isPresenting = usePresent(state => state.isPresenting);
-	const setIsPresenting = usePresent(state => state.setIsPresenting);
-
-	useEffect(() => {
-		tabData.current = TabStore.allTabs;
-	}, [tabs]);
-
-	const [isFocused, setIsFocus] = useState(true);
+	const presentingIsOpen = isOpen.use();
 
 	const keyDown = (e: KeyboardEvent) => {
 		if (!e.ctrlKey) return;
@@ -38,16 +29,16 @@ const HeaderModule = () => {
 			// if ctrl + tab
 			// should move backward or forward
 			if (e.shiftKey) {
-				moveActive('-');
+				Tabs.move('-');
 			} else {
-				moveActive('+');
+				Tabs.move('+');
 			}
 		} else if (digitExp.test(e.code)) {
 			e.preventDefault();
 			// if ctrl + number
 			let tab = parseInt(e.key) - 1;
 			if (tab === -1) tab = 9;
-			moveActive(tab);
+			Tabs.move(tab);
 		}
 	};
 
@@ -61,22 +52,34 @@ const HeaderModule = () => {
 
 	return (
 		<div class='Header'>
-			<div class={`background ${isFocused ? 'focused' : ''}`}></div>
 			<div class='nav'>
 				<div class='tabs'>
-					{tabs.map(tab => {
-						if (tab === newtabUri) return null;
+					{tabs.map(id => {
+						const tab = Tabs.getTab(id);
+						if (!tab || id === newtabUri) return null;
 
-						return <Tab key={tab} uri={tab} />;
+						return <HeaderTab key={id} tab={tab} />;
 					})}
 				</div>
 				<div
 					class={`add ${active.toString() === newtabUri ? 'active' : ''}`}
 					onClick={() => {
-						setActive(newtabUri);
+						Tabs.set({
+							active: newtabUri,
+						});
 					}}
 				>
 					<Plus />
+				</div>
+			</div>
+			<div class='control'>
+				<div
+					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
+					onClick={() => {
+						CustomEvents.dispatch(Events.START);
+					}}
+				>
+					<span>{presentingIsOpen ? 'Stop' : 'Start'}</span>
 				</div>
 			</div>
 		</div>

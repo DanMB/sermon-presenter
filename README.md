@@ -1,4 +1,4 @@
-# sermon-presenter
+# ourpresenter
 
 Built in Preact Typescript with SCSS.
 Native app made with [Tauri](https://tauri.app/)
