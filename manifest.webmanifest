@@ -1,1 +1,16 @@
-{"name":"Sermon Presenter","short_name":"Sermon","start_url":"/sermon-presenter/","display":"standalone","background_color":"#ffffff","lang":"en","scope":"/sermon-presenter/","version":"0.0.1","theme_color":"#ffffff","icons":[{"src":"icons/appIcon.png","sizes":"200x200","type":"image/png"}]}
+{
+	"name": "OurPresenter",
+	"short_name": "OurPresenter",
+	"start_url": "/sermon-presenter/",
+	"display": "standalone",
+	"background_color": "#10141d",
+	"lang": "en",
+	"scope": "/sermon-presenter/",
+	"version": "0.3.5",
+	"app": "0.3.1",
+	"icons": [
+		{ "src": "/icons/logo-192x192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/icons/logo-512x512.png", "sizes": "512x512", "type": "image/png" }
+	],
+	"theme_color": "#10141d"
+}
