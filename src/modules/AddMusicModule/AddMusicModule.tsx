@@ -9,12 +9,12 @@ import OurPraise from '@src/ts/OurPraise';
 
 const AddMusicModule = () => {
 	const onSearch = (value: string) => {
-		console.log(value);
-		OurPraise.get()
-			?.search(value)
-			.then(results => {
-				console.log(results);
-			});
+		// console.log(value);
+		// OurPraise.get()
+		// 	?.search(value)
+		// 	.then(results => {
+		// 		console.log(results);
+		// 	});
 	};
 
 	return (

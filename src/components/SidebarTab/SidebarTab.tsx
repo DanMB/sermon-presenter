@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import './SidebarTab.scss';
-import Settings from '@src/ts/Settings';
+import Sidebar from '@src/ts/Sidebar';
 
 const SidebarTab = ({ id, icon }: { id: string; icon: h.JSX.Element }) => {
-	const sidebar = Settings.use(state => state.sidebar);
+	const sidebar = Sidebar.use(state => state.sidebar);
 
 	return (
 		<div
@@ -11,7 +11,7 @@ const SidebarTab = ({ id, icon }: { id: string; icon: h.JSX.Element }) => {
 			key={id}
 			data-id={id}
 			onClick={() => {
-				Settings.set({
+				Sidebar.set({
 					sidebar: id === sidebar ? null : id,
 				});
 			}}

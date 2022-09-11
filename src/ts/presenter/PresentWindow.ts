@@ -6,26 +6,9 @@ import WindowFeatures from '@src/utils/WindowFeatures';
 import CustomEvents, { Events } from '../CustomEvents';
 import Tabs from '../tabs/Tabs';
 import { useState } from 'preact/hooks';
-import { current, currentTab, isOpen } from './hooks';
+import { blackedOut, cleared, current, currentTab, isOpen } from './hooks';
 import ISetList from '@src/types/ISetList';
-
-export interface IPresenterOptions {
-	scale: number;
-	font: string;
-	background: string;
-	text: string;
-}
-
-export interface IPresenterProps extends Partial<IPresenterOptions> {
-	uri?: string;
-}
-
-export const DefaultPresentingState: IPresenterOptions = {
-	scale: 1,
-	font: "'Open Sans', Roboto, Arial, sans-serif",
-	background: '#000',
-	text: '#fff',
-};
+import Settings, { ISettingsState } from '../Settings';
 
 export default class PresentWindow {
 	private static _instance: PresentWindow | null = null;
@@ -40,6 +23,7 @@ export default class PresentWindow {
 
 	private _unlistenWindowClose: UnlistenFn = () => null;
 	private _unlistenAppClose: UnlistenFn = () => null;
+	private _unlistenStyleSet: UnlistenFn = () => null;
 
 	private _native: Window | null = null;
 
@@ -52,6 +36,9 @@ export default class PresentWindow {
 		if (PresentWindow._instance !== null) {
 			PresentWindow._instance.close();
 		}
+
+		cleared.set(true);
+		blackedOut.set(true);
 
 		CustomEvents.listen(Events.SLIDE, this.onSlideEvent);
 		CustomEvents.listen(Events.STOP, this.onStopShow);
@@ -100,7 +87,6 @@ export default class PresentWindow {
 			);
 			if (this._native)
 				this._native.addEventListener('beforeunload', () => {
-					console.log('unload');
 					this.destroy();
 				});
 		}
@@ -128,6 +114,8 @@ export default class PresentWindow {
 	};
 
 	private init = async () => {
+		this.style(Settings.get());
+		this._unlistenStyleSet = Settings.sub(this.style);
 		if (!this._window) return;
 		this._unlistenAppClose = await appWindow.onCloseRequested(this.close);
 		this._unlistenWindowClose = await this._window.onCloseRequested(this.destroy);
@@ -156,6 +144,8 @@ export default class PresentWindow {
 	};
 
 	public set = async (slide?: string | null) => {
+		cleared.set(false);
+		blackedOut.set(false);
 		if (this._window) {
 			await this._window.emit(EventNames.PRESENT, slide);
 		} else if (this._native) {
@@ -163,11 +153,29 @@ export default class PresentWindow {
 		}
 	};
 
-	public style = async (style: IPresenterOptions) => {
+	public style = async (style: ISettingsState) => {
 		if (this._window) {
 			await this._window.emit(EventNames.STYLE, style);
 		} else if (this._native) {
 			this._native.postMessage({ event: EventNames.STYLE, payload: JSON.stringify(style) }, window.location.origin);
+		}
+	};
+
+	public clear = async () => {
+		cleared.set(true);
+		if (this._window) {
+			await this._window.emit(EventNames.CLEAR);
+		} else if (this._native) {
+			this._native.postMessage({ event: EventNames.CLEAR }, window.location.origin);
+		}
+	};
+
+	public blackout = async () => {
+		blackedOut.set(true);
+		if (this._window) {
+			await this._window.emit(EventNames.BLACKOUT);
+		} else if (this._native) {
+			this._native.postMessage({ event: EventNames.BLACKOUT }, window.location.origin);
 		}
 	};
 
@@ -184,6 +192,7 @@ export default class PresentWindow {
 	private destroy = () => {
 		this._unlistenWindowClose();
 		this._unlistenAppClose();
+		this._unlistenStyleSet();
 		CustomEvents.remove(Events.SLIDE, this.onSlideEvent);
 		CustomEvents.remove(Events.STOP, this.onStopShow);
 		appWindow.emit(EventNames.STOPPED);

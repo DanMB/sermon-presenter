@@ -10,6 +10,7 @@ import OurPraise from '@src/ts/OurPraise';
 import SidebarModule from '@src/modules/SidebarModule/SidebarModule';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
+import { cleared } from '@src/ts/presenter/hooks';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
@@ -17,7 +18,11 @@ const ControlRoute = () => {
 	const keyDown = (e: KeyboardEvent) => {
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			CustomEvents.dispatch(Events.CLEAR);
+			if (cleared.get()) {
+				PresentWindow.get()?.blackout();
+			} else {
+				PresentWindow.get()?.clear();
+			}
 		}
 	};
 

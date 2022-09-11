@@ -14,7 +14,7 @@ const SetListModule = ({ id }: { id: string }) => {
 	return (
 		<div class='page SongsGroup' key={`${id}/group`}>
 			{data.songs.map((song, i) => (
-				<Song key={song.id} song={song} listId={data.id} index={i + 1} />
+				<Song key={song.id} song={song} listId={id} index={i + 1} />
 			))}
 		</div>
 	);

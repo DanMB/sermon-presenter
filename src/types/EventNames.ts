@@ -4,4 +4,5 @@ export enum EventNames {
 	CLEAR = 'sermon://event/clear',
 	STOPPED = 'sermon://event/stopped',
 	LOADED = 'sermon://event/loaded',
+	BLACKOUT = 'sermon://custom/blackout',
 }

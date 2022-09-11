@@ -27,4 +27,20 @@
 			line-height: 1.5em;
 		}
 	}
+
+	.saveButton {
+		padding: 0 $padding;
+		background-color: $fadedText;
+		color: $background;
+		cursor: pointer;
+		max-width: 100%;
+		border-radius: $small-radius;
+		font-size: 0.9em;
+		text-align: center;
+		padding: 0.5em 1em;
+
+		&:hover {
+			background-color: $borderLight;
+		}
+	}
 }

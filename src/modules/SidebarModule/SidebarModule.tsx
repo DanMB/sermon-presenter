@@ -2,16 +2,16 @@ import { h } from 'preact';
 import './SidebarModule.scss';
 
 import { useEffect, useRef } from 'preact/hooks';
-import Settings from '@src/ts/Settings';
 import Music from '@src/components/icons/Music';
 import SidebarTab from '@src/components/SidebarTab/SidebarTab';
 import Cog from '@src/components/icons/Cog';
 import SettingsModule from '../SettingsModule/SettingsModule';
 import AddMusicModule from '../AddMusicModule/AddMusicModule';
+import Sidebar from '@src/ts/Sidebar';
 
 const SidebarModule = () => {
-	const sidebar = Settings.use(state => state.sidebar);
-	const size = Settings.use(state => state.sidebarWidth);
+	const sidebar = Sidebar.use(state => state.sidebar);
+	const size = Sidebar.use(state => state.sidebarWidth);
 
 	const pos = useRef(0);
 	const holding = useRef(false);
@@ -28,12 +28,12 @@ const SidebarModule = () => {
 	const resizerMove = (e: MouseEvent) => {
 		if (!holding.current) return;
 
-		let newVal = Settings.get().sidebarWidth + e.movementX;
+		let newVal = Sidebar.get().sidebarWidth + e.movementX;
 
 		if (newVal < 100) newVal = 100;
 		if (newVal > 800) newVal = 800;
 
-		Settings.set({
+		Sidebar.set({
 			sidebarWidth: newVal,
 		});
 	};
@@ -45,7 +45,7 @@ const SidebarModule = () => {
 		return function () {
 			document.removeEventListener('mouseup', resizerUp);
 			document.removeEventListener('mousemove', resizerMove, false);
-			Settings.set({ sidebarWidth: size });
+			Sidebar.set({ sidebarWidth: size });
 		};
 	}, []);
 
