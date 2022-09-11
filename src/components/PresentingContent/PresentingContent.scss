@@ -11,12 +11,13 @@
 	width: 100%;
 	padding: 2.5vw;
 
+	$min_width: 480px;
+	$max_width: 3840px;
+	$min_font: 30px;
+	$max_font: 130px;
+	@include fluid-type($min_width, $max_width, $min_font, $max_font);
+
 	.text {
-		$min_width: 480px;
-		$max_width: 3840px;
-		$min_font: 30px;
-		$max_font: 130px;
-		@include fluid-type($min_width, $max_width, $min_font, $max_font);
 		font-weight: 500;
 		line-height: 1.4em;
 		text-align: center;

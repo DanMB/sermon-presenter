@@ -5,12 +5,13 @@ import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
 import { WebviewWindow } from '@tauri-apps/api/window';
 import { Event, UnlistenFn } from '@tauri-apps/api/event';
-import { IPresenterOptions } from '@src/ts/presenter/PresentWindow';
 import ISongSlide from '@src/types/ISongSlide';
 import { EventNames } from '@src/types/EventNames';
+import { DefaultSettings, ISettingsState } from '@src/ts/Settings';
 
 const PresentRoute = () => {
 	const [presenting, setPresenting] = useState<string | null>(null);
+	const [style, setStyle] = useState<ISettingsState>(DefaultSettings);
 	// const style = Storage.use(Events.STYLE);
 
 	useEffect(() => {
@@ -19,12 +20,10 @@ const PresentRoute = () => {
 			setPresenting(data);
 		};
 
-		const onStyle = (e: Event<IPresenterOptions>) => {
-			// setPresenting(e.payload);
+		const onStyle = (e: Event<string>) => {
+			const data: ISettingsState | null = e.payload ? JSON.parse(e.payload) : null;
+			if (data) setStyle(data);
 		};
-
-		// Client.on('windowClose', onWindowClose);
-		// Client.on('windowFocus', onWindowFocus);
 
 		let offSet: UnlistenFn = () => null;
 		let offStyle: UnlistenFn = () => null;
@@ -32,7 +31,7 @@ const PresentRoute = () => {
 		const onMsg = (e: MessageEvent<{ event: string; payload: any }>) => {
 			if (e.data.event === EventNames.PRESENT) {
 				onSetPresenting(e.data as unknown as Event<any>);
-			} else if (e.data.event === EventNames.PRESENT) {
+			} else if (e.data.event === EventNames.STYLE) {
 				onStyle(e.data as unknown as Event<any>);
 			}
 		};
@@ -56,9 +55,17 @@ const PresentRoute = () => {
 		};
 	}, []);
 
-	if (!presenting) return <div class='Present'></div>;
+	if (!presenting)
+		return (
+			<div
+				class='Present'
+				style={{
+					background: style.background,
+				}}
+			></div>
+		);
 
-	return <PresentingContent data={presenting} />;
+	return <PresentingContent data={presenting} style={style} />;
 };
 
 export default PresentRoute;
