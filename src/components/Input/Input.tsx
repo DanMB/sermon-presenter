@@ -43,6 +43,9 @@ const Input = ({
 			onChange={e => {
 				setCurrentValue((e?.target as HTMLInputElement)?.value ?? '');
 			}}
+			onKeyUp={e => {
+				setCurrentValue((e?.target as HTMLInputElement)?.value ?? '');
+			}}
 		/>
 	);
 };
