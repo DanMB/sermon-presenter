@@ -76,7 +76,11 @@ const HeaderModule = () => {
 				<div
 					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
 					onClick={() => {
-						CustomEvents.dispatch(Events.START);
+						if (presentingIsOpen) {
+							CustomEvents.dispatch(Events.STOP);
+						} else {
+							CustomEvents.dispatch(Events.START);
+						}
 					}}
 				>
 					<span>{presentingIsOpen ? 'Stop' : 'Start'}</span>

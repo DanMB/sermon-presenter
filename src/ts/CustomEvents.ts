@@ -3,7 +3,7 @@ export enum Events {
 	CLEAR = 'sermon://custom/clear',
 	BLACKOUT = 'sermon://custom/blackout',
 	START = 'sermon://custom/start',
-	STOP = 'sermon://custom/start',
+	STOP = 'sermon://custom/stop',
 	OPTIONS = 'sermon://custom/options',
 }
 
