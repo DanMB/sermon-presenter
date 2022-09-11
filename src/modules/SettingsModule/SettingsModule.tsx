@@ -9,7 +9,9 @@ import { useEffect } from 'preact/hooks';
 const SettingsModule = () => {
 	const useFont = Settings.use(state => state.font);
 	const useBackground = Settings.use(state => state.background);
+	const useForeground = Settings.use(state => state.foreground);
 	const useScale = Settings.use(state => state.scale);
+	const usePadding = Settings.use(state => state.padding);
 
 	const send = () => {
 		PresentWindow.get()?.style(Settings.get());
@@ -47,6 +49,20 @@ const SettingsModule = () => {
 				/>
 			</div>
 			<div class='setting'>
+				<label for='foreground'>Foreground</label>
+				<Input
+					label={'foreground'}
+					id={'foreground'}
+					defaultValue={useForeground}
+					placeholder={DefaultSettings.foreground}
+					onChange={value => {
+						Settings.set({
+							foreground: value || DefaultSettings.foreground,
+						});
+					}}
+				/>
+			</div>
+			<div class='setting'>
 				<label for='scale'>Scale</label>
 				<Input
 					label={'scale'}
@@ -61,6 +77,48 @@ const SettingsModule = () => {
 						Settings.set({
 							scale: parseFloat(value) || DefaultSettings.scale,
 						});
+					}}
+				/>
+			</div>
+			<div class='setting'>
+				<label for='pad-top'>Padding top</label>
+				<Input
+					label={'pad-top'}
+					id={'pad-top'}
+					type={'number'}
+					defaultValue={`${usePadding.top}`}
+					placeholder={`${DefaultSettings.padding.top}`}
+					step={'5'}
+					min={'5'}
+					max={'250'}
+					onChange={value => {
+						Settings.set(state => ({
+							padding: {
+								...state.padding,
+								top: parseInt(value) || DefaultSettings.padding.top,
+							},
+						}));
+					}}
+				/>
+			</div>
+			<div class='setting'>
+				<label for='pad-bot'>Padding bottom</label>
+				<Input
+					label={'pad-bot'}
+					id={'pad-bot'}
+					type={'number'}
+					defaultValue={`${usePadding.bottom}`}
+					placeholder={`${DefaultSettings.padding.bottom}`}
+					step={'5'}
+					min={'5'}
+					max={'250'}
+					onChange={value => {
+						Settings.set(state => ({
+							padding: {
+								...state.padding,
+								bottom: parseInt(value) || DefaultSettings.padding.bottom,
+							},
+						}));
 					}}
 				/>
 			</div>
