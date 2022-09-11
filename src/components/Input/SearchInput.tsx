@@ -12,7 +12,7 @@ const SearchInput = ({ className, defaultValue, onChange, ...restProps }: IProps
 
 			timeout.current = setTimeout(() => {
 				onChange(currentValue);
-			}, 250);
+			}, 350);
 		}
 	}, [currentValue]);
 
