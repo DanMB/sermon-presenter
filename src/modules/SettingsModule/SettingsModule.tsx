@@ -44,6 +44,9 @@ const SettingsModule = () => {
 					type={'number'}
 					defaultValue={`${Settings.get().scale}`}
 					placeholder={`${DefaultSettings.scale}`}
+					step={'0.1'}
+					min={'0.1'}
+					max={'5'}
 					onChange={value => {
 						Settings.set({
 							scale: parseInt(value) || DefaultSettings.scale,
