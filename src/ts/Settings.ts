@@ -1,17 +1,15 @@
 import Store from '@src/types/Store';
+import PresentWindow from './presenter/PresentWindow';
 
 export interface ISettingsState {
-	sidebarWidth: number;
-	sidebar: string | null;
 	padding: { top: number; right: number; bottom: number; left: number };
 	font: string;
 	scale: number;
 	background: string;
+	foreground: string;
 }
 
 export const DefaultSettings = {
-	sidebarWidth: 200,
-	sidebar: null,
 	padding: {
 		top: 25,
 		right: 25,
@@ -21,6 +19,7 @@ export const DefaultSettings = {
 	font: `'Fira Sans', sans-serif`,
 	scale: 1,
 	background: '#000000',
+	foreground: '#ffffff',
 };
 
 export class SettingsStore extends Store<ISettingsState> {
