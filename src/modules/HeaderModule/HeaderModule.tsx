@@ -11,7 +11,8 @@ import CustomMap from '@src/types/CustomMap';
 import ITabData from '@src/types/ITabData';
 import { newtabUri, UriParts } from '@src/types/URIParts';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
-import { isOpen } from '@src/ts/presenter/hooks';
+import { blackedOut, cleared, isOpen } from '@src/ts/presenter/hooks';
+import PresentWindow from '@src/ts/presenter/PresentWindow';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -20,6 +21,8 @@ const HeaderModule = () => {
 	const active = useTabs(state => state.active);
 
 	const presentingIsOpen = isOpen.use();
+	const isBlackedOut = blackedOut.use();
+	const isCleared = cleared.use();
 
 	const keyDown = (e: KeyboardEvent) => {
 		if (!e.ctrlKey) return;
@@ -73,6 +76,22 @@ const HeaderModule = () => {
 				</div>
 			</div>
 			<div class='control'>
+				<div
+					class={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
+					onClick={() => {
+						PresentWindow.get()?.blackout();
+					}}
+				>
+					<span>BL</span>
+				</div>
+				<div
+					class={`stateButton ${!presentingIsOpen ? 'disabled' : isCleared ? 'active' : ''}`}
+					onClick={() => {
+						PresentWindow.get()?.clear();
+					}}
+				>
+					<span>CL</span>
+				</div>
 				<div
 					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
 					onClick={() => {

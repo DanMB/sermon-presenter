@@ -6,7 +6,7 @@ import WindowFeatures from '@src/utils/WindowFeatures';
 import CustomEvents, { Events } from '../CustomEvents';
 import Tabs from '../tabs/Tabs';
 import { useState } from 'preact/hooks';
-import { current, currentTab, isOpen } from './hooks';
+import { blackedOut, cleared, current, currentTab, isOpen } from './hooks';
 import ISetList from '@src/types/ISetList';
 import Settings, { ISettingsState } from '../Settings';
 
@@ -36,6 +36,9 @@ export default class PresentWindow {
 		if (PresentWindow._instance !== null) {
 			PresentWindow._instance.close();
 		}
+
+		cleared.set(true);
+		blackedOut.set(true);
 
 		CustomEvents.listen(Events.SLIDE, this.onSlideEvent);
 		CustomEvents.listen(Events.STOP, this.onStopShow);
@@ -141,6 +144,8 @@ export default class PresentWindow {
 	};
 
 	public set = async (slide?: string | null) => {
+		cleared.set(false);
+		blackedOut.set(false);
 		if (this._window) {
 			await this._window.emit(EventNames.PRESENT, slide);
 		} else if (this._native) {
@@ -153,6 +158,24 @@ export default class PresentWindow {
 			await this._window.emit(EventNames.STYLE, style);
 		} else if (this._native) {
 			this._native.postMessage({ event: EventNames.STYLE, payload: JSON.stringify(style) }, window.location.origin);
+		}
+	};
+
+	public clear = async () => {
+		cleared.set(true);
+		if (this._window) {
+			await this._window.emit(EventNames.CLEAR);
+		} else if (this._native) {
+			this._native.postMessage({ event: EventNames.CLEAR }, window.location.origin);
+		}
+	};
+
+	public blackout = async () => {
+		blackedOut.set(true);
+		if (this._window) {
+			await this._window.emit(EventNames.BLACKOUT);
+		} else if (this._native) {
+			this._native.postMessage({ event: EventNames.BLACKOUT }, window.location.origin);
 		}
 	};
 

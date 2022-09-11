@@ -12,11 +12,17 @@ import { DefaultSettings, ISettingsState } from '@src/ts/Settings';
 const PresentRoute = () => {
 	const [presenting, setPresenting] = useState<string | null>(null);
 	const [style, setStyle] = useState<ISettingsState>(DefaultSettings);
+	const [cleared, setCleared] = useState<boolean>(true);
+	const [blackedout, setBlackedout] = useState<boolean>(true);
 	// const style = Storage.use(Events.STYLE);
 
 	useEffect(() => {
 		const onSetPresenting = (e: Event<string>) => {
 			const data: string | null = e.payload ? JSON.parse(e.payload) : null;
+			if (data !== null || data !== '') {
+				setCleared(false);
+				setBlackedout(false);
+			}
 			setPresenting(data);
 		};
 
@@ -33,6 +39,10 @@ const PresentRoute = () => {
 				onSetPresenting(e.data as unknown as Event<any>);
 			} else if (e.data.event === EventNames.STYLE) {
 				onStyle(e.data as unknown as Event<any>);
+			} else if (e.data.event === EventNames.CLEAR) {
+				setCleared(true);
+			} else if (e.data.event === EventNames.BLACKOUT) {
+				setBlackedout(true);
 			}
 		};
 
@@ -55,12 +65,12 @@ const PresentRoute = () => {
 		};
 	}, []);
 
-	if (!presenting)
+	if (!presenting || blackedout || cleared)
 		return (
 			<div
 				class='Present'
 				style={{
-					background: style.background,
+					background: blackedout ? null : style.background,
 				}}
 			></div>
 		);
