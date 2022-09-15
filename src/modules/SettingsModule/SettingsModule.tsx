@@ -5,6 +5,7 @@ import Settings, { DefaultSettings } from '@src/ts/Settings';
 import Input from '@src/components/Input/Input';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
 import { useEffect } from 'preact/hooks';
+import CheckboxInput from '@src/components/Input/CheckboxInput';
 
 const SettingsModule = () => {
 	const useFont = Settings.use(state => state.font);
@@ -12,6 +13,7 @@ const SettingsModule = () => {
 	const useForeground = Settings.use(state => state.foreground);
 	const useScale = Settings.use(state => state.scale);
 	const usePadding = Settings.use(state => state.padding);
+	const useAutoScale = Settings.use(state => state.autoScale);
 
 	const send = () => {
 		PresentWindow.get()?.style(Settings.get());
@@ -118,6 +120,20 @@ const SettingsModule = () => {
 								...state.padding,
 								bottom: parseInt(value) || DefaultSettings.padding.bottom,
 							},
+						}));
+					}}
+				/>
+			</div>
+			<div class='setting'>
+				<label for='scale'>Auto-scale text down</label>
+				<CheckboxInput
+					label={'scale'}
+					id={'scale'}
+					type={'checkbox'}
+					defaultValue={useAutoScale}
+					onChange={value => {
+						Settings.set(() => ({
+							autoScale: value ?? DefaultSettings.autoScale,
 						}));
 					}}
 				/>

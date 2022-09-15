@@ -7,9 +7,10 @@ export interface ISettingsState {
 	scale: number;
 	background: string;
 	foreground: string;
+	autoScale: boolean;
 }
 
-export const DefaultSettings = {
+export const DefaultSettings: ISettingsState = {
 	padding: {
 		top: 25,
 		right: 25,
@@ -20,6 +21,7 @@ export const DefaultSettings = {
 	scale: 1,
 	background: '#000000',
 	foreground: '#ffffff',
+	autoScale: true,
 };
 
 export class SettingsStore extends Store<ISettingsState> {

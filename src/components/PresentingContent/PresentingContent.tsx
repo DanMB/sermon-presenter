@@ -34,6 +34,7 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 				text={cleanMultiline(data)}
 				fontSize={`${clamp(style.scale, 0.1, 5)}em`}
 				parentRef={containerRef.current}
+				autoScale={style.autoScale}
 			/>
 		</div>
 	);

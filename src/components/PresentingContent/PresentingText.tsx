@@ -8,10 +8,12 @@ const PresentingText = ({
 	text,
 	fontSize,
 	parentRef,
+	autoScale = true,
 }: {
 	text: string;
 	fontSize: string;
 	parentRef?: HTMLDivElement | null;
+	autoScale: boolean;
 }) => {
 	const [scale, setScale] = useState<number>(1);
 	const [actualText, setText] = useState<string>('');
@@ -54,8 +56,9 @@ const PresentingText = ({
 			class='text'
 			ref={element}
 			style={{
-				transform: `scale(${scale})`,
+				transform: `scale(${autoScale ? scale : 1})`,
 				fontSize: `${fontSize}em`,
+				whiteSpace: autoScale ? 'pre' : 'pre-wrap',
 			}}
 		>
 			{actualText}
