@@ -67,7 +67,7 @@
 		justify-content: flex-start;
 		align-items: center;
 		position: relative;
-		gap: #{$gap / 2};
+		gap: #{calc($gap / 2)};
 
 		.stateButton {
 			font-weight: weight(bold);
