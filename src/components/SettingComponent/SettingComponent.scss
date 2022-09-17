@@ -1,0 +1,14 @@
+@import 'src/style/shared.scss';
+
+.SettingComponent {
+	display: flex;
+	flex-direction: column;
+
+	label {
+		line-height: 1.5em;
+	}
+
+	.Checkbox {
+		order: -1;
+	}
+}
