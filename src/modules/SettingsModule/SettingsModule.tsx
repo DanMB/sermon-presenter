@@ -1,18 +1,10 @@
 import { h } from 'preact';
 import './SettingsModule.scss';
 
-import Settings, { DefaultSettings } from '@src/ts/Settings';
-import Input from '@src/components/Input/Input';
-import PresentWindow from '@src/ts/presenter/PresentWindow';
-import { useEffect } from 'preact/hooks';
-import CheckboxInput from '@src/components/Input/CheckboxInput';
+import Settings from '@src/ts/Settings';
 import SettingComponent from '@src/components/SettingComponent/SettingComponent';
 
 const SettingsModule = () => {
-	const send = () => {
-		PresentWindow.get()?.style(Settings.get());
-	};
-
 	return (
 		<div class='SettingsModule'>
 			<div class='title'>Settings</div>
