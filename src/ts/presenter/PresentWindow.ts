@@ -153,6 +153,15 @@ export default class PresentWindow {
 		}
 	};
 
+	private _styleUpdateTimeout: NodeJS.Timeout | undefined;
+
+	public updateStyle = () => {
+		if (this._styleUpdateTimeout) clearTimeout(this._styleUpdateTimeout);
+		this._styleUpdateTimeout = setTimeout(() => {
+			this.style(Settings.get());
+		}, 600);
+	};
+
 	public style = async (style: ISettingsState) => {
 		if (this._window) {
 			await this._window.emit(EventNames.STYLE, style);
