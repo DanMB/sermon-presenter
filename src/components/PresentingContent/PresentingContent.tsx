@@ -11,6 +11,7 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 	const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max);
 
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const position = clamp(style.position, 0, 1);
 
 	return (
 		<div
@@ -20,6 +21,8 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 				background: style.background,
 				color: style.foreground,
 				fontFamily: style.font,
+				marginTop: position > 0.5 ? 'auto' : null,
+				height: `${100 - 100 * Math.abs(position - 0.5)}vh`,
 			}}
 		>
 			<PresentingText
