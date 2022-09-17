@@ -57,7 +57,7 @@ const PresentingText = ({
 			ref={element}
 			style={{
 				transform: `scale(${autoScale ? scale : 1})`,
-				fontSize: `${fontSize}em`,
+				fontSize: fontSize,
 				whiteSpace: autoScale ? 'pre' : 'pre-wrap',
 			}}
 		>
