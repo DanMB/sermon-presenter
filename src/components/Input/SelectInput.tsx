@@ -26,10 +26,6 @@ const SelectInput = ({
 	options,
 	...restProps
 }: IProps) => {
-	console.log(
-		defaultValue,
-		options.find(o => o.value === defaultValue || o.selected)
-	);
 	const [currentValue, setCurrentValue] = useState<string | number>(
 		options.find(o => o.value === defaultValue || o.selected)?.value ?? (type === 'number' ? 0 : '')
 	);
