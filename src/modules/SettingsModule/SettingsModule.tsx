@@ -20,6 +20,33 @@ const SettingsModule = () => {
 				setting={Settings.keys.scale}
 			/>
 			<SettingComponent title={'Auto-scale text down'} type={'checkbox'} setting={Settings.keys.autoScale} />
+			<SettingComponent
+				title={'Text position'}
+				type={'number'}
+				setting={Settings.keys.position}
+				options={[
+					{
+						label: '0%',
+						value: 0,
+					},
+					{
+						label: '25%',
+						value: 0.25,
+					},
+					{
+						label: '50%',
+						value: 0.5,
+					},
+					{
+						label: '75%',
+						value: 0.75,
+					},
+					{
+						label: '100%',
+						value: 1,
+					},
+				]}
+			/>
 		</div>
 	);
 };

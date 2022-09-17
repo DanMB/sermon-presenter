@@ -10,10 +10,6 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 
 	const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max);
 
-	const padding = (value: number, unit: 'w' | 'h') => {
-		return `${clamp(value / 10, 0.5, 25)}v${unit}`;
-	};
-
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	return (
@@ -24,10 +20,6 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 				background: style.background,
 				color: style.foreground,
 				fontFamily: style.font,
-				borderTopWidth: padding(style.padding.top, 'h'),
-				borderRightWidth: padding(style.padding.right, 'w'),
-				borderBottomWidth: padding(style.padding.bottom, 'h'),
-				borderLeftWidth: padding(style.padding.left, 'w'),
 			}}
 		>
 			<PresentingText
