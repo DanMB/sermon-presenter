@@ -27,7 +27,8 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 					color: style.foreground,
 					fontFamily: style.font,
 					marginTop: position > 0.5 ? 'auto' : null,
-					height: `${100 - 100 * Math.abs(position - 0.5)}vh`,
+					// justifyContent: position === 0.5 ? 'center' : position > 0.5 ? 'end' : 'start',
+					minHeight: `${100 - 100 * Math.abs(position - 0.5)}vh`,
 				}}
 			>
 				<PresentingText
