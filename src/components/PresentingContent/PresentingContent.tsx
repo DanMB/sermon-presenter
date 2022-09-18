@@ -15,22 +15,28 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 
 	return (
 		<div
-			class='PresentingContent'
-			ref={containerRef}
+			class='PresentWrapper'
 			style={{
 				background: style.background,
-				color: style.foreground,
-				fontFamily: style.font,
-				marginTop: position > 0.5 ? 'auto' : null,
-				height: `${100 - 100 * Math.abs(position - 0.5)}vh`,
 			}}
 		>
-			<PresentingText
-				text={cleanMultiline(data)}
-				fontSize={`${clamp(style.scale, 0.1, 5)}em`}
-				parentRef={containerRef.current}
-				autoScale={style.autoScale}
-			/>
+			<div
+				class='PresentingContent'
+				ref={containerRef}
+				style={{
+					color: style.foreground,
+					fontFamily: style.font,
+					marginTop: position > 0.5 ? 'auto' : null,
+					height: `${100 - 100 * Math.abs(position - 0.5)}vh`,
+				}}
+			>
+				<PresentingText
+					text={cleanMultiline(data)}
+					fontSize={`${clamp(style.scale, 0.1, 5)}em`}
+					parentRef={containerRef.current}
+					autoScale={style.autoScale}
+				/>
+			</div>
 		</div>
 	);
 };
