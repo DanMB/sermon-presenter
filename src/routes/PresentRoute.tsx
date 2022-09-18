@@ -68,11 +68,13 @@ const PresentRoute = () => {
 	if (!presenting || blackedout || cleared)
 		return (
 			<div
-				class='Present'
+				class='PresentWrapper'
 				style={{
 					background: blackedout ? null : style.background,
 				}}
-			></div>
+			>
+				<div class='Present'></div>
+			</div>
 		);
 
 	return <PresentingContent data={presenting} style={style} />;
