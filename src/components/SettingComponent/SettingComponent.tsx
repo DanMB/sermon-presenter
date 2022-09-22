@@ -22,7 +22,7 @@ const SettingComponent = ({ setting, id, title, type = 'text', options, ...restP
 	// @ts-ignore
 	const useSetting = Settings.use(state => state[setting.key]);
 	const InputComponent = type === 'checkbox' ? CheckboxInput : Input;
-	const uid = id ?? title.toLowerCase().replaceAll(/\w+/g, '-');
+	const uid = id ?? title.toLowerCase().replaceAll(/\W+/g, '-');
 	// @ts-ignore
 	const defaultVal = DefaultSettings[setting.key];
 
