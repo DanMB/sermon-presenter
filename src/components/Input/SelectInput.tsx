@@ -37,7 +37,7 @@ const SelectInput = ({
 	return (
 		<select
 			{...restProps}
-			class={`SelectInput ${className}`}
+			class={`Input ${className}`}
 			ref={inputRef}
 			aria-label={label}
 			onChange={e => {
