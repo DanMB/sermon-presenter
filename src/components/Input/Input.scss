@@ -22,5 +22,38 @@
 		opacity: 0;
 		visibility: hidden;
 		pointer-events: none;
+
+		&:focus ~ .CustomCheckbox {
+			border-color: $borderLight;
+		}
+
+		&:checked ~ .CustomCheckbox {
+			&::after {
+				content: '';
+				display: block;
+				height: 0.5em;
+				width: 0.5em;
+				position: absolute;
+				border-radius: $small-radius;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: currentColor;
+			}
+		}
+	}
+
+	.CustomCheckbox {
+		display: inline-block;
+		padding: 0.3em 0.4em;
+		font-weight: weight(bold);
+		background-color: $offset;
+		color: $fadedText;
+		height: 1.25em;
+		width: 1.25em;
+		border: 1px solid $border;
+		border-radius: $small-radius;
+		cursor: pointer;
+		position: relative;
 	}
 }

@@ -17,20 +17,23 @@ const CheckboxInput = ({ className, label, defaultValue, onChange, inputRef, typ
 	}, [currentValue]);
 
 	return (
-		<input
-			{...restProps}
-			class={`Input ${className}`}
-			type={'checkbox'}
-			ref={inputRef}
-			checked={currentValue}
-			aria-label={label}
-			onChange={e => {
-				setCurrentValue((e?.target as HTMLInputElement)?.checked ?? false);
-			}}
-			onKeyUp={e => {
-				setCurrentValue((e?.target as HTMLInputElement)?.checked ?? false);
-			}}
-		/>
+		<div className='CheckboxInput'>
+			<input
+				{...restProps}
+				class={`Input ${className}`}
+				type={'checkbox'}
+				ref={inputRef}
+				checked={currentValue}
+				aria-label={label}
+				onChange={e => {
+					setCurrentValue((e?.target as HTMLInputElement)?.checked ?? false);
+				}}
+				onKeyUp={e => {
+					setCurrentValue((e?.target as HTMLInputElement)?.checked ?? false);
+				}}
+			/>
+			<label className='CustomCheckbox' for={restProps.id}></label>
+		</div>
 	);
 };
 
