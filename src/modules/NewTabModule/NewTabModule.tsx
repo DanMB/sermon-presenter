@@ -61,8 +61,6 @@ const NewTabModule = () => {
 			});
 	}, []);
 
-	console.log(orgEvents);
-
 	return (
 		<div class='page NewTab'>
 			<div class='title'>OurPresenter</div>
