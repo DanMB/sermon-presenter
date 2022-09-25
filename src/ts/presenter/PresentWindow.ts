@@ -171,7 +171,7 @@ export default class PresentWindow {
 	};
 
 	public clear = async () => {
-		cleared.set(true);
+		cleared.set(!cleared.get());
 		if (this._window) {
 			await this._window.emit(EventNames.CLEAR);
 		} else if (this._native) {
@@ -180,7 +180,7 @@ export default class PresentWindow {
 	};
 
 	public blackout = async () => {
-		blackedOut.set(true);
+		blackedOut.set(!blackedOut.get());
 		if (this._window) {
 			await this._window.emit(EventNames.BLACKOUT);
 		} else if (this._native) {
