@@ -12,6 +12,7 @@ import {
 	query,
 	DocumentSnapshot,
 	where,
+	limit,
 } from 'firebase/firestore';
 import Cache from './Cache';
 
@@ -120,7 +121,7 @@ export default class OurPraise {
 			if (cached) return cached;
 		}
 
-		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc')));
+		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'), limit(5)));
 		const orgs = await this.organisations();
 
 		const result = data.docs.map<ISetList<string>>(value => {

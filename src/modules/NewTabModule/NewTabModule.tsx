@@ -10,10 +10,9 @@ import ISongData from '@src/types/ISongData';
 import Client from '@src/ts/Client';
 import OurPraise, { ISetList, IOrganisation } from '@src/ts/OurPraise';
 import Tab, { TabTypes } from '@src/ts/tabs/Tab';
+import Dates from '@src/ts/Dates';
 
 const NewTabModule = () => {
-	const newSetListTab = async () => {};
-
 	const clickEvent = async (e: MouseEvent) => {
 		const id = (e.currentTarget as HTMLElement)?.getAttribute('data-id');
 		if (!id) return;
@@ -78,13 +77,21 @@ const NewTabModule = () => {
 				{orgEvents.map(org => (
 					<div key={org.id} class='org' data-id={org.id}>
 						<div class='orgName'>{org.name}</div>
-						{org.events.map(event => (
-							<div class='event' key={event.id} data-id={event.id} onClick={clickEvent}>
-								<span class='evTitle'>{event.title}</span>
-								<span class='evDate'>{event.date}</span>
-								<span class='evLength'>{event.songs.length}</span>
-							</div>
-						))}
+						{org.events.map(event => {
+							const eventDate = new Date(event.date);
+							return (
+								<div
+									class={`event ${Dates.hasPassed(eventDate) && 'passed'}`}
+									key={event.id}
+									data-id={event.id}
+									onClick={clickEvent}
+								>
+									<span class='evTitle'>{event.title}</span>
+									<span class='evDate'>{Dates.Full(eventDate)}</span>
+									<span class='evLength'>{event.songs.length}</span>
+								</div>
+							);
+						})}
 					</div>
 				))}
 			</div>
