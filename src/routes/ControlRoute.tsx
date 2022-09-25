@@ -18,7 +18,7 @@ const ControlRoute = () => {
 	const keyDown = (e: KeyboardEvent) => {
 		if (e.key === 'Escape') {
 			e.preventDefault();
-			if (cleared.get()) {
+			if (e.shiftKey) {
 				PresentWindow.get()?.blackout();
 			} else {
 				PresentWindow.get()?.clear();
