@@ -40,9 +40,9 @@ const PresentRoute = () => {
 			} else if (e.data.event === EventNames.STYLE) {
 				onStyle(e.data as unknown as Event<any>);
 			} else if (e.data.event === EventNames.CLEAR) {
-				setCleared(true);
+				setCleared(val => !val);
 			} else if (e.data.event === EventNames.BLACKOUT) {
-				setBlackedout(true);
+				setBlackedout(val => !val);
 			}
 		};
 

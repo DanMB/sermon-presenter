@@ -93,12 +93,15 @@
 			&.active {
 				background-color: $fadedText;
 				color: $background;
-				pointer-events: none;
 			}
 
 			&.disabled {
 				box-shadow: inset 0 0 0 1px $borderLight;
 				color: $borderLight;
+				pointer-events: none;
+			}
+
+			&.pen {
 				pointer-events: none;
 			}
 		}

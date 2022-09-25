@@ -85,7 +85,9 @@ const HeaderModule = () => {
 					<span>BL</span>
 				</div>
 				<div
-					class={`stateButton ${!presentingIsOpen ? 'disabled' : isCleared ? 'active' : ''}`}
+					class={`stateButton ${
+						!presentingIsOpen ? 'disabled' : isBlackedOut ? 'pen active' : isCleared ? 'active' : ''
+					}`}
 					onClick={() => {
 						PresentWindow.get()?.clear();
 					}}
