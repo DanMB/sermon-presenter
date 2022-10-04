@@ -121,22 +121,29 @@ export default class OurPraise {
 			if (cached) return cached;
 		}
 
-		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'), limit(5)));
+		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'), limit(5))).catch(
+			e => {
+				console.warn(e);
+				return null;
+			}
+		);
 		const orgs = await this.organisations();
 
-		const result = data.docs.map<ISetList<string>>(value => {
-			const ev = value.data();
-			const org = orgs.find(o => o.id === ev.organisation)?.name ?? 'UNKNOWN';
+		const result = data
+			? data.docs.map<ISetList<string>>(value => {
+					const ev = value.data();
+					const org = orgs.find(o => o.id === ev.organisation)?.name ?? 'UNKNOWN';
 
-			return {
-				id: value.id,
-				organisation: ev.organisation,
-				organisationName: org,
-				title: ev.title,
-				date: ev.date,
-				songs: ev.songs.map((s: any) => s.id),
-			};
-		});
+					return {
+						id: value.id,
+						organisation: ev.organisation,
+						organisationName: org,
+						title: ev.title,
+						date: ev.date,
+						songs: ev.songs.map((s: any) => s.id),
+					};
+			  })
+			: [];
 
 		Cache.set('OurPraise.events', result);
 
@@ -149,15 +156,20 @@ export default class OurPraise {
 			if (cached) return cached;
 		}
 
-		const data = await getDocs(query(collection(getFirestore(), 'organisations')));
-
-		const result = data.docs.map<IOrganisation>(value => {
-			const org = value.data();
-			return {
-				id: value.id,
-				name: org.name,
-			};
+		const data = await getDocs(query(collection(getFirestore(), 'organisations'))).catch(e => {
+			console.warn(e);
+			return null;
 		});
+
+		const result = data
+			? data.docs.map<IOrganisation>(value => {
+					const org = value.data();
+					return {
+						id: value.id,
+						name: org.name,
+					};
+			  })
+			: [];
 
 		Cache.set('OurPraise.organisations', result);
 
