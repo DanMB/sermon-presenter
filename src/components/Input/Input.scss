@@ -14,6 +14,35 @@
 		outline: none;
 		border-color: $borderLight;
 	}
+
+	&[type='file'] {
+		&:focus ~ .CustomFile {
+			border-color: $borderLight;
+		}
+
+		&::-webkit-file-upload-button {
+			visibility: hidden;
+			width: 0;
+			display: none;
+		}
+
+		&::before {
+			content: '';
+			display: inline-block;
+			height: 1.25em;
+			width: 1.25em;
+			background: red;
+			vertical-align: text-bottom;
+			background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='17 8 12 3 7 8'%3E%3C/polyline%3E%3Cline x1='12' y1='3' x2='12' y2='15'%3E%3C/line%3E%3C/svg%3E")
+				no-repeat center center;
+			background-size: cover;
+			margin-right: 0.4em;
+		}
+
+		&[data-value='none'] {
+			color: $fadedText;
+		}
+	}
 }
 
 .CheckboxInput {
