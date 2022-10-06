@@ -68,10 +68,15 @@ export default class OurPraise {
 			if (cached) return cached;
 		}
 
-		const result = await getDoc(doc(getFirestore(), `songs/${id}`)).then(value => {
-			if (!value.exists()) return null;
-			return this.parseSong(value.id, value.data());
-		});
+		const result = await getDoc(doc(getFirestore(), `songs/${id}`))
+			.then(value => {
+				if (!value.exists()) return null;
+				return this.parseSong(value.id, value.data());
+			})
+			.catch(e => {
+				console.warn(`Error getting song - ${id}`, e);
+				return null;
+			});
 
 		Cache.set(`OurPraise.song.${id}`, result);
 		return result;
@@ -83,8 +88,11 @@ export default class OurPraise {
 			if (cached) return cached;
 		}
 
-		const value = await getDoc(doc(getFirestore(), `events/${id}`));
-		if (!value.exists()) {
+		const value = await getDoc(doc(getFirestore(), `events/${id}`)).catch(e => {
+			console.warn(`Error getting event - ${id}`, e);
+			return null;
+		});
+		if (!value || !value.exists()) {
 			Cache.set(`OurPraise.event.${id}`, null);
 			return null;
 		}
@@ -123,7 +131,7 @@ export default class OurPraise {
 
 		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'), limit(5))).catch(
 			e => {
-				console.warn(e);
+				console.warn(`Error getting events`, e);
 				return null;
 			}
 		);
@@ -157,7 +165,7 @@ export default class OurPraise {
 		}
 
 		const data = await getDocs(query(collection(getFirestore(), 'organisations'))).catch(e => {
-			console.warn(e);
+			console.warn(`Error getting organisations`, e);
 			return null;
 		});
 
