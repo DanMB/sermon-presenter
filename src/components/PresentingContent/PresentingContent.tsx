@@ -17,7 +17,7 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 		<div
 			class='PresentWrapper'
 			style={{
-				background: style.background,
+				background: !style.background ? null : `url(${style.background.data})`,
 			}}
 		>
 			<div

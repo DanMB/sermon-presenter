@@ -70,7 +70,7 @@ const PresentRoute = () => {
 			<div
 				class='PresentWrapper'
 				style={{
-					background: blackedout ? null : style.background,
+					backgroundImage: blackedout || !style.background ? null : `url(${style.background.data})`,
 				}}
 			>
 				<div class='Present'></div>

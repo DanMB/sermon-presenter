@@ -1,10 +1,11 @@
+import { IFileData } from '@src/components/Input/FileInput';
 import Store from '@src/types/Store';
 import PresentWindow from './presenter/PresentWindow';
 
 export interface ISettingsState {
 	font: string;
 	scale: number;
-	background: string;
+	background: IFileData | null;
 	foreground: string;
 	autoScale: boolean;
 	position: number;
@@ -13,7 +14,7 @@ export interface ISettingsState {
 export const DefaultSettings: ISettingsState = {
 	font: `'Fira Sans', sans-serif`,
 	scale: 1,
-	background: '#000000',
+	background: null,
 	foreground: '#ffffff',
 	autoScale: true,
 	position: 0.5,
