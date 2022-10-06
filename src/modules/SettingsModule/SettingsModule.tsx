@@ -3,11 +3,18 @@ import './SettingsModule.scss';
 
 import Settings from '@src/ts/Settings';
 import SettingComponent from '@src/components/SettingComponent/SettingComponent';
+import FileInput from '@src/components/Input/FileInput';
 
 const SettingsModule = () => {
 	return (
 		<div class='SettingsModule'>
 			<div class='title'>Settings</div>
+			<SettingComponent
+				title={'Background'}
+				type={'file'}
+				acceptFiles={'image/jpeg, image/png, image/jpg'}
+				setting={Settings.keys.background}
+			/>
 			<SettingComponent title={'Font'} setting={Settings.keys.font} />
 			<SettingComponent title={'Background'} setting={Settings.keys.background} />
 			<SettingComponent title={'Foreground'} setting={Settings.keys.foreground} />

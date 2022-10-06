@@ -1,7 +1,6 @@
-import { h, JSX } from 'preact';
-import { Ref, useEffect, useRef, useState } from 'preact/hooks';
+import { h } from 'preact';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import Input, { IProps } from './Input';
-import Music from '@src/components/icons/Music';
 
 export interface IFileData {
 	lastModified: number;
@@ -11,11 +10,12 @@ export interface IFileData {
 }
 
 export interface IFileInputProps extends Omit<IProps, 'onChange' | 'defaultValue'> {
+	acceptFiles?: string;
 	defaultValue?: IFileData | null;
 	onChange?: (value: IFileData | null) => void;
 }
 
-const FileInput = ({ className, defaultValue, onChange, ...restProps }: IFileInputProps) => {
+const FileInput = ({ className, defaultValue, onChange, acceptFiles, ...restProps }: IFileInputProps) => {
 	const [currentValue, setCurrentValue] = useState<IFileData | null>(defaultValue ?? null);
 	const data = useRef<File | null>(null);
 	const input = useRef<HTMLInputElement | null>(null);
@@ -60,7 +60,7 @@ const FileInput = ({ className, defaultValue, onChange, ...restProps }: IFileInp
 			{...restProps}
 			inputRef={input}
 			type='file'
-			accept='image/jpeg, image/png, image/jpg'
+			accept={acceptFiles ?? 'image/jpeg, image/png, image/jpg'}
 			value={currentValue?.name}
 			data-value={currentValue?.name ?? 'none'}
 			onChange={internalChange}
