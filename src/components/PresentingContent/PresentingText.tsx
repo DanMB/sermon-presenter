@@ -24,8 +24,9 @@ const PresentingText = ({
 		if (element.current) {
 			const parent = parentRef ?? element.current.parentElement;
 			if (parent) {
+				const style = getComputedStyle(parent);
 				const maxWidth = parent.clientWidth;
-				const maxHeight = parent.clientHeight;
+				const maxHeight = parseInt(style.maxHeight) - parseInt(style.marginTop) - parseInt(style.marginBottom);
 
 				const lines = text.split(newLine).length;
 				const lineHeight = parseInt(getCssStyle(element.current, 'line-height') || '1.2em');
@@ -49,7 +50,7 @@ const PresentingText = ({
 				setText(text);
 			}
 		}
-	}, [text, scale]);
+	}, [text]);
 
 	return (
 		<div
