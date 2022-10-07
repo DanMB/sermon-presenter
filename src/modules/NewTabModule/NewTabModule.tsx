@@ -33,6 +33,7 @@ const NewTabModule = () => {
 		);
 		Tabs.set({
 			tabs: [...Tabs.get().tabs, tabId],
+			active: tabId,
 		});
 	};
 

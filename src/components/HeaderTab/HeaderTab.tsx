@@ -21,7 +21,9 @@ const HeaderTab = ({ tab }: { tab: Tab }) => {
 			class={`HeaderTab ${id === active ? 'active' : ''} ${presentingIsOpen && id === presentingTab ? 'live' : ''}`}
 			key={id}
 			data-id={id}
-			onClick={() => {
+			onClick={e => {
+				const target = e.target as HTMLElement | null;
+				if (target?.classList.contains('close')) return;
 				Tabs.set({
 					active: id,
 				});
