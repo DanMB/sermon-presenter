@@ -1,15 +1,15 @@
 @import 'src/style/shared.scss';
 
 .SettingComponent {
-	display: flex;
-	flex-direction: column;
-	gap: #{$gap * 0.5};
+	margin-bottom: $gap;
 
-	label {
+	> label {
 		line-height: 1.5em;
+		margin-bottom: #{$gap * 0.5};
 	}
 
-	.Checkbox {
-		order: -1;
+	input,
+	select {
+		display: block;
 	}
 }

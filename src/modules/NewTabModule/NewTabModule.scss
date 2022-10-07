@@ -61,11 +61,6 @@
 	.events {
 		width: 100%;
 		max-width: 50em;
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		justify-content: start;
-		gap: 1.5rem;
 
 		.org {
 			width: 100%;
@@ -73,6 +68,7 @@
 			flex-direction: column;
 			align-items: stretch;
 			justify-content: start;
+			margin-bottom: 1.5rem;
 
 			.orgName {
 				font-weight: weight(bold);
@@ -122,9 +118,6 @@
 
 	.footer {
 		margin-top: auto;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
 		color: $fadedText;
 		// opacity: 0.6;
 	}
