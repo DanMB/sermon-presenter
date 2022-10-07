@@ -1,6 +1,6 @@
 {
 	"name": "ourpresenter",
-	"version": "0.5.6",
+	"version": "0.6.1",
 	"description": "",
 	"scripts": {
 		"start": "tauri dev",
