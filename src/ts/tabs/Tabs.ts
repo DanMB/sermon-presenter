@@ -90,7 +90,8 @@ export class TabsStore extends Store<ITabState> {
 		this.map.delete(uri);
 
 		if (foundI >= 0) {
-			const tabs = [...this.get().tabs].splice(foundI, 1);
+			const tabs = [...this.get().tabs];
+			tabs.splice(foundI, 1);
 			if (uri === this.get().active) {
 				this.set({
 					tabs,
