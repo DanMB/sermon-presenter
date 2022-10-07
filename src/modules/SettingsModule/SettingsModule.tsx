@@ -3,7 +3,6 @@ import './SettingsModule.scss';
 
 import Settings from '@src/ts/Settings';
 import SettingComponent from '@src/components/SettingComponent/SettingComponent';
-import FileInput from '@src/components/Input/FileInput';
 
 const SettingsModule = () => {
 	return (
@@ -16,7 +15,6 @@ const SettingsModule = () => {
 				setting={Settings.keys.background}
 			/>
 			<SettingComponent title={'Font'} setting={Settings.keys.font} />
-			<SettingComponent title={'Background'} setting={Settings.keys.background} />
 			<SettingComponent title={'Foreground'} setting={Settings.keys.foreground} />
 			<SettingComponent
 				title={'Scale'}
