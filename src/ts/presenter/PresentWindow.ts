@@ -85,10 +85,12 @@ export default class PresentWindow {
 					fullscreen: true,
 				})
 			);
-			if (this._native)
+			if (this._native) {
 				this._native.addEventListener('beforeunload', () => {
 					this.destroy();
 				});
+				this.updateStyle();
+			}
 		}
 
 		PresentWindow._instance = this;
