@@ -48,7 +48,7 @@ const SelectInput = ({
 				if (!optionProps.label) return null;
 				return (
 					<option {...optionProps} key={optionProps.value} selected={optionProps.value === currentValue}>
-						{label}
+						{optionProps.label}
 					</option>
 				);
 			})}
