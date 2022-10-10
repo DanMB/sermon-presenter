@@ -1,5 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
+import Close from '../icons/Close';
+import Upload from '../icons/Upload';
 import Input, { IProps } from './Input';
 
 export interface IFileData {
@@ -33,6 +35,12 @@ const FileInput = ({ className, defaultValue, onChange, acceptFiles, ...restProp
 		};
 	}, [reader]);
 
+	const clearInput = (e: h.JSX.TargetedMouseEvent<SVGSVGElement>) => {
+		e.preventDefault();
+		data.current = null;
+		setCurrentValue(null);
+	};
+
 	const onFileLoaded = (e: ProgressEvent<FileReader>) => {
 		if (e.target?.result && data.current) {
 			setCurrentValue({
@@ -56,15 +64,22 @@ const FileInput = ({ className, defaultValue, onChange, acceptFiles, ...restProp
 	};
 
 	return (
-		<Input
-			{...restProps}
-			inputRef={input}
-			type='file'
-			accept={acceptFiles ?? 'image/jpeg, image/png, image/jpg'}
-			value={currentValue?.name}
-			data-value={currentValue?.name ?? 'none'}
-			onChange={internalChange}
-		/>
+		<div className='FileInput'>
+			<Input
+				{...restProps}
+				inputRef={input}
+				type='file'
+				accept={acceptFiles ?? 'image/jpeg, image/png, image/jpg'}
+				value={currentValue?.name}
+				data-value={currentValue?.name ?? 'none'}
+				onChange={internalChange}
+			/>
+			<label className='CustomFile' for={restProps.id}>
+				<Upload />
+				<span>{currentValue?.name ?? 'No file chosen'}</span>
+				<Close className='clear' onClick={clearInput} />
+			</label>
+		</div>
 	);
 };
 

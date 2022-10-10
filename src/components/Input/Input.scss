@@ -6,9 +6,10 @@
 	background: $offset;
 	color: $text;
 	line-height: 1.25em;
-	max-width: 100%;
+	width: 100%;
 	border: 1px solid $border;
 	border-radius: $small-radius;
+	display: block;
 
 	&:focus {
 		outline: none;
@@ -84,5 +85,70 @@
 		border-radius: $small-radius;
 		cursor: pointer;
 		position: relative;
+	}
+}
+
+.FileInput {
+	input {
+		position: absolute;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+
+		&:focus ~ .CustomFile {
+			border-color: $borderLight;
+		}
+
+		&[data-value='none'] ~ .CustomFile {
+			color: $fadedText;
+
+			&:hover {
+				.clear {
+					display: none;
+				}
+				svg {
+					color: $text;
+				}
+			}
+		}
+	}
+
+	.CustomFile {
+		display: flex;
+		gap: 0.4em;
+		align-items: center;
+		padding: 0.3em 0.4em;
+		font-weight: weight(bold);
+		background: $offset;
+		color: $text;
+		line-height: 1.25em;
+		max-width: 100%;
+		border: 1px solid $border;
+		border-radius: $small-radius;
+		cursor: pointer;
+
+		span {
+			flex: 1 0 0;
+		}
+
+		svg {
+			height: 1.25em;
+			width: 1.25em;
+			flex: 0 0 auto;
+		}
+
+		.clear {
+			cursor: pointer;
+			display: none;
+			order: 3;
+
+			&:hover {
+				color: $primary;
+			}
+		}
+
+		&:hover .clear {
+			display: block;
+		}
 	}
 }
