@@ -1,6 +1,6 @@
 import { h, JSX } from 'preact';
 
-const Close = (props: JSX.HTMLAttributes<SVGSVGElement>) => {
+const Upload = (props: JSX.HTMLAttributes<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -12,10 +12,11 @@ const Close = (props: JSX.HTMLAttributes<SVGSVGElement>) => {
 			stroke-linejoin='round'
 			{...props}
 		>
-			<line x1='18' y1='6' x2='6' y2='18'></line>
-			<line x1='6' y1='6' x2='18' y2='18'></line>
+			<path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path>
+			<polyline points='17 8 12 3 7 8'></polyline>
+			<line x1='12' y1='3' x2='12' y2='15'></line>
 		</svg>
 	);
 };
 
-export default Close;
+export default Upload;
