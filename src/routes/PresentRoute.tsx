@@ -77,7 +77,7 @@ const PresentRoute = () => {
 			offSet();
 			offStyle();
 			offClear();
-			offStyle();
+			offBlackout();
 		};
 	}, []);
 
