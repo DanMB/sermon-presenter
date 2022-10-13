@@ -18,7 +18,7 @@ const PresentRoute = () => {
 
 	useEffect(() => {
 		const onSetPresenting = (e: Event<string>) => {
-			const data: string | null = e.payload ? JSON.parse(e.payload) : null;
+			const data: string | null = Client.isTau ? e.payload : e.payload ? JSON.parse(e.payload) : null;
 			if (data !== null || data !== '') {
 				setCleared(false);
 				setBlackedout(false);
@@ -27,12 +27,22 @@ const PresentRoute = () => {
 		};
 
 		const onStyle = (e: Event<string>) => {
-			const data: ISettingsState | null = e.payload ? JSON.parse(e.payload) : null;
+			const data: ISettingsState | null = Client.isTau ? e.payload : e.payload ? JSON.parse(e.payload) : null;
 			if (data) setStyle(data);
+		};
+
+		const onClear = () => {
+			setCleared(val => !val);
+		};
+
+		const onBlackout = () => {
+			setBlackedout(val => !val);
 		};
 
 		let offSet: UnlistenFn = () => null;
 		let offStyle: UnlistenFn = () => null;
+		let offClear: UnlistenFn = () => null;
+		let offBlackout: UnlistenFn = () => null;
 
 		const onMsg = (e: MessageEvent<{ event: string; payload: any }>) => {
 			if (e.data.event === EventNames.PRESENT) {
@@ -40,17 +50,21 @@ const PresentRoute = () => {
 			} else if (e.data.event === EventNames.STYLE) {
 				onStyle(e.data as unknown as Event<any>);
 			} else if (e.data.event === EventNames.CLEAR) {
-				setCleared(val => !val);
+				onClear();
 			} else if (e.data.event === EventNames.BLACKOUT) {
-				setBlackedout(val => !val);
+				onBlackout();
 			}
 		};
 
 		const setup = async () => {
 			if (Client.isTau) {
 				const window = WebviewWindow.getByLabel('control');
-				if (window) offSet = await window.listen(EventNames.PRESENT, onSetPresenting);
-				if (window) offStyle = await window.listen(EventNames.STYLE, onStyle);
+				if (window) {
+					offSet = await window.listen(EventNames.PRESENT, onSetPresenting);
+					offStyle = await window.listen(EventNames.STYLE, onStyle);
+					offClear = await window.listen(EventNames.CLEAR, onClear);
+					offBlackout = await window.listen(EventNames.BLACKOUT, onBlackout);
+				}
 			} else {
 				window.addEventListener('message', onMsg, false);
 				offSet = () => window.removeEventListener('message', onMsg);
@@ -61,6 +75,8 @@ const PresentRoute = () => {
 
 		return function () {
 			offSet();
+			offStyle();
+			offClear();
 			offStyle();
 		};
 	}, []);
