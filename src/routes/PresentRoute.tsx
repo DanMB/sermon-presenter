@@ -3,7 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 import Storage from '@src/ts/Storage';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
-import { WebviewWindow } from '@tauri-apps/api/window';
+import { appWindow, WebviewWindow } from '@tauri-apps/api/window';
 import { Event, UnlistenFn } from '@tauri-apps/api/event';
 import ISongSlide from '@src/types/ISongSlide';
 import { EventNames } from '@src/types/EventNames';
@@ -39,10 +39,18 @@ const PresentRoute = () => {
 			setBlackedout(val => !val);
 		};
 
+		const onSetFocus = (e: Event<boolean>) => {
+			if (Client.isTau && e.payload) {
+				const window = WebviewWindow.getByLabel('control');
+				if (window) window.setFocus();
+			}
+		};
+
 		let offSet: UnlistenFn = () => null;
 		let offStyle: UnlistenFn = () => null;
 		let offClear: UnlistenFn = () => null;
 		let offBlackout: UnlistenFn = () => null;
+		let offSetFocus: UnlistenFn = () => null;
 
 		const onMsg = (e: MessageEvent<{ event: string; payload: any }>) => {
 			if (e.data.event === EventNames.PRESENT) {
@@ -64,6 +72,7 @@ const PresentRoute = () => {
 					offStyle = await window.listen(EventNames.STYLE, onStyle);
 					offClear = await window.listen(EventNames.CLEAR, onClear);
 					offBlackout = await window.listen(EventNames.BLACKOUT, onBlackout);
+					offSetFocus = await window.onFocusChanged(onSetFocus);
 				}
 			} else {
 				window.addEventListener('message', onMsg, false);
@@ -78,6 +87,7 @@ const PresentRoute = () => {
 			offStyle();
 			offClear();
 			offBlackout();
+			offSetFocus();
 		};
 	}, []);
 
