@@ -5,4 +5,5 @@ export enum EventNames {
 	STOPPED = 'sermon://event/stopped',
 	LOADED = 'sermon://event/loaded',
 	BLACKOUT = 'sermon://custom/blackout',
+	SETFOCUS = 'sermon://custom/focus',
 }
