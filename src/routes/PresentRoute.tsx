@@ -27,7 +27,7 @@ const PresentRoute = () => {
 		};
 
 		const onStyle = (e: Event<string>) => {
-			const data: ISettingsState | null = Client.isTau ? e.payload : e.payload ? JSON.parse(e.payload) : null;
+			const data: ISettingsState | null = e.payload ? JSON.parse(e.payload) : null;
 			if (data) setStyle(data);
 		};
 
