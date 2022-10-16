@@ -39,10 +39,18 @@ const PresentRoute = () => {
 			setBlackedout(val => !val);
 		};
 
-		const onSetFocus = (e: Event<boolean>) => {
+		const onControlFocus = (e: Event<boolean>) => {
+			if (Client.isTau && e.payload) {
+				// appWindow.setFocus();
+			}
+		};
+
+		const onPresentFocus = (e: Event<boolean>) => {
 			if (Client.isTau && e.payload) {
 				const window = WebviewWindow.getByLabel('control');
-				if (window) window.setFocus();
+				if (window) {
+					window.setFocus();
+				}
 			}
 		};
 
@@ -50,7 +58,8 @@ const PresentRoute = () => {
 		let offStyle: UnlistenFn = () => null;
 		let offClear: UnlistenFn = () => null;
 		let offBlackout: UnlistenFn = () => null;
-		let offSetFocus: UnlistenFn = () => null;
+		let offControlFocus: UnlistenFn = () => null;
+		let offPresentFocus: UnlistenFn = () => null;
 
 		const onMsg = (e: MessageEvent<{ event: string; payload: any }>) => {
 			if (e.data.event === EventNames.PRESENT) {
@@ -72,7 +81,8 @@ const PresentRoute = () => {
 					offStyle = await window.listen(EventNames.STYLE, onStyle);
 					offClear = await window.listen(EventNames.CLEAR, onClear);
 					offBlackout = await window.listen(EventNames.BLACKOUT, onBlackout);
-					offSetFocus = await window.onFocusChanged(onSetFocus);
+					offControlFocus = await window.onFocusChanged(onControlFocus);
+					offPresentFocus = await appWindow.onFocusChanged(onPresentFocus);
 				}
 			} else {
 				window.addEventListener('message', onMsg, false);
@@ -87,7 +97,8 @@ const PresentRoute = () => {
 			offStyle();
 			offClear();
 			offBlackout();
-			offSetFocus();
+			offControlFocus();
+			offPresentFocus();
 		};
 	}, []);
 
