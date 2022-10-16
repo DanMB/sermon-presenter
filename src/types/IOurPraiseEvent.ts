@@ -1,14 +1,9 @@
 import IOurPraiseSong from './IOurPraiseSong';
 
 export default interface IOurPraiseEvent {
+	id: string;
+	organisationName: string;
 	title: string;
 	date: string;
-	songs: Array<IOurPraiseSong>;
-	songsIndex: Record<string, IOurPraiseSong>;
-	id: string;
-	comment: string;
-	createdAt: string;
-	organisation: string;
-	organisationName: string;
-	owner: string;
+	songs: number;
 }

@@ -1,5 +1,6 @@
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
+import ISetList from '@src/types/ISetList';
 import ISongData from '@src/types/ISongData';
 import { FirebaseApp, initializeApp, FirebaseOptions } from 'firebase/app';
 import {
@@ -15,22 +16,25 @@ import {
 	limit,
 } from 'firebase/firestore';
 import Cache from './Cache';
+import Request from './Request';
 
 export interface IOrganisation {
 	id: string;
 	name: string;
 }
 
-export interface ISetList<T = ISongData> {
-	id: string;
-	title: string;
-	date: string;
-	organisation: string;
-	organisationName: string;
-	songs: Array<T>;
-}
+// export interface ISetList<T = ISongData> {
+// 	id: string;
+// 	title: string;
+// 	date: string;
+// 	organisation: string;
+// 	organisationName: string;
+// 	songs: Array<T>;
+// }
 
 export default class OurPraise {
+	private static endpoint = 'https://europe-west1-ourpraise-fb.cloudfunctions.net/api/';
+
 	private static _instance: OurPraise | null = null;
 	public static get(): OurPraise | null {
 		return this._instance;
@@ -82,80 +86,86 @@ export default class OurPraise {
 		return result;
 	};
 
-	public event = async (id: string, force: boolean = false) => {
+	public event = async (id: string, force: boolean = false): Promise<IOurPraiseSong[]> => {
 		if (!force) {
-			const cached = Cache.get<ISetList>(`OurPraise.event.${id}`);
+			const cached = Cache.get<IOurPraiseSong[]>(`OurPraise.event.${id}`);
 			if (cached) return cached;
 		}
 
-		const value = await getDoc(doc(getFirestore(), `events/${id}`)).catch(e => {
-			console.warn(`Error getting event - ${id}`, e);
+		const data = await Request.get(OurPraise.endpoint + 'slides?event=' + id).catch(e => {
+			console.warn(`Error getting events`, e);
 			return null;
 		});
-		if (!value || !value.exists()) {
-			Cache.set(`OurPraise.event.${id}`, null);
-			return null;
+
+		if (!data) {
+			throw new Error('Got null from event request');
 		}
 
-		const orgs = await this.organisations();
-
-		const event = value.data();
-		const org = orgs.find(o => o.id === event.organisation)?.name ?? 'UNKNOWN';
-
-		const songs: ISongData[] = [];
-
-		for (const song of event.songs) {
-			const songData = await this.song(song.id, force);
-			if (songData) songs.push(songData);
+		try {
+			const json: IOurPraiseSong[] = JSON.parse(data);
+			Cache.set('OurPraise.events', json);
+			return json;
+		} catch (e) {
+			throw new Error('Failed to parse data from event request');
 		}
 
-		const data: ISetList = {
-			id: value.id,
-			organisation: event.organisation,
-			organisationName: org,
-			title: event.title,
-			date: event.date,
-			songs,
-		};
+		// const value = await getDoc(doc(getFirestore(), `events/${id}`)).catch(e => {
+		// 	console.warn(`Error getting event - ${id}`, e);
+		// 	return null;
+		// });
+		// if (!value || !value.exists()) {
+		// 	Cache.set(`OurPraise.event.${id}`, null);
+		// 	return null;
+		// }
 
-		Cache.set(`OurPraise.event.${id}`, data);
+		// const orgs = await this.organisations();
 
-		return data;
+		// const event = value.data();
+		// const org = orgs.find(o => o.id === event.organisation)?.name ?? 'UNKNOWN';
+
+		// const songs: ISongData[] = [];
+
+		// for (const song of event.songs) {
+		// 	const songData = await this.song(song.id, force);
+		// 	if (songData) songs.push(songData);
+		// }
+
+		// const data: ISetList = {
+		// 	id: value.id,
+		// 	organisation: event.organisation,
+		// 	organisationName: org,
+		// 	title: event.title,
+		// 	date: event.date,
+		// 	songs,
+		// };
+
+		// Cache.set(`OurPraise.event.${id}`, data);
+
+		// return data;
 	};
 
-	public events = async (force: boolean = false): Promise<ISetList<string>[]> => {
+	public events = async (force: boolean = false): Promise<IOurPraiseEvent[]> => {
 		if (!force) {
-			const cached = Cache.get<ISetList<string>[]>('OurPraise.events');
+			const cached = Cache.get<IOurPraiseEvent[]>('OurPraise.events');
 			if (cached) return cached;
 		}
 
-		const data = await getDocs(query(collection(getFirestore(), 'events'), orderBy('date', 'desc'), limit(5))).catch(
-			e => {
-				console.warn(`Error getting events`, e);
-				return null;
-			}
-		);
-		const orgs = await this.organisations();
+		const data = await Request.get(OurPraise.endpoint + 'events').catch(e => {
+			console.warn(`Error getting events`, e);
+			return null;
+		});
 
-		const result = data
-			? data.docs.map<ISetList<string>>(value => {
-					const ev = value.data();
-					const org = orgs.find(o => o.id === ev.organisation)?.name ?? 'UNKNOWN';
+		if (!data) {
+			throw new Error('Got null from events request');
+		}
 
-					return {
-						id: value.id,
-						organisation: ev.organisation,
-						organisationName: org,
-						title: ev.title,
-						date: ev.date,
-						songs: ev.songs.map((s: any) => s.id),
-					};
-			  })
-			: [];
-
-		Cache.set('OurPraise.events', result);
-
-		return result;
+		try {
+			const json = JSON.parse(data);
+			Cache.set('OurPraise.events', json);
+			return json;
+		} catch (e) {
+			throw new Error('Failed to parse data from events request');
+		}
 	};
 
 	public organisations = async (force: boolean = false): Promise<IOrganisation[]> => {

@@ -1,10 +1,7 @@
-import ISongData from './ISongData';
+import IOurPraiseSong from './IOurPraiseSong';
 
 export default interface ISetList {
 	id: string;
 	title: string;
-	date: string;
-	organisation: string;
-	organisationName: string;
-	songs: Array<ISongData>;
+	songs: Array<IOurPraiseSong>;
 }

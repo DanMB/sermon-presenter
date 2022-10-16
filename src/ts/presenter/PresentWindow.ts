@@ -1,4 +1,5 @@
 import { WebviewWindow, availableMonitors, currentMonitor, appWindow, PhysicalPosition } from '@tauri-apps/api/window';
+import { type } from '@tauri-apps/api/os';
 import { UnlistenFn } from '@tauri-apps/api/event';
 import { EventNames } from '@src/types/EventNames';
 import Client from '../Client';
@@ -107,7 +108,7 @@ export default class PresentWindow {
 
 		const parts = e.detail ? e.detail.split('/') : [];
 		const tab = parts[0] ? Tabs.getTab<ISetList>(parts[0]) : undefined;
-		const song = parts[1] && tab ? tab.get().data.songs.find(s => s.id === parts[1]) : null;
+		const song = parts[1] && tab ? tab.get().data.songs.find(s => s.title === parts[1]) : null;
 		const slide = parts[2] && song ? song.slides[parseInt(parts[2])] : null;
 
 		this.set(slide);
@@ -135,12 +136,14 @@ export default class PresentWindow {
 
 		if (!other) {
 			console.log('no 2nd monitor');
-			this.close();
+			// this.close();
 			return;
 		}
 
 		await this._window.setPosition(new PhysicalPosition(other.position.x, other.position.y));
-		await this._window.maximize();
+		if ((await type()) !== 'Darwin') {
+			await this._window.maximize();
+		}
 		await this._window.setFullscreen(true);
 		// await this._window.show();
 	};

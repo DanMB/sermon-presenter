@@ -33,12 +33,8 @@ export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
 					?.event(data.id)
 					.then(newData => {
 						if (newData) {
-							this.set({
-								title: newData.title,
-								data: {
-									...newData,
-								},
-							});
+							// @ts-ignore
+							this.set({ data: newData });
 						}
 					});
 			}
