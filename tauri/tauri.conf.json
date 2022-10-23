@@ -4,7 +4,7 @@
 		"withGlobalTauri": true,
 		"beforeBuildCommand": "yarn build:github",
 		"beforeDevCommand": "yarn start:src",
-		"devPath": "http://localhost:3000/",
+		"devPath": "https://localhost:3000/",
 		"distDir": "https://danmb.github.io/sermon-presenter/"
 	},
 	"package": {

@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import Storage from '@src/ts/Storage';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
@@ -15,6 +15,8 @@ const PresentRoute = () => {
 	const [cleared, setCleared] = useState<boolean>(true);
 	const [blackedout, setBlackedout] = useState<boolean>(true);
 	// const style = Storage.use(Events.STYLE);
+
+	const lastFocus = useRef<number>(0);
 
 	useEffect(() => {
 		const onSetPresenting = (e: Event<string>) => {
@@ -40,8 +42,10 @@ const PresentRoute = () => {
 		};
 
 		const onControlFocus = (e: Event<boolean>) => {
-			if (Client.isTau && e.payload) {
-				// appWindow.setFocus();
+			const nowTime = new Date().getTime();
+			if (Client.isTau && e.payload && nowTime - 10 > lastFocus.current) {
+				lastFocus.current = nowTime;
+				appWindow.setFocus();
 			}
 		};
 
