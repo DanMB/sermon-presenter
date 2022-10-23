@@ -53,7 +53,7 @@ export default class PresentWindow {
 				title: 'OurPresenter',
 				visible: false,
 				decorations: false,
-				skipTaskbar: false,
+				skipTaskbar: true,
 				resizable: true,
 				url: window.location.origin + window.location.pathname,
 				// processArgs: `--id=${id} --route=${route ?? id} --control-port=${NL_PORT}`,
