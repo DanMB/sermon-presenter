@@ -1,3 +1,4 @@
+import { IFileData } from '@src/components/Input/FileInput';
 import ISetList from '@src/types/ISetList';
 import Store from '@src/types/Store';
 import OurPraise from '../OurPraise';
@@ -25,27 +26,35 @@ export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
 			id: config.id,
 		});
 
-		const data = config.data;
+		// const data = config.data;
 
-		if (Tab.isSetList(data)) {
-			if (data.id) {
-				OurPraise.get()
-					?.event(data.id)
-					.then(newData => {
-						if (newData) {
-							this.set({
-								title: newData.title,
-								data: {
-									...newData,
-								},
-							});
-						}
-					});
-			}
-		}
+		// if (Tab.isSetList(data)) {
+		// 	if (data.id) {
+		// 		OurPraise.get()
+		// 			?.event(data.id)
+		// 			.then(newData => {
+		// 				if (newData) {
+		// 					this.set({
+		// 						title: newData.title,
+		// 						data: {
+		// 							...newData,
+		// 						},
+		// 					});
+		// 				}
+		// 			});
+		// 	}
+		// }
 	}
 
 	public static isSetList(data: any): data is ISetList {
 		return data?.songs;
 	}
+
+	public static isVideo(data: any): data is IFileData {
+		return data?.lastModified;
+	}
+
+	// public static isPresentation(data: any): data is IPresentation {
+	// 	return data?.presentationType;
+	// }
 }
