@@ -42,11 +42,11 @@ const PresentRoute = () => {
 		};
 
 		const onControlFocus = (e: Event<boolean>) => {
-			const nowTime = new Date().getTime();
-			if (Client.isTau && e.payload && nowTime - 10 > lastFocus.current) {
-				lastFocus.current = nowTime;
-				appWindow.setFocus();
-			}
+			// const nowTime = new Date().getTime();
+			// if (Client.isTau && e.payload && nowTime - 10 > lastFocus.current) {
+			// 	lastFocus.current = nowTime;
+			// 	appWindow.setFocus();
+			// }
 		};
 
 		const onPresentFocus = (e: Event<boolean>) => {
