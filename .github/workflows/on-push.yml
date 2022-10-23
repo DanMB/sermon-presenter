@@ -20,14 +20,14 @@ jobs:
           ref: gh-pages
       - name: Get client version 🔎
         id: client
-        uses: notiz-dev/github-action-json-property@v0.1.0
+        uses: notiz-dev/github-action-json-property@latest
         with:
           path: manifest.webmanifest
           prop_path: version
       - run: echo ${{ steps.client.outputs.prop }}
       - name: Get app version 🔎
         id: app
-        uses: notiz-dev/github-action-json-property@v0.1.0
+        uses: notiz-dev/github-action-json-property@latest
         with:
           path: manifest.webmanifest
           prop_path: app
@@ -46,14 +46,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Get client version 🔎
         id: client
-        uses: notiz-dev/github-action-json-property@v0.1.0
+        uses: notiz-dev/github-action-json-property@latest
         with:
           path: package.json
           prop_path: version
       - run: echo ${{ steps.client.outputs.prop }}
       - name: Get app version 🔎
         id: app
-        uses: notiz-dev/github-action-json-property@v0.1.0
+        uses: notiz-dev/github-action-json-property@latest
         with:
           path: tauri/tauri.conf.json
           prop_path: package.version
