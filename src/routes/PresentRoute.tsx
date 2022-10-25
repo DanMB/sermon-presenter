@@ -16,8 +16,6 @@ const PresentRoute = () => {
 	const [blackedout, setBlackedout] = useState<boolean>(true);
 	// const style = Storage.use(Events.STYLE);
 
-	const lastFocus = useRef<number>(0);
-
 	useEffect(() => {
 		const onSetPresenting = (e: Event<string>) => {
 			const data: string | null = Client.isTau ? e.payload : e.payload ? JSON.parse(e.payload) : null;
@@ -42,11 +40,8 @@ const PresentRoute = () => {
 		};
 
 		const onControlFocus = (e: Event<boolean>) => {
-			// const nowTime = new Date().getTime();
-			// if (Client.isTau && e.payload && nowTime - 10 > lastFocus.current) {
-			// 	lastFocus.current = nowTime;
-			// 	appWindow.setFocus();
-			// }
+			if (!Client.isTau) return;
+			appWindow.setAlwaysOnTop(e?.payload ?? false);
 		};
 
 		const onPresentFocus = (e: Event<boolean>) => {
