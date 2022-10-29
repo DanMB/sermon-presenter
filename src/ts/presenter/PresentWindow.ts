@@ -144,6 +144,7 @@ export default class PresentWindow {
 		await this._window.maximize();
 		const os = await type();
 		if (os === 'Darwin') await this._window.setFullscreen(true);
+		this.updateStyle();
 		// await this._window.show();
 	};
 
