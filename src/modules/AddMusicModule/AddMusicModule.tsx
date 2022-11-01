@@ -10,7 +10,7 @@ import OurPraise from '@src/ts/OurPraise';
 const AddMusicModule = () => {
 	const onSearch = (value: string) => {
 		// console.log(value);
-		// OurPraise.get()
+		// OurPraise
 		// 	?.search(value)
 		// 	.then(results => {
 		// 		console.log(results);

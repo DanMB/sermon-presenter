@@ -16,7 +16,7 @@ const NewTabModule = () => {
 		const target = e.currentTarget as HTMLElement;
 		const id = target?.getAttribute('data-id');
 		if (!id) return;
-		const event = await OurPraise.get()?.event(id, true);
+		const event = await OurPraise.getEvent(id, true);
 		if (!event) return;
 		const title = target?.querySelector('.evTitle')?.innerHTML;
 		if (!title) return;
@@ -65,7 +65,7 @@ const NewTabModule = () => {
 		const cached = Cache.get<IOurPraiseEvent[]>('OurPraise.events');
 		if (cached) handleEventsData(cached);
 
-		OurPraise.get()?.events().then(handleEventsData);
+		OurPraise.getAllEvents().then(handleEventsData);
 	}, []);
 
 	return (
