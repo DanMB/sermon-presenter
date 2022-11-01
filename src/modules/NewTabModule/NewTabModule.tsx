@@ -42,7 +42,7 @@ const NewTabModule = () => {
 
 	useEffect(() => {
 		OurPraise.get()
-			?.events(true)
+			?.events()
 			.then(data => {
 				const map = data.reduce<Record<string, IOurPraiseEvent[]>>((map, e) => {
 					(map[e.organisationName] = map[e.organisationName] || []).push(e);

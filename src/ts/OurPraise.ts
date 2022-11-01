@@ -92,7 +92,7 @@ export default class OurPraise {
 			if (cached) return cached;
 		}
 
-		const data = await Request.get(OurPraise.endpoint + 'slides?event=' + id).catch(e => {
+		const data = await Request.get(OurPraise.endpoint + 'event?id=' + id).catch(e => {
 			console.warn(`Error getting events`, e);
 			return null;
 		});
@@ -103,7 +103,7 @@ export default class OurPraise {
 
 		try {
 			const json: IOurPraiseSong[] = JSON.parse(data);
-			Cache.set('OurPraise.events', json);
+			Cache.set(`OurPraise.event.${id}`, json, 1800);
 			return json;
 		} catch (e) {
 			throw new Error('Failed to parse data from event request');
@@ -161,38 +161,38 @@ export default class OurPraise {
 
 		try {
 			const json = JSON.parse(data);
-			Cache.set('OurPraise.events', json);
+			Cache.set('OurPraise.events', json, 600);
 			return json;
 		} catch (e) {
 			throw new Error('Failed to parse data from events request');
 		}
 	};
 
-	public organisations = async (force: boolean = false): Promise<IOrganisation[]> => {
-		if (!force) {
-			const cached = Cache.get<IOrganisation[]>('OurPraise.organisations');
-			if (cached) return cached;
-		}
+	// public organisations = async (force: boolean = false): Promise<IOrganisation[]> => {
+	// 	if (!force) {
+	// 		const cached = Cache.get<IOrganisation[]>('OurPraise.organisations');
+	// 		if (cached) return cached;
+	// 	}
 
-		const data = await getDocs(query(collection(getFirestore(), 'organisations'))).catch(e => {
-			console.warn(`Error getting organisations`, e);
-			return null;
-		});
+	// 	const data = await getDocs(query(collection(getFirestore(), 'organisations'))).catch(e => {
+	// 		console.warn(`Error getting organisations`, e);
+	// 		return null;
+	// 	});
 
-		const result = data
-			? data.docs.map<IOrganisation>(value => {
-					const org = value.data();
-					return {
-						id: value.id,
-						name: org.name,
-					};
-			  })
-			: [];
+	// 	const result = data
+	// 		? data.docs.map<IOrganisation>(value => {
+	// 				const org = value.data();
+	// 				return {
+	// 					id: value.id,
+	// 					name: org.name,
+	// 				};
+	// 		  })
+	// 		: [];
 
-		Cache.set('OurPraise.organisations', result);
+	// 	Cache.set('OurPraise.organisations', result);
 
-		return result;
-	};
+	// 	return result;
+	// };
 
 	public search = async (q: string, force: boolean = false): Promise<ISongData[]> => {
 		const norm = q.trim().toUpperCase();
