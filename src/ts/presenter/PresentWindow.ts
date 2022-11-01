@@ -10,7 +10,6 @@ import { useState } from 'preact/hooks';
 import { blackedOut, cleared, current, currentTab, isOpen } from './hooks';
 import ISetList from '@src/types/ISetList';
 import Settings, { ISettingsState } from '../Settings';
-import { type } from '@tauri-apps/api/os';
 
 export default class PresentWindow {
 	private static _instance: PresentWindow | null = null;
