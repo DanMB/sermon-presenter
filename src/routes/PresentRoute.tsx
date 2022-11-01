@@ -1,9 +1,9 @@
 import { h } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import Storage from '@src/ts/Storage';
 import Client from '@src/ts/Client';
 import PresentingContent from '@src/components/PresentingContent/PresentingContent';
-import { WebviewWindow } from '@tauri-apps/api/window';
+import { appWindow, WebviewWindow } from '@tauri-apps/api/window';
 import { Event, UnlistenFn } from '@tauri-apps/api/event';
 import ISongSlide from '@src/types/ISongSlide';
 import { EventNames } from '@src/types/EventNames';
@@ -27,7 +27,7 @@ const PresentRoute = () => {
 		};
 
 		const onStyle = (e: Event<string>) => {
-			const data: ISettingsState | null = Client.isTau ? e.payload : e.payload ? JSON.parse(e.payload) : null;
+			const data: ISettingsState | null = e.payload ? JSON.parse(e.payload) : null;
 			if (data) setStyle(data);
 		};
 
@@ -39,10 +39,26 @@ const PresentRoute = () => {
 			setBlackedout(val => !val);
 		};
 
+		const onControlFocus = (e: Event<boolean>) => {
+			if (!Client.isTau) return;
+			appWindow.setAlwaysOnTop(e?.payload ?? false);
+		};
+
+		const onPresentFocus = (e: Event<boolean>) => {
+			if (Client.isTau && e.payload) {
+				const window = WebviewWindow.getByLabel('control');
+				if (window) {
+					window.setFocus();
+				}
+			}
+		};
+
 		let offSet: UnlistenFn = () => null;
 		let offStyle: UnlistenFn = () => null;
 		let offClear: UnlistenFn = () => null;
 		let offBlackout: UnlistenFn = () => null;
+		let offControlFocus: UnlistenFn = () => null;
+		let offPresentFocus: UnlistenFn = () => null;
 
 		const onMsg = (e: MessageEvent<{ event: string; payload: any }>) => {
 			if (e.data.event === EventNames.PRESENT) {
@@ -64,6 +80,8 @@ const PresentRoute = () => {
 					offStyle = await window.listen(EventNames.STYLE, onStyle);
 					offClear = await window.listen(EventNames.CLEAR, onClear);
 					offBlackout = await window.listen(EventNames.BLACKOUT, onBlackout);
+					offControlFocus = await window.onFocusChanged(onControlFocus);
+					offPresentFocus = await appWindow.onFocusChanged(onPresentFocus);
 				}
 			} else {
 				window.addEventListener('message', onMsg, false);
@@ -78,6 +96,8 @@ const PresentRoute = () => {
 			offStyle();
 			offClear();
 			offBlackout();
+			offControlFocus();
+			offPresentFocus();
 		};
 	}, []);
 
