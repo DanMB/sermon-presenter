@@ -8,6 +8,7 @@ import Client from '@src/ts/Client';
 import OurPraise from '@src/ts/OurPraise';
 import Tab, { TabTypes } from '@src/ts/tabs/Tab';
 import Dates from '@src/ts/Dates';
+import Cache from '@src/ts/Cache';
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 
 const NewTabModule = () => {
@@ -41,25 +42,30 @@ const NewTabModule = () => {
 	const [orgEvents, setOrgEvents] = useState<{ name: string; events: IOurPraiseEvent[] }[]>([]);
 
 	useEffect(() => {
-		OurPraise.get()
-			?.events()
-			.then(data => {
-				const map = data.reduce<Record<string, IOurPraiseEvent[]>>((map, e) => {
-					(map[e.organisationName] = map[e.organisationName] || []).push(e);
-					return map;
-				}, {});
+		const handleEventsData = (data: IOurPraiseEvent[]) => {
+			const map = data.reduce<Record<string, IOurPraiseEvent[]>>((map, e) => {
+				(map[e.organisationName] = map[e.organisationName] || []).push(e);
+				return map;
+			}, {});
 
-				setOrgEvents(
-					Object.values(map).map(events => {
-						const first = events[0];
+			const orgEvents = Object.values(map).map(events => {
+				const first = events[0];
 
-						return {
-							events,
-							name: first.organisationName,
-						};
-					})
-				);
+				return {
+					events: events.slice(0, 5),
+					name: first.organisationName,
+				};
 			});
+
+			orgEvents.sort((a, b) => a.name.localeCompare(b.name));
+
+			setOrgEvents(orgEvents);
+		};
+
+		const cached = Cache.get<IOurPraiseEvent[]>('OurPraise.events');
+		if (cached) handleEventsData(cached);
+
+		OurPraise.get()?.events().then(handleEventsData);
 	}, []);
 
 	return (
