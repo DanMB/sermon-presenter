@@ -2,7 +2,6 @@ import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
 import ISetList from '@src/types/ISetList';
 import ISongData from '@src/types/ISongData';
-import { FirebaseApp, initializeApp, FirebaseOptions } from 'firebase/app';
 import Cache from './Cache';
 import Request from './Request';
 
