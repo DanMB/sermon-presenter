@@ -35,15 +35,6 @@ export default class Client {
 	private static setup = async () => {
 		Cache.enabled = !!(import.meta.env.APP_CACHE ?? true);
 
-		OurPraise.init({
-			apiKey: 'AIzaSyCBfNSkzwlXjavTRNq-TmVo7QpcHrZYvgE',
-			authDomain: 'ourpraise-fb.firebaseapp.com',
-			projectId: 'ourpraise-fb',
-			storageBucket: 'ourpraise-fb.appspot.com',
-			messagingSenderId: '485823144275',
-			appId: '1:485823144275:web:a6eae91b382d7ebefc41a6',
-		});
-
 		if (!Client.isTau) return;
 
 		this.versions.tauri = await getTauriVersion();

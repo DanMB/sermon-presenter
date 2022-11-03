@@ -8,10 +8,11 @@ import { cleanMultiline } from '@src/utils/textUtils';
 import SongSlide from './SongSlide';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
+import IOurPraiseSong from '@src/types/IOurPraiseSong';
 
 const digitExp = /^Digit\d+$/i;
 
-const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId: string }) => {
+const Song = ({ song, index, listId }: { song: IOurPraiseSong; index?: number; listId: string }) => {
 	// const isActive = useRef<boolean>(activeSong === song.id);
 	// const slideI = useRef<number>(activeSong === song.id ? parseInt(activeSlide) : -1);
 
@@ -115,9 +116,9 @@ const Song = ({ song, index, listId }: { song: ISongData; index?: number; listId
 			<div class='slides' ref={slidesRef}>
 				{song.slides.map((slide, index) => (
 					<SongSlide
-						key={`${song.id}_sld${index}`}
+						key={`${song.title}_sld${index}`}
 						{...{ slide, index, listId }}
-						songId={song.id}
+						songId={song.title}
 						onClick={onClick}
 						onFocus={onFocus}
 					/>

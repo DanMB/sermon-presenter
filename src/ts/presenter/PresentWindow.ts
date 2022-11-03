@@ -1,4 +1,5 @@
 import { WebviewWindow, availableMonitors, currentMonitor, appWindow, PhysicalPosition } from '@tauri-apps/api/window';
+import { type } from '@tauri-apps/api/os';
 import { UnlistenFn } from '@tauri-apps/api/event';
 import { EventNames } from '@src/types/EventNames';
 import Client from '../Client';
@@ -9,7 +10,6 @@ import { useState } from 'preact/hooks';
 import { blackedOut, cleared, current, currentTab, isOpen } from './hooks';
 import ISetList from '@src/types/ISetList';
 import Settings, { ISettingsState } from '../Settings';
-import { type } from '@tauri-apps/api/os';
 
 export default class PresentWindow {
 	private static _instance: PresentWindow | null = null;
@@ -108,7 +108,7 @@ export default class PresentWindow {
 
 		const parts = e.detail ? e.detail.split('/') : [];
 		const tab = parts[0] ? Tabs.getTab<ISetList>(parts[0]) : undefined;
-		const song = parts[1] && tab ? tab.get().data.songs.find(s => s.id === parts[1]) : null;
+		const song = parts[1] && tab ? tab.get().data.songs.find(s => s.title === parts[1]) : null;
 		const slide = parts[2] && song ? song.slides[parseInt(parts[2])] : null;
 
 		this.set(slide);

@@ -29,18 +29,12 @@ export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
 
 		if (Tab.isSetList(data)) {
 			if (data.id) {
-				OurPraise.get()
-					?.event(data.id)
-					.then(newData => {
-						if (newData) {
-							this.set({
-								title: newData.title,
-								data: {
-									...newData,
-								},
-							});
-						}
-					});
+				OurPraise.getEvent(data.id).then(newData => {
+					if (newData) {
+						// @ts-ignore
+						this.set({ data: newData });
+					}
+				});
 			}
 		}
 	}

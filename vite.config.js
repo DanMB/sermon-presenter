@@ -4,6 +4,7 @@ import preact from '@preact/preset-vite';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
+import mkcert from 'vite-plugin-mkcert';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -21,6 +22,7 @@ export default defineConfig({
 	},
 	root: './src',
 	plugins: [
+		mkcert(),
 		tsconfigPaths({
 			root: '../../',
 		}),
@@ -59,6 +61,7 @@ export default defineConfig({
 		port: process.env['VITE_PORT'] || 3000,
 		open: false,
 		host: true,
+		https: true,
 	},
 	logLevel: 'info',
 	clearScreen: false,
