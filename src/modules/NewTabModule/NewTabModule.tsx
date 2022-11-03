@@ -10,6 +10,7 @@ import Tab, { TabTypes } from '@src/ts/tabs/Tab';
 import Dates from '@src/ts/Dates';
 import Cache from '@src/ts/Cache';
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
+import Spinner from '@src/components/icons/Spinner';
 
 const NewTabModule = () => {
 	const clickEvent = async (e: MouseEvent) => {
@@ -39,10 +40,10 @@ const NewTabModule = () => {
 		});
 	};
 
-	const [orgEvents, setOrgEvents] = useState<{ name: string; events: IOurPraiseEvent[] }[]>([]);
+	const [orgEvents, setOrgEvents] = useState<{ name: string; loading: boolean; events: IOurPraiseEvent[] }[]>([]);
 
 	useEffect(() => {
-		const handleEventsData = (data: IOurPraiseEvent[]) => {
+		const handleEventsData = (data: IOurPraiseEvent[], loading: boolean = true) => {
 			const map = data.reduce<Record<string, IOurPraiseEvent[]>>((map, e) => {
 				(map[e.organisationName] = map[e.organisationName] || []).push(e);
 				return map;
@@ -53,6 +54,7 @@ const NewTabModule = () => {
 
 				return {
 					events: events.slice(0, 5),
+					loading,
 					name: first.organisationName,
 				};
 			});
@@ -63,7 +65,7 @@ const NewTabModule = () => {
 		};
 
 		const cached = Cache.get<IOurPraiseEvent[]>('OurPraise.events');
-		if (cached) handleEventsData(cached);
+		if (cached) handleEventsData(cached, false);
 
 		OurPraise.getAllEvents().then(handleEventsData);
 	}, []);
@@ -83,7 +85,10 @@ const NewTabModule = () => {
 			<div class='events'>
 				{orgEvents.map(org => (
 					<div key={org.name} class='org'>
-						<div class='orgName'>{org.name}</div>
+						<div class='orgName'>
+							<span>{org.name}</span>
+							{!org.loading && <Spinner />}
+						</div>
 						{org.events.map(event => {
 							const eventDate = new Date(event.date);
 							return (
