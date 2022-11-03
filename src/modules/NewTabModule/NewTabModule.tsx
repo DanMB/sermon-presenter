@@ -21,23 +21,29 @@ const NewTabModule = () => {
 		if (!event) return;
 		const title = target?.querySelector('.evTitle')?.innerHTML;
 		if (!title) return;
-		console.log(event);
 
 		const tabId = `tab.ourpraise.${id}`;
-		Tabs.map.set(
-			tabId,
-			new Tab({
-				id: tabId,
-				title,
-				data: event,
-				type: TabTypes.SETLIST,
-				active: '',
-			})
-		);
-		Tabs.set({
-			tabs: [...Tabs.get().tabs, tabId],
-			active: tabId,
-		});
+
+		if (Tabs.map.has(tabId)) {
+			Tabs.set({
+				active: tabId,
+			});
+		} else {
+			Tabs.map.set(
+				tabId,
+				new Tab({
+					id: tabId,
+					title,
+					data: event,
+					type: TabTypes.SETLIST,
+					active: '',
+				})
+			);
+			Tabs.set({
+				tabs: [...Tabs.get().tabs, tabId],
+				active: tabId,
+			});
+		}
 	};
 
 	const [orgEvents, setOrgEvents] = useState<{ name: string; loading: boolean; events: IOurPraiseEvent[] }[]>([]);
