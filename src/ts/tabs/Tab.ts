@@ -7,6 +7,7 @@ export type TabUid = string;
 export enum TabTypes {
 	SETLIST = 'setlist',
 	NEWTAB = 'newtab',
+	SLIDES = 'slides',
 }
 
 export interface ITabConfig<T = unknown> {

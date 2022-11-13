@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import './NewTabModule.scss';
 
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 
 import Tabs from '@src/ts/tabs/Tabs';
 import Client from '@src/ts/Client';
@@ -11,6 +11,10 @@ import Dates from '@src/ts/Dates';
 import Cache from '@src/ts/Cache';
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import Spinner from '@src/components/icons/Spinner';
+import Powerpoint from '@src/components/icons/Powerpoint';
+import FileInput, { IFileData } from '@src/components/Input/FileInput';
+import { slug } from '@src/utils/textUtils';
+import * as pdfjs from 'pdfjs-dist/build/pdf';
 
 const NewTabModule = () => {
 	const clickEvent = async (e: MouseEvent) => {
@@ -76,18 +80,66 @@ const NewTabModule = () => {
 		OurPraise.getAllEvents().then(handleEventsData);
 	}, []);
 
+	const newPDFSlides = (value: IFileData | null) => {
+		if (!value) return;
+
+		const modified = value.lastModified.toString(36);
+		const tabId = `tab.pdf.${slug(value.name)}_${modified}`;
+
+		var loadingTask = pdfjs
+			.getDocument({
+				data: value.data,
+			})
+			.then(pdf => {
+				console.log(pdf);
+				// you can now use *pdf* here
+			});
+
+		// if (Tabs.map.has(tabId)) {
+		// 	Tabs.set({
+		// 		active: tabId,
+		// 	});
+		// } else {
+		// 	Tabs.map.set(
+		// 		tabId,
+		// 		new Tab({
+		// 			id: tabId,
+		// 			title: value.name,
+		// 			data: {
+		// 				file: value,
+
+		// 			},
+		// 			type: TabTypes.SLIDES,
+		// 			active: '',
+		// 		})
+		// 	);
+		// 	Tabs.set({
+		// 		tabs: [...Tabs.get().tabs, tabId],
+		// 		active: tabId,
+		// 	});
+		// }
+	};
+
 	return (
 		<div class='page NewTab'>
 			<div class='title'>OurPresenter</div>
-			{/* <div class='groups'>
-				<div class='group' onClick={newSetListTab}>
-					<div class='logo'>
-						<Music />
+			<div class='groups'>
+				<label class='group' for='pdf'>
+					<div class='groupName'>
+						<Powerpoint />
+						<span>Slides</span>
 					</div>
-					<div class='groupName'>OurPraise</div>
-					<div class='button'>Find setlister fra OurPraise</div>
-				</div>
-			</div> */}
+					<div class='button'>PDF Presentations</div>
+					<FileInput
+						label={'PDF Slide'}
+						id={'pdf'}
+						onChange={newPDFSlides}
+						title={'Background'}
+						type={'file'}
+						acceptFiles={'application/pdf'}
+					/>
+				</label>
+			</div>
 			<div class='events'>
 				{orgEvents.map(org => (
 					<div key={org.name} class='org'>

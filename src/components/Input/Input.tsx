@@ -1,5 +1,5 @@
 import { h, JSX } from 'preact';
-import { Ref, useEffect, useState } from 'preact/hooks';
+import { MutableRef, Ref, useEffect, useState } from 'preact/hooks';
 import './Input.scss';
 
 export interface IProps extends Omit<JSX.HTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -7,7 +7,7 @@ export interface IProps extends Omit<JSX.HTMLAttributes<HTMLInputElement>, 'onCh
 	defaultValue?: string;
 	invalid?: boolean;
 	onChange?: (value: string) => void;
-	inputRef?: Ref<HTMLInputElement>;
+	inputRef?: MutableRef<HTMLInputElement | undefined>;
 }
 
 const Input = ({

@@ -20,7 +20,7 @@ export interface IFileInputProps extends Omit<IProps, 'onChange' | 'defaultValue
 const FileInput = ({ className, defaultValue, onChange, acceptFiles, ...restProps }: IFileInputProps) => {
 	const [currentValue, setCurrentValue] = useState<IFileData | null>(defaultValue ?? null);
 	const data = useRef<File | null>(null);
-	const input = useRef<HTMLInputElement | null>(null);
+	const input = useRef<HTMLInputElement | undefined>();
 	const reader = useRef(new FileReader());
 
 	useEffect(() => {
