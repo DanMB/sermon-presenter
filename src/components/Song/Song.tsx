@@ -1,10 +1,7 @@
 import { h } from 'preact';
 import './Song.scss';
 
-import { useContext, useEffect, useRef } from 'preact/hooks';
-import ISongData from '@src/types/ISongData';
-import { useTabs } from '@src/ts/tabs/Tabs';
-import { cleanMultiline } from '@src/utils/textUtils';
+import { useEffect, useRef } from 'preact/hooks';
 import SongSlide from './SongSlide';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
