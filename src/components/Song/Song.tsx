@@ -117,7 +117,8 @@ const Song = ({ song, index, listId }: { song: IOurPraiseSong; index?: number; l
 				{song.slides.map((slide, index) => (
 					<SongSlide
 						key={`${song.title}_sld${index}`}
-						{...{ slide, index, listId }}
+						{...{ index, listId }}
+						text={slide}
 						songId={song.title}
 						onClick={onClick}
 						onFocus={onFocus}
