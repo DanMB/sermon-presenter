@@ -16,6 +16,7 @@ import FileInput, { IFileData } from '@src/components/Input/FileInput';
 import { slug } from '@src/utils/textUtils';
 import * as pdfjs from 'pdfjs-dist';
 import { IPdfSlide } from '@src/types/IPdfSlides';
+import { TextItem } from 'pdfjs-dist/types/src/display/api';
 
 const NewTabModule = () => {
 	const clickEvent = async (e: MouseEvent) => {
@@ -112,7 +113,15 @@ const NewTabModule = () => {
 
 					slides.push({
 						index: i,
-						text: content ? content.items.join('\n') : '',
+						text: content
+							? content.items
+									.map(item => {
+										const textItem = item as TextItem;
+										return textItem.str.trim() + (textItem.hasEOL ? '\n' : '');
+									})
+									.filter(Boolean)
+									.join(' ')
+							: '',
 						viewport: page.getViewport({ scale }),
 						render: page.render,
 					});
