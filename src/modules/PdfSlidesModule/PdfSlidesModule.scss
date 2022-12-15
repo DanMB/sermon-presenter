@@ -1,0 +1,7 @@
+@import 'src/style/shared.scss';
+
+.PdfGroup {
+	--color: #{$text};
+	padding: 0.5rem;
+	align-items: stretch;
+}
