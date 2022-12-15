@@ -1,5 +1,4 @@
 import { h } from 'preact';
-import './SetListModule.scss';
 
 import Tabs from '@src/ts/tabs/Tabs';
 import Tab from '@src/ts/tabs/Tab';
