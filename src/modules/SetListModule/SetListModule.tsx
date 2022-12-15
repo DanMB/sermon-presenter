@@ -1,15 +1,13 @@
 import { h } from 'preact';
 import './SetListModule.scss';
 
-import Tabs from '@src/ts/tabs/Tabs';
 import Song from '@src/components/Song/Song';
 import ISetList from '@src/types/ISetList';
+import Tab from '@src/ts/tabs/Tab';
 
-const SetListModule = ({ id }: { id: string }) => {
-	const tab = Tabs.getTab<ISetList>(id);
-	if (!tab) return null;
-
+const SetListModule = ({ tab }: { tab: Tab<ISetList> }) => {
 	const data = tab.use(state => state.data);
+	const id = tab.use(state => state.id);
 
 	return (
 		<div class='page SongsGroup' key={`${id}/group`}>

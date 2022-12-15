@@ -2,15 +2,13 @@ import { h } from 'preact';
 
 import { useEffect } from 'preact/hooks';
 import HeaderModule from '@src/modules/HeaderModule/HeaderModule';
-import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
+import { useTabs } from '@src/ts/tabs/Tabs';
 import NewTabModule from '@src/modules/NewTabModule/NewTabModule';
-import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
-import SetListModule from '@src/modules/SetListModule/SetListModule';
-import OurPraise from '@src/ts/OurPraise';
+import { newtabUri } from '@src/types/URIParts';
 import SidebarModule from '@src/modules/SidebarModule/SidebarModule';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
-import { cleared } from '@src/ts/presenter/hooks';
+import TabModule from '@src/modules/TabModule/TabModule';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
@@ -45,7 +43,7 @@ const ControlRoute = () => {
 			<SidebarModule />
 			<div class='main'>
 				<HeaderModule />
-				{active == newtabUri ? <NewTabModule /> : <SetListModule id={active} />}
+				{active == newtabUri ? <NewTabModule /> : <TabModule id={active} />}
 			</div>
 
 			{/* <ContextMenu /> */}
