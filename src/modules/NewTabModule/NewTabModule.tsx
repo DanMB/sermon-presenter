@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import './NewTabModule.scss';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 
 import Tabs from '@src/ts/tabs/Tabs';
 import Client from '@src/ts/Client';
@@ -14,7 +14,8 @@ import Spinner from '@src/components/icons/Spinner';
 import Powerpoint from '@src/components/icons/Powerpoint';
 import FileInput, { IFileData } from '@src/components/Input/FileInput';
 import { slug } from '@src/utils/textUtils';
-import * as pdfjs from 'pdfjs-dist/build/pdf';
+import * as pdfjs from 'pdfjs-dist';
+import { IPdfSlide } from '@src/types/IPdfSlides';
 
 const NewTabModule = () => {
 	const clickEvent = async (e: MouseEvent) => {
@@ -78,46 +79,66 @@ const NewTabModule = () => {
 		if (cached) handleEventsData(cached, false);
 
 		OurPraise.getAllEvents().then(handleEventsData);
+
+		pdfjs.GlobalWorkerOptions.workerSrc =
+			'https://localhost:3000/@fs/Users/daniel/web/sermon-presenter/node_modules/pdfjs-dist/build/pdf.worker.js';
 	}, []);
 
 	const newPDFSlides = (value: IFileData | null) => {
 		if (!value) return;
 
-		const modified = value.lastModified.toString(36);
-		const tabId = `tab.pdf.${slug(value.name)}_${modified}`;
+		// const modified = value.lastModified.toString(36);
+		const tabId = `tab.pdf.${slug(value.name)}`;
 
-		var loadingTask = pdfjs
-			.getDocument({
-				data: value.data,
+		console.log('loading', value.data);
+
+		pdfjs
+			.getDocument(value.data)
+			.promise.then(async pdf => {
+				const scale = 1;
+
+				const slides: IPdfSlide[] = [];
+
+				for (let i = 1; i <= pdf.numPages; i++) {
+					const page = await pdf.getPage(i).catch(err => {
+						console.error(err);
+						return null;
+					});
+					if (!page) continue;
+					const content = await page.getTextContent().catch(err => {
+						console.error(err);
+						return null;
+					});
+
+					slides.push({
+						index: i,
+						text: content ? content.items.join('\n') : '',
+						viewport: page.getViewport({ scale }),
+						render: page.render,
+					});
+				}
+
+				Tabs.map.set(
+					tabId,
+					new Tab({
+						id: tabId,
+						title: value.name,
+						type: TabTypes.PDFSLIDES,
+						active: '',
+						data: {
+							fingerprints: pdf.fingerprints,
+							slides,
+						},
+					})
+				);
+				Tabs.set({
+					tabs: [...Tabs.get().tabs, tabId],
+					active: tabId,
+				});
 			})
-			.then(pdf => {
-				console.log(pdf);
-				// you can now use *pdf* here
+			.catch(err => {
+				console.error(err);
 			});
-
-		// if (Tabs.map.has(tabId)) {
-		// 	Tabs.set({
-		// 		active: tabId,
-		// 	});
-		// } else {
-		// 	Tabs.map.set(
-		// 		tabId,
-		// 		new Tab({
-		// 			id: tabId,
-		// 			title: value.name,
-		// 			data: {
-		// 				file: value,
-
-		// 			},
-		// 			type: TabTypes.SLIDES,
-		// 			active: '',
-		// 		})
-		// 	);
-		// 	Tabs.set({
-		// 		tabs: [...Tabs.get().tabs, tabId],
-		// 		active: tabId,
-		// 	});
-		// }
 	};
 
 	return (

@@ -1,3 +1,4 @@
+import IPdfSlides from '@src/types/IPdfSlides';
 import ISetList from '@src/types/ISetList';
 import Store from '@src/types/Store';
 import OurPraise from '../OurPraise';
@@ -7,7 +8,7 @@ export type TabUid = string;
 export enum TabTypes {
 	SETLIST = 'setlist',
 	NEWTAB = 'newtab',
-	SLIDES = 'slides',
+	PDFSLIDES = 'pdfSlides',
 }
 
 export interface ITabConfig<T = unknown> {
@@ -28,7 +29,7 @@ export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
 
 		const data = config.data;
 
-		if (Tab.isSetList(data)) {
+		if (this.isSetList(data)) {
 			if (data.id) {
 				OurPraise.getEvent(data.id).then(newData => {
 					if (newData) {
@@ -40,7 +41,19 @@ export default class Tab<T = unknown> extends Store<ITabConfig<T>> {
 		}
 	}
 
-	public static isSetList(data: any): data is ISetList {
+	private isSetList(data: any): data is ISetList {
 		return data?.songs;
+	}
+
+	private isPdf(data: any): data is IPdfSlides {
+		return data?.fingerprints;
+	}
+
+	public static isSetList(tab: Tab<any>): tab is Tab<ISetList> {
+		return tab.get().data?.songs;
+	}
+
+	public static isPdf(tab: Tab<any>): tab is Tab<IPdfSlides> {
+		return tab.get().data?.fingerprints;
 	}
 }
