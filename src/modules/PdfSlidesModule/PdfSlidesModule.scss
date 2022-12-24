@@ -1,7 +1,17 @@
 @import 'src/style/shared.scss';
 
-.PdfGroup {
+.page.PdfGroup {
 	--color: #{$text};
 	padding: 0.5rem;
 	align-items: stretch;
+
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-auto-rows: max-content;
+	grid-gap: $padding;
+	// -webkit-mask-image: -webkit-gradient(linear, left 90%, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(0, 0, 0, 0)));
+
+	@include breakpoint(large) {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }

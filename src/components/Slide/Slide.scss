@@ -93,6 +93,15 @@
 			}
 		}
 
+		canvas {
+			height: calc(100% + 2px);
+			width: calc(100% + 2px);
+
+			&.loading {
+				display: none;
+			}
+		}
+
 		.textContent {
 			height: calc(100% + 2px);
 			width: calc(100% + 2px);

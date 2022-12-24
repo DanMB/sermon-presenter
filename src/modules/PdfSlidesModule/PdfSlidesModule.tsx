@@ -108,9 +108,8 @@ const PdfSlidesModule = ({ tab }: { tab: Tab<IPdfSlides> }) => {
 			{data.slides.map(slide => (
 				<PdfSlide
 					key={slide.index}
-					pdfId={data.fingerprints.join('.')}
-					text={slide.text}
-					index={slide.index}
+					pdfId={slide.fileId}
+					slide={slide}
 					tabIndex={0}
 					onClick={onClick}
 					onFocus={onFocus}

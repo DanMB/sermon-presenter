@@ -14,9 +14,9 @@ import Spinner from '@src/components/icons/Spinner';
 import Powerpoint from '@src/components/icons/Powerpoint';
 import FileInput, { IFileData } from '@src/components/Input/FileInput';
 import { slug } from '@src/utils/textUtils';
-import * as pdfjs from 'pdfjs-dist';
 import { IPdfSlide } from '@src/types/IPdfSlides';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
+import PdfFiles from '@src/ts/PdfFiles';
 
 const NewTabModule = () => {
 	const clickEvent = async (e: MouseEvent) => {
@@ -80,9 +80,6 @@ const NewTabModule = () => {
 		if (cached) handleEventsData(cached, false);
 
 		OurPraise.getAllEvents().then(handleEventsData);
-
-		pdfjs.GlobalWorkerOptions.workerSrc =
-			'https://localhost:3000/@fs/Users/daniel/web/sermon-presenter/node_modules/pdfjs-dist/build/pdf.worker.js';
 	}, []);
 
 	const newPDFSlides = (value: IFileData | null) => {
@@ -90,14 +87,11 @@ const NewTabModule = () => {
 
 		// const modified = value.lastModified.toString(36);
 		const tabId = `tab.pdf.${slug(value.name)}`;
+		const fileId = `file.pdf.${slug(value.name)}`;
 
-		console.log('loading', value.data);
-
-		pdfjs
-			.getDocument(value.data)
-			.promise.then(async pdf => {
-				const scale = 1;
-
+		PdfFiles.load(fileId, value.data)
+			.then(async pdf => {
+				if (!pdf) return;
 				const slides: IPdfSlide[] = [];
 
 				for (let i = 1; i <= pdf.numPages; i++) {
@@ -113,6 +107,7 @@ const NewTabModule = () => {
 
 					slides.push({
 						index: i,
+						fileId,
 						text: content
 							? content.items
 									.map(item => {
@@ -122,8 +117,6 @@ const NewTabModule = () => {
 									.filter(Boolean)
 									.join(' ')
 							: '',
-						viewport: page.getViewport({ scale }),
-						render: page.render,
 					});
 				}
 
