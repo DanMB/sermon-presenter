@@ -4,23 +4,19 @@ import Input, { IProps } from './Input';
 
 const SearchInput = ({ className, defaultValue, onChange, ...restProps }: IProps) => {
 	const [currentValue, setCurrentValue] = useState<string>(defaultValue ?? '');
-	const timeout = useRef<NodeJS.Timeout | null>(null);
+	const timeout = useRef<number | null>(null);
 
 	useEffect(() => {
 		if (onChange) {
-			if (timeout.current) clearTimeout(timeout);
-
-			timeout.current = setTimeout(() => {
+			timeout.current = window.setTimeout(() => {
 				onChange(currentValue.trim());
-			}, 500);
+			}, 400);
 		}
-	}, [currentValue]);
 
-	useEffect(() => {
 		return function () {
-			if (timeout.current) clearTimeout(timeout);
+			if (timeout.current) window.clearTimeout(timeout.current);
 		};
-	}, []);
+	}, [currentValue]);
 
 	return (
 		<Input
