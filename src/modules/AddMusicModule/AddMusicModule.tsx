@@ -33,15 +33,20 @@ const AddMusicModule = () => {
 			<div class='title'>Songs</div>
 			<SearchInput label={'Search songs'} placeholder={'Search songs'} onChange={onSearch} />
 			{!!loadingQuery && <Spinner />}
-			{!loadingQuery &&
-				hits &&
-				hits.map(song => (
-					<div class='searchHit' key={song.path}>
-						<div class='name'>{song.title}</div>
-						<div class='author'>{song.authors}</div>
-						<div class='icon'></div>
-					</div>
-				))}
+			{!loadingQuery && hits && (
+				<div class='searchResults'>
+					{hits.map(song => {
+						if (song._highlightResult.title.matchLevel!)
+							return (
+								<div class='result' key={song.path}>
+									<div class='name' dangerouslySetInnerHTML={{ __html: song._highlightResult.title.value }}></div>
+									<div class='author' dangerouslySetInnerHTML={{ __html: song._highlightResult.authors.value }}></div>
+									<div class='icon'></div>
+								</div>
+							);
+					})}
+				</div>
+			)}
 		</div>
 	);
 };
