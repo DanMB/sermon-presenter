@@ -1,5 +1,6 @@
 import IOurPraiseEvent from '@src/types/IOurPraiseEvent';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
+import ISearchHit from '@src/types/ISearchHit';
 import ISetList from '@src/types/ISetList';
 import ISongData from '@src/types/ISongData';
 import Cache from './Cache';
@@ -69,4 +70,28 @@ export default class OurPraise {
 			throw new Error('Failed to parse data from events request');
 		}
 	};
+
+	public static search = async (query:string, force: boolean = false): Promise<{query:string;hits:ISearchHit[]}> => {
+		if (!force) {
+			const cached = Cache.get<{query:string;hits:ISearchHit[]}>(`OurPraise.search.${query}`);
+			if (cached) return cached;
+		}
+
+		const data = await Request.get(OurPraise.endpoint + 'search?q=' + query).catch(e => {
+			console.warn(`Error searching songs`, e);
+			return null;
+		});
+
+		if (!data) {
+			throw new Error('Got null from search request');
+		}
+
+		try {
+			const json = JSON.parse(data);
+			Cache.set(`OurPraise.search.${query}`, json, 600);
+			return json;
+		} catch (e) {
+			throw new Error('Failed to parse data from search request');
+		}
+	}
 }
