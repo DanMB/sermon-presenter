@@ -1,8 +1,10 @@
 import { getDocument, PDFDocumentProxy, GlobalWorkerOptions } from 'pdfjs-dist';
 import Storage from './Storage';
+import { signal, Signal } from '@preact/signals';
 
 export default class PdfFiles {
 	private static loaded = new Map<string, PDFDocumentProxy>();
+	private static signals = new Map<string, Signal<PDFDocumentProxy | undefined>>();
 	private static workerSet: boolean = false;
 
 	private static setWorker = () => {
@@ -51,5 +53,18 @@ export default class PdfFiles {
 			gotten.destroy();
 			this.loaded.delete(key);
 		}
+	};
+
+	public static signal = (key: string): Signal<PDFDocumentProxy | undefined> => {
+		const gotten = this.signals.get(key);
+		if (gotten) return gotten;
+
+		const newSignal = signal<PDFDocumentProxy | undefined>(undefined);
+
+		this.get(key).then(document => {
+			newSignal.value = document;
+		});
+
+		return newSignal;
 	};
 }
