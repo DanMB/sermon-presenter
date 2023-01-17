@@ -11,8 +11,8 @@ const SearchInput = ({ className, defaultValue, onChange, ...restProps }: IProps
 			if (timeout.current) clearTimeout(timeout);
 
 			timeout.current = setTimeout(() => {
-				onChange(currentValue);
-			}, 350);
+				onChange(currentValue.trim());
+			}, 500);
 		}
 	}, [currentValue]);
 
@@ -27,7 +27,7 @@ const SearchInput = ({ className, defaultValue, onChange, ...restProps }: IProps
 			{...restProps}
 			class={`SearchInput ${className}`}
 			value={currentValue}
-			onChange={val => setCurrentValue(val.trim())}
+			onChange={val => setCurrentValue(val.trimStart())}
 		/>
 	);
 };
