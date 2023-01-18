@@ -39,12 +39,11 @@ const AddMusicModule = () => {
 
 		OurPraise?.getSong(id)
 			.then(data => {
-				console.log(data);
-				const songs = tab?.get().custom.songs ?? [];
+				const songs = tab.get().data.songs;
 				songs.push(data);
 				tab.set({
-					custom: {
-						...tab.get().custom,
+					data: {
+						...tab.get().data,
 						songs,
 					},
 				});

@@ -10,15 +10,11 @@ const SetListModule = ({ id }: { id: string }) => {
 	if (!tab) return null;
 
 	const data = tab.use(state => state.data);
-	const custom = tab.use(state => state.custom);
 
 	return (
 		<div class='page SongsGroup' key={`${id}/group`}>
 			{data.songs.map((song, i) => (
 				<Song key={song.title} song={song} listId={id} index={i + 1} />
-			))}
-			{custom.songs?.map((song, i) => (
-				<Song key={song.title} song={song} listId={id} index={i + 1 + data.songs.length} />
 			))}
 		</div>
 	);
