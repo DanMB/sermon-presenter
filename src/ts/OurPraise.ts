@@ -23,9 +23,33 @@ export interface IOrganisation {
 export default class OurPraise {
 	private static endpoint = 'https://europe-west1-ourpraise-fb.cloudfunctions.net/api/';
 
-	public static getEvent = async (id: string, force: boolean = false): Promise<IOurPraiseSong[]> => {
+	public static getSong = async (id: string, force: boolean = false): Promise<IOurPraiseSong> => {
 		if (!force) {
-			const cached = Cache.get<IOurPraiseSong[]>(`OurPraise.event.${id}`);
+			const cached = Cache.get<IOurPraiseSong>(`OurPraise.song.${id}`);
+			if (cached) return cached;
+		}
+
+		const data = await Request.get(OurPraise.endpoint + 'song?id=' + id).catch(e => {
+			console.warn(`Error getting song`, e);
+			return null;
+		});
+
+		if (!data) {
+			throw new Error('Got null from song request');
+		}
+
+		try {
+			const json: IOurPraiseSong = JSON.parse(data);
+			Cache.set(`OurPraise.song.${id}`, json, 1800);
+			return json;
+		} catch (e) {
+			throw new Error('Failed to parse data from song request');
+		}
+	};
+
+	public static getEvent = async (id: string, force: boolean = false): Promise<ISetList> => {
+		if (!force) {
+			const cached = Cache.get<ISetList>(`OurPraise.event.${id}`);
 			if (cached) return cached;
 		}
 
@@ -39,7 +63,7 @@ export default class OurPraise {
 		}
 
 		try {
-			const json: IOurPraiseSong[] = JSON.parse(data);
+			const json: ISetList = JSON.parse(data);
 			Cache.set(`OurPraise.event.${id}`, json, 1800);
 			return json;
 		} catch (e) {
@@ -71,9 +95,12 @@ export default class OurPraise {
 		}
 	};
 
-	public static search = async (query:string, force: boolean = false): Promise<{query:string;hits:ISearchHit[]}> => {
+	public static search = async (
+		query: string,
+		force: boolean = false
+	): Promise<{ query: string; hits: ISearchHit[] }> => {
 		if (!force) {
-			const cached = Cache.get<{query:string;hits:ISearchHit[]}>(`OurPraise.search.${query}`);
+			const cached = Cache.get<{ query: string; hits: ISearchHit[] }>(`OurPraise.search.${query}`);
 			if (cached) return cached;
 		}
 
@@ -93,5 +120,5 @@ export default class OurPraise {
 		} catch (e) {
 			throw new Error('Failed to parse data from search request');
 		}
-	}
+	};
 }

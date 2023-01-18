@@ -37,6 +37,7 @@ const NewTabModule = () => {
 					data: event,
 					type: TabTypes.SETLIST,
 					active: '',
+					custom: {},
 				})
 			);
 			Tabs.set({
