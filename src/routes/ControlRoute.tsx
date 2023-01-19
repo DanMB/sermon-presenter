@@ -2,41 +2,29 @@ import { h } from 'preact';
 
 import { useEffect } from 'preact/hooks';
 import HeaderModule from '@src/modules/HeaderModule/HeaderModule';
-import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
+import { useTabs } from '@src/ts/tabs/Tabs';
 import NewTabModule from '@src/modules/NewTabModule/NewTabModule';
-import { newtabUri, TabType, UriParts } from '@src/types/URIParts';
+import { newtabUri } from '@src/types/URIParts';
 import SetListModule from '@src/modules/SetListModule/SetListModule';
-import OurPraise from '@src/ts/OurPraise';
 import SidebarModule from '@src/modules/SidebarModule/SidebarModule';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
-import { cleared } from '@src/ts/presenter/hooks';
+import Commands from '@src/ts/commands/Commands';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
-
-	const keyDown = (e: KeyboardEvent) => {
-		if (e.key === 'Escape') {
-			e.preventDefault();
-			if (e.shiftKey) {
-				PresentWindow.get()?.blackout();
-			} else {
-				PresentWindow.get()?.clear();
-			}
-		}
-	};
 
 	const startShow = () => {
 		new PresentWindow();
 	};
 
 	useEffect(() => {
-		window.addEventListener('keydown', keyDown);
 		CustomEvents.listen(Events.START, startShow);
+		Commands.init();
 
 		return function () {
-			window.removeEventListener('keydown', keyDown);
 			CustomEvents.remove(Events.START, startShow);
+			Commands.destroy();
 		};
 	}, []);
 

@@ -88,10 +88,10 @@ const Song = ({ song, index, listId }: { song: IOurPraiseSong; index?: number; l
 			}
 		};
 
-		if (container.current) container.current.addEventListener('keydown', keydown);
+		// if (container.current) container.current.addEventListener('keydown', keydown);
 
 		return function () {
-			if (container.current) container.current.removeEventListener('keydown', keydown);
+			// if (container.current) container.current.removeEventListener('keydown', keydown);
 		};
 	}, []);
 
@@ -102,9 +102,9 @@ const Song = ({ song, index, listId }: { song: IOurPraiseSong; index?: number; l
 
 	const onFocus = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
 		// console.log('onFocus', e.currentTarget.id, PresentWindow.get()?.current !== e.currentTarget.id);
-		if (PresentWindow.get()?.current !== e.currentTarget.id) {
-			CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
-		}
+		// if (PresentWindow.get()?.current !== e.currentTarget.id) {
+		// 	CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
+		// }
 	};
 
 	return (

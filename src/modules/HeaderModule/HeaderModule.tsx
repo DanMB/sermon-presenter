@@ -27,16 +27,7 @@ const HeaderModule = () => {
 	const keyDown = (e: KeyboardEvent) => {
 		if (!e.ctrlKey) return;
 
-		if (e.key === 'Tab') {
-			e.preventDefault();
-			// if ctrl + tab
-			// should move backward or forward
-			if (e.shiftKey) {
-				Tabs.move('-');
-			} else {
-				Tabs.move('+');
-			}
-		} else if (digitExp.test(e.code)) {
+		if (digitExp.test(e.code)) {
 			e.preventDefault();
 			// if ctrl + number
 			let tab = parseInt(e.key) - 1;
@@ -78,9 +69,7 @@ const HeaderModule = () => {
 			<div class='control'>
 				<div
 					class={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
-					onClick={() => {
-						PresentWindow.get()?.blackout();
-					}}
+					onClick={PresentWindow.blackout}
 				>
 					<span>BL</span>
 				</div>
@@ -88,9 +77,7 @@ const HeaderModule = () => {
 					class={`stateButton ${
 						!presentingIsOpen ? 'disabled' : isBlackedOut ? 'pen active' : isCleared ? 'active' : ''
 					}`}
-					onClick={() => {
-						PresentWindow.get()?.clear();
-					}}
+					onClick={PresentWindow.clear}
 				>
 					<span>CL</span>
 				</div>
@@ -98,9 +85,9 @@ const HeaderModule = () => {
 					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
 					onClick={() => {
 						if (presentingIsOpen) {
-							CustomEvents.dispatch(Events.STOP);
+							PresentWindow.stop();
 						} else {
-							CustomEvents.dispatch(Events.START);
+							PresentWindow.start();
 						}
 					}}
 				>
