@@ -1,4 +1,4 @@
-import { StateUpdater, useState } from 'preact/hooks';
+import { useState } from 'react';
 import Storage, { StorageItem } from './Storage';
 
 export type CacheItem<T = StorageItem> = {

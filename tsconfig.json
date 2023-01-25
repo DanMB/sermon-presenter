@@ -3,8 +3,7 @@
 		"target": "esnext",
 		"module": "esnext",
 		"moduleResolution": "node",
-		"jsx": "preserve",
-		"jsxFactory": "h",
+		"jsx": "react-jsx",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"strict": true,
 		"noEmit": true,
@@ -20,7 +19,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@src/*": ["./src/*"]
-		}
+		},
+		"types": ["vite-plugin-pwa/client"]
 	},
 	"include": ["src", "node_modules/**/*.d.ts"],
 	"exclude": ["src/public", "node_modules "]

@@ -6,7 +6,6 @@ import Client from '../Client';
 import WindowFeatures from '@src/utils/WindowFeatures';
 import CustomEvents, { Events } from '../CustomEvents';
 import Tabs from '../tabs/Tabs';
-import { useState } from 'preact/hooks';
 import { blackedOut, cleared, current, currentTab, isOpen } from './hooks';
 import ISetList from '@src/types/ISetList';
 import Settings, { ISettingsState } from '../Settings';

@@ -1,4 +1,4 @@
-import { StateUpdater, useState } from 'preact/hooks';
+import { useState } from 'react';
 
 export type StorageItem = Record<string, unknown> | string | unknown[];
 

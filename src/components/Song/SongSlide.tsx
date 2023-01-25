@@ -1,13 +1,12 @@
-import { h } from 'preact';
 import './Song.scss';
 
-import { useEffect, useState } from 'preact/hooks';
 import { useTabs } from '@src/ts/tabs/Tabs';
 import { cleanMultiline } from '@src/utils/textUtils';
 import ISongSlide from '@src/types/ISongSlide';
 import { current } from '@src/ts/presenter/hooks';
+import { HTMLAttributes, useEffect, useState } from 'react';
 
-export interface ISongSlideProps extends h.JSX.HTMLAttributes<HTMLDivElement> {
+export interface ISongSlideProps extends HTMLAttributes<HTMLDivElement> {
 	slide: string;
 	listId: string;
 	songId: string;
@@ -57,17 +56,17 @@ const SongSlide = ({ slide, listId, songId, index, ...restProps }: ISongSlidePro
 			id={slideData.id}
 			tabIndex={-1}
 			role='listitem'
-			class={`slide ${presentingCurrent === slideData.id ? 'active' : activeSlide ? 'subActive' : ''}`}
+			className={`slide ${presentingCurrent === slideData.id ? 'active' : activeSlide ? 'subActive' : ''}`}
 		>
 			{slideData.key !== undefined && (
-				<div class='hotkey'>
+				<div className='hotkey'>
 					{slideData.shift ? <li></li> : <></>}
 					{slideData.key}
 				</div>
 			)}
-			<div class='preview'>
-				<div class='textContent'>
-					<div class='inner'>{cleanMultiline(slide)}</div>
+			<div className='preview'>
+				<div className='textContent'>
+					<div className='inner'>{cleanMultiline(slide)}</div>
 				</div>
 			</div>
 		</div>

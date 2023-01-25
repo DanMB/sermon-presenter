@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import './SettingsModule.scss';
 
 import Settings from '@src/ts/Settings';
@@ -6,8 +5,8 @@ import SettingComponent from '@src/components/SettingComponent/SettingComponent'
 
 const SettingsModule = () => {
 	return (
-		<div class='SettingsModule'>
-			<div class='title'>Settings</div>
+		<div className='SettingsModule'>
+			<div className='title'>Settings</div>
 			<SettingComponent
 				title={'Background'}
 				type={'file'}

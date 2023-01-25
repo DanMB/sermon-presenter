@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 const Topography = () => {
 	return (
 		<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'>

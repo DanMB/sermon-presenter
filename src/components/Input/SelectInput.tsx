@@ -1,12 +1,11 @@
-import { h, JSX } from 'preact';
-import { Ref, useEffect, useState } from 'preact/hooks';
+import { OptionHTMLAttributes, Ref, SelectHTMLAttributes, useEffect, useState } from 'react';
 
-export interface IOption extends JSX.HTMLAttributes<HTMLOptionElement> {
+export interface IOption extends OptionHTMLAttributes<HTMLOptionElement> {
 	value: string | number;
 	label: string;
 }
 
-export interface IProps extends Omit<JSX.HTMLAttributes<HTMLSelectElement>, 'onChange' | 'defaultValue'> {
+export interface IProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange' | 'defaultValue'> {
 	label: string;
 	defaultValue?: string | number;
 	invalid?: boolean;
@@ -37,7 +36,7 @@ const SelectInput = ({
 	return (
 		<select
 			{...restProps}
-			class={`Input ${className}`}
+			className={`Input ${className}`}
 			ref={inputRef}
 			aria-label={label}
 			onChange={e => {

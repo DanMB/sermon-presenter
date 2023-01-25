@@ -7,7 +7,7 @@
 	.st1{fill:#FF1A7D;}
 	.st2{fill:#FFD60B;}
 </style>
-<polygon class="st0" points="0,0 60,0 60,30 30,30 30,60 0,60 "/>
-<polygon class="st1" points="20,20 80,20 80,50 50,50 50,80 20,80 "/>
-<polygon class="st2" points="40,40 100,40 100,60 60,60 60,100 40,100 "/>
+<polygon className="st0" points="0,0 60,0 60,30 30,30 30,60 0,60 "/>
+<polygon className="st1" points="20,20 80,20 80,50 50,50 50,80 20,80 "/>
+<polygon className="st2" points="40,40 100,40 100,60 60,60 60,100 40,100 "/>
 </svg>

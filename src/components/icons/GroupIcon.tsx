@@ -1,4 +1,3 @@
-import { h } from 'preact';
 // import { GroupTypes } from '../../../types/IGroupData';
 import Music from './Music';
 import Powerpoint from './Powerpoint';

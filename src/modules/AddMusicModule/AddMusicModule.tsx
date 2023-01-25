@@ -1,7 +1,5 @@
-import { h } from 'preact';
 import './AddMusicModule.scss';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
 import Plus from '@src/components/icons/Plus';
 import Tabs, { useTabs } from '@src/ts/tabs/Tabs';
 import SearchInput from '@src/components/Input/SearchInput';
@@ -9,6 +7,7 @@ import OurPraise from '@src/ts/OurPraise';
 import ISearchHit from '@src/types/ISearchHit';
 import Spinner from '@src/components/icons/Spinner';
 import ISetList from '@src/types/ISetList';
+import { useState, useEffect } from 'react';
 
 const AddMusicModule = () => {
 	const [loadingQuery, setLoadingQuery] = useState<string>('');
@@ -54,25 +53,28 @@ const AddMusicModule = () => {
 	};
 
 	return (
-		<div class='AddMusicModule'>
-			<div class='title'>Songs</div>
+		<div className='AddMusicModule'>
+			<div className='title'>Songs</div>
 			<SearchInput label={'Search songs'} placeholder={'Search songs'} onChange={onSearch} />
 			{!!loadingQuery && <Spinner />}
 			{!loadingQuery && hits && (
-				<div class='searchResults'>
+				<div className='searchResults'>
 					{hits.map(song => {
 						if (song._highlightResult.title.matchLevel!)
 							return (
 								<div
-									class='result'
+									className='result'
 									key={song.path}
 									onClick={() => {
 										if (tab) addSong(song.objectID);
 									}}
 								>
-									<div class='name' dangerouslySetInnerHTML={{ __html: song._highlightResult.title.value }}></div>
-									<div class='author' dangerouslySetInnerHTML={{ __html: song._highlightResult.authors.value }}></div>
-									<div class='icon'></div>
+									<div className='name' dangerouslySetInnerHTML={{ __html: song._highlightResult.title.value }}></div>
+									<div
+										className='author'
+										dangerouslySetInnerHTML={{ __html: song._highlightResult.authors.value }}
+									></div>
+									<div className='icon'></div>
 								</div>
 							);
 					})}

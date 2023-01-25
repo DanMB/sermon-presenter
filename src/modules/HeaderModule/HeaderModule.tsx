@@ -1,7 +1,5 @@
-import { h } from 'preact';
 import './HeaderModule.scss';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
 import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
@@ -13,6 +11,7 @@ import { newtabUri, UriParts } from '@src/types/URIParts';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import { blackedOut, cleared, isOpen } from '@src/ts/presenter/hooks';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
+import { useEffect } from 'react';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -45,9 +44,9 @@ const HeaderModule = () => {
 	}, []);
 
 	return (
-		<div class='Header'>
-			<div class='nav'>
-				<div class='tabs'>
+		<div className='Header'>
+			<div className='nav'>
+				<div className='tabs'>
 					{tabs.map(id => {
 						const tab = Tabs.getTab(id);
 						if (!tab || id === newtabUri) return null;
@@ -56,7 +55,7 @@ const HeaderModule = () => {
 					})}
 				</div>
 				<div
-					class={`add ${active.toString() === newtabUri ? 'active' : ''}`}
+					className={`add ${active.toString() === newtabUri ? 'active' : ''}`}
 					onClick={() => {
 						Tabs.set({
 							active: newtabUri,
@@ -66,15 +65,15 @@ const HeaderModule = () => {
 					<Plus />
 				</div>
 			</div>
-			<div class='control'>
+			<div className='control'>
 				<div
-					class={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
+					className={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
 					onClick={PresentWindow.blackout}
 				>
 					<span>BL</span>
 				</div>
 				<div
-					class={`stateButton ${
+					className={`stateButton ${
 						!presentingIsOpen ? 'disabled' : isBlackedOut ? 'pen active' : isCleared ? 'active' : ''
 					}`}
 					onClick={PresentWindow.clear}
@@ -82,7 +81,7 @@ const HeaderModule = () => {
 					<span>CL</span>
 				</div>
 				<div
-					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
+					className={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
 					onClick={() => {
 						if (presentingIsOpen) {
 							PresentWindow.stop();

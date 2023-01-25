@@ -1,6 +1,3 @@
-import { h } from 'preact';
-
-import { useEffect } from 'preact/hooks';
 import HeaderModule from '@src/modules/HeaderModule/HeaderModule';
 import { useTabs } from '@src/ts/tabs/Tabs';
 import NewTabModule from '@src/modules/NewTabModule/NewTabModule';
@@ -10,6 +7,8 @@ import SidebarModule from '@src/modules/SidebarModule/SidebarModule';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
 import Commands from '@src/ts/commands/Commands';
+import ToastManager from '@src/modules/ToastModule/ToastManager';
+import { useEffect } from 'react';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
@@ -29,15 +28,17 @@ const ControlRoute = () => {
 	}, []);
 
 	return (
-		<div class='Control'>
-			<SidebarModule />
-			<div class='main'>
-				<HeaderModule />
-				{active == newtabUri ? <NewTabModule /> : <SetListModule id={active} />}
-			</div>
+		<ToastManager.Container>
+			<div className='Control'>
+				<SidebarModule />
+				<div className='main'>
+					<HeaderModule />
+					{active == newtabUri ? <NewTabModule /> : <SetListModule id={active} />}
+				</div>
 
-			{/* <ContextMenu /> */}
-		</div>
+				{/* <ContextMenu /> */}
+			</div>
+		</ToastManager.Container>
 	);
 };
 

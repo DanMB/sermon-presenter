@@ -1,9 +1,8 @@
-import { h } from 'preact';
 import './PresentingContent.scss';
 import { cleanMultiline } from '@src/utils/textUtils';
 import { ISettingsState } from '@src/ts/Settings';
-import { useRef } from 'preact/hooks';
 import PresentingText from './PresentingText';
+import { useRef } from 'react';
 
 const PresentingContent = ({ data, style }: { data?: string; style: ISettingsState }) => {
 	if (!data) return null;
@@ -15,18 +14,18 @@ const PresentingContent = ({ data, style }: { data?: string; style: ISettingsSta
 
 	return (
 		<div
-			class='PresentWrapper'
+			className='PresentWrapper'
 			style={{
-				backgroundImage: !style.background ? null : `url(${style.background.data})`,
+				backgroundImage: !style.background ? undefined : `url(${style.background.data})`,
 			}}
 		>
 			<div
-				class='PresentingContent'
+				className='PresentingContent'
 				ref={containerRef}
 				style={{
 					color: style.foreground,
 					fontFamily: style.font,
-					marginTop: position > 0.5 ? 'auto' : null,
+					marginTop: position > 0.5 ? 'auto' : undefined,
 					// justifyContent: position === 0.5 ? 'center' : position > 0.5 ? 'end' : 'start',
 					minHeight: `${100 - 100 * Math.abs(position - 0.5)}vh`,
 				}}

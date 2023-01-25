@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import preact from '@preact/preset-vite';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
@@ -26,7 +26,7 @@ export default defineConfig({
 		tsconfigPaths({
 			root: '../../',
 		}),
-		preact(),
+		react(),
 		VitePWA({
 			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
 			manifest: {

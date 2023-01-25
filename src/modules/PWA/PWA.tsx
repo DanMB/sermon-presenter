@@ -1,6 +1,5 @@
-import { h } from 'preact';
-import { useEffect } from 'preact/hooks';
-import { useRegisterSW } from 'virtual:pwa-register/preact';
+import { useEffect } from 'react';
+import { useRegisterSW } from 'virtual:pwa-register/react';
 
 function PWA() {
 	// replaced dyanmicaly

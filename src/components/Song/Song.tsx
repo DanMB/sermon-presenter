@@ -1,7 +1,5 @@
-import { h } from 'preact';
 import './Song.scss';
 
-import { useContext, useEffect, useRef } from 'preact/hooks';
 import ISongData from '@src/types/ISongData';
 import { useTabs } from '@src/ts/tabs/Tabs';
 import { cleanMultiline } from '@src/utils/textUtils';
@@ -9,6 +7,7 @@ import SongSlide from './SongSlide';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
 import IOurPraiseSong from '@src/types/IOurPraiseSong';
+import { useRef, useEffect, MouseEvent } from 'react';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -53,17 +52,17 @@ const Song = ({ song, index, listId }: { song: IOurPraiseSong; index?: number; l
 		};
 	}, []);
 
-	const onClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+	const onClick = (e: MouseEvent<HTMLDivElement>) => {
 		CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
 	};
 
 	return (
-		<div class='SongComponent' ref={container} tabIndex={0} role='list'>
-			<div class='title'>
+		<div className='SongComponent' ref={container} tabIndex={0} role='list'>
+			<div className='title'>
 				{index && `#${index} `}
 				{song.title}
 			</div>
-			<div class='slides' ref={slidesRef}>
+			<div className='slides' ref={slidesRef}>
 				{song.slides.map((slide, index) => (
 					<SongSlide
 						key={`${song.title}_sld${index}`}

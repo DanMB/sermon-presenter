@@ -1,5 +1,4 @@
-import { h, JSX } from 'preact';
-import { Ref, useEffect, useRef, useState } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'react';
 import Input, { IProps } from './Input';
 
 const SearchInput = ({ className, defaultValue, onChange, ...restProps }: IProps) => {
@@ -21,7 +20,7 @@ const SearchInput = ({ className, defaultValue, onChange, ...restProps }: IProps
 	return (
 		<Input
 			{...restProps}
-			class={`SearchInput ${className}`}
+			className={`SearchInput ${className}`}
 			value={currentValue}
 			onChange={val => setCurrentValue(val.trimStart())}
 		/>

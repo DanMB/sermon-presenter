@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import './SetListModule.scss';
 
 import Tabs from '@src/ts/tabs/Tabs';
@@ -12,7 +11,7 @@ const SetListModule = ({ id }: { id: string }) => {
 	const data = tab.use(state => state.data);
 
 	return (
-		<div class='page SongsGroup' key={`${id}/group`}>
+		<div className='page SongsGroup' key={`${id}/group`}>
 			{data.songs.map((song, i) => (
 				<Song key={song.title} song={song} listId={id} index={i + 1} />
 			))}
