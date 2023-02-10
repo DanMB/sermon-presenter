@@ -309,4 +309,23 @@ export default class PresentWindow {
 
 		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${id}/0`);
 	};
+
+	public static gotoIndex = (index: number) => {
+		const currentSlide = current.get();
+		const tab = currentTab.get();
+		if (!tab || !currentSlide) return;
+		const tabData = Tabs.getTab<ISetList>(tab);
+		if (!tabData) return;
+
+		const parts = currentSlide ? currentSlide.split('/') : [];
+		const song = parts[1] ? tabData.get().data.songs.find(s => s.title === parts[1]) : null;
+		const slide = parts[2] ? parseInt(parts[2]) : null;
+		if (!song || slide == null) return;
+
+		let nextSlide = index;
+
+		if (nextSlide >= song.slides.length) return;
+
+		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${parts[1]}/${nextSlide}`);
+	};
 }
