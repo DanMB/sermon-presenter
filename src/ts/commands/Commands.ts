@@ -16,7 +16,6 @@ export default class Commands {
 				// } else if(!Array.isArray(command.keybind) && globalTest.test(command.keybind)) {
 				// 	Mousetrap.global(command.keybind, command.call, command.keybindAction);
 				// }
-				console.log('bind', command.keybind, command.name);
 				Mousetrap.bind(command.keybind, command.call, command.keybindAction);
 			}
 		}
