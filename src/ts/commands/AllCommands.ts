@@ -1,3 +1,4 @@
+import ToastManager from '@src/modules/ToastModule/ToastManager';
 import Tabs from '@src/ts/tabs/Tabs';
 import PresentWindow from '../presenter/PresentWindow';
 import Sidebar from '../Sidebar';
@@ -73,5 +74,10 @@ export const AllCommands: ICommand[] = [
 		name: 'Settings',
 		call: Sidebar.openSettings,
 		keybind: 'meta+,',
+	},
+	{
+		name: 'Test toast',
+		call: ToastManager.test,
+		keybind: 'f',
 	},
 ];

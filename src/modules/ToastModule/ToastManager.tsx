@@ -7,6 +7,7 @@ export interface IToastProps {
 	title?: string;
 	text: string;
 	theme?: string;
+	type?: 'foreground' | 'background';
 }
 
 export interface IToastState {
@@ -14,7 +15,7 @@ export interface IToastState {
 }
 
 export default class ToastManager {
-	public static TIMEOUT = 5000;
+	public static TIMEOUT = 3000;
 	private static _store = create<IToastState>((set, get) => ({
 		items: [],
 	}));
@@ -23,7 +24,7 @@ export default class ToastManager {
 		const items = [...ToastManager._store.getState().items];
 		const index = items.findIndex(toast => toast.id === props.id);
 
-		if (index < 0) {
+		if (index >= 0) {
 			items.splice(index, 1);
 		}
 		items.push(props);
@@ -51,7 +52,6 @@ export default class ToastManager {
 	};
 
 	public static test = () => {
-		console.log('test');
 		const id = new Date().getTime();
 
 		ToastManager.add({
@@ -62,7 +62,7 @@ export default class ToastManager {
 
 	public static Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
 		return (
-			<Toast.Provider swipeDirection='down' duration={ToastManager.TIMEOUT}>
+			<Toast.Provider swipeDirection='right' duration={ToastManager.TIMEOUT}>
 				<ToastManager.Toasts />
 				{children}
 				<Toast.Viewport className='ToastViewport' />
@@ -72,68 +72,29 @@ export default class ToastManager {
 
 	public static Toasts = () => {
 		const items = ToastManager._store(state => state.items);
-		console.log(items);
 
 		return (
 			<>
 				{items.map(toast => (
-					<Toast.Root key={toast.id}>
-						{toast.title && <Toast.Title className='ToastTitle'>{toast.title}</Toast.Title>}
-						<Toast.Description>{toast.text}</Toast.Description>
-						<Toast.Close className='ToastClose'>X</Toast.Close>
-					</Toast.Root>
+					<ToastManager.ToastComponent key={toast.id} {...toast} />
 				))}
 			</>
 		);
 	};
 
-	// public static createToast = () => {
-	// 	const [open, setOpen] = useState(false);
-	// 	const eventDateRef = useRef(new Date());
-	// 	const timerRef = useRef(0);
+	public static ToastComponent = (props: IToastProps) => {
+		const onChange = (open: boolean) => {
+			if (!open) {
+				ToastManager.remove(props.id);
+			}
+		};
 
-	// 	useEffect(() => {
-	// 		return () => clearTimeout(timerRef.current);
-	// 	}, []);
-
-	// 	return (
-	// 		<Toast.Root className='ToastRoot' open={open} onOpenChange={setOpen}>
-	// 			<Toast.Title className='ToastTitle'>Scheduled: Catch up</Toast.Title>
-	// 			<Toast.Description asChild>
-	// 				<time className='ToastDescription' dateTime={eventDateRef.current.toISOString()}>
-	// 					{prettyDate(eventDateRef.current)}
-	// 				</time>
-	// 			</Toast.Description>
-	// 			<Toast.Close className='ToastClose'>X</Toast.Close>
-	// 		</Toast.Root>
-	// 	);
-	// };
+		return (
+			<Toast.Root className='ToastRoot' duration={ToastManager.TIMEOUT} type={props.type} onOpenChange={onChange}>
+				{props.title && <Toast.Title className='ToastTitle'>{props.title}</Toast.Title>}
+				<Toast.Description className='ToastDescription'>{props.text}</Toast.Description>
+				<Toast.Close className='ToastAction'>X</Toast.Close>
+			</Toast.Root>
+		);
+	};
 }
-
-// export interface IToastProps {}
-// export interface IToastState {}
-
-// export class ToastInstance {
-// 	private _store: UseBoundStore<StoreApi<IToastState>>;
-
-// 	constructor(props:IToastProps) {
-// 		ToastManager._store = create<IToastState>(() => {
-// 			isOpen: true,
-// 			setIsOpen
-// 		});
-// 	}
-
-// 	public Component() {
-// 		return (<Toast.Root className="ToastRoot" open={open} onOpenChange={setOpen}>
-//         <Toast.Title className="ToastTitle">Scheduled: Catch up</Toast.Title>
-//         <Toast.Description asChild>
-//           <time className="ToastDescription" dateTime={eventDateRef.current.toISOString()}>
-//             {prettyDate(eventDateRef.current)}
-//           </time>
-//         </Toast.Description>
-//         <Toast.Action className="ToastAction" asChild altText="Goto schedule to undo">
-//           <button className="Button small green">Undo</button>
-//         </Toast.Action>
-//       </Toast.Root>);
-// 	}
-// }

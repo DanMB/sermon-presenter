@@ -33,7 +33,7 @@
 	animation: hide 100ms ease-in;
 }
 .ToastRoot[data-swipe='move'] {
-	transform: translateX(var(--radix-toast-swipe-move-x));
+	transform: translateX(var(--radix-toast-swipe-move-y));
 }
 .ToastRoot[data-swipe='cancel'] {
 	transform: translateX(0);
@@ -63,7 +63,7 @@
 
 @keyframes swipeOut {
 	from {
-		transform: translateX(var(--radix-toast-swipe-end-x));
+		transform: translateX(var(--radix-toast-swipe-end-y));
 	}
 	to {
 		transform: translateX(calc(100% + var(--viewport-padding)));
