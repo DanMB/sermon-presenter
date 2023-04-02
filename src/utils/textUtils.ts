@@ -2,7 +2,7 @@ const whitespaceWithoutNewline = /[^\S\r\n]{2,}/g;
 const newLine = /\r?\n/;
 
 export function cleanMultiline(text: string): string {
-	return text.replace(whitespaceWithoutNewline, '');
+	return text.replace(whitespaceWithoutNewline, ' ');
 }
 
 /**

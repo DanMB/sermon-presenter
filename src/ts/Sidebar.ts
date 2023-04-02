@@ -16,6 +16,24 @@ export class SidebarStore extends Store<ISidebarState> {
 			id: 'settings',
 		});
 	}
+
+	public openMusic = () => {
+		this.set({
+			sidebar: 'music'
+		})
+	}
+
+	public openSettings = () => {
+		this.set({
+			sidebar: 'settings'
+		})
+	}
+
+	public close = () => {
+		this.set({
+			sidebar: null
+		})
+	}
 }
 
 const Sidebar = new SidebarStore();

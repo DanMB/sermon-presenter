@@ -1,4 +1,4 @@
-import { h } from 'preact';
+
 import './HeaderTab.scss';
 import Live from '@src/components/icons/Live';
 import GroupIcon from '@src/components/icons/GroupIcon';
@@ -18,7 +18,7 @@ const HeaderTab = ({ tab }: { tab: Tab }) => {
 
 	return (
 		<div
-			class={`HeaderTab ${id === active ? 'active' : ''} ${presentingIsOpen && id === presentingTab ? 'live' : ''}`}
+			className={`HeaderTab ${id === active ? 'active' : ''} ${presentingIsOpen && id === presentingTab ? 'live' : ''}`}
 			key={id}
 			data-id={id}
 			onClick={e => {
@@ -29,15 +29,15 @@ const HeaderTab = ({ tab }: { tab: Tab }) => {
 				});
 			}}
 		>
-			<span class='icon'>
+			<span className='icon'>
 				<GroupIcon />
 			</span>
-			<span class='name'>{title}</span>
-			<span class='indicator'>
+			<span className='name'>{title}</span>
+			<span className='indicator'>
 				<Live />
 			</span>
 			<span
-				class='close'
+				className='close'
 				onClick={() => {
 					Tabs.remove(id);
 				}}

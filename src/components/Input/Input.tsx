@@ -1,13 +1,12 @@
-import { h, JSX } from 'preact';
-import { MutableRef, Ref, useEffect, useState } from 'preact/hooks';
+import { InputHTMLAttributes, Ref, useEffect, useState } from 'react';
 import './Input.scss';
 
-export interface IProps extends Omit<JSX.HTMLAttributes<HTMLInputElement>, 'onChange'> {
+export interface IProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
 	label: string;
 	defaultValue?: string;
 	invalid?: boolean;
 	onChange?: (value: string) => void;
-	inputRef?: MutableRef<HTMLInputElement | undefined>;
+	inputRef?: Ref<HTMLInputElement | undefined>;
 }
 
 const Input = ({
@@ -29,7 +28,7 @@ const Input = ({
 	return (
 		<input
 			{...restProps}
-			class={`Input ${className}`}
+			className={`Input ${className}`}
 			autoComplete={autoComplete ?? 'off'}
 			type={type ?? 'text'}
 			ref={inputRef}

@@ -14,4 +14,54 @@
 		padding-top: 0;
 		margin-bottom: $padding;
 	}
+
+	.searchResults {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: start;
+		padding: 0.5rem 0;
+
+		.result {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) max-content;
+			grid-template-rows: max-content max-content;
+			gap: 0.5em;
+			padding: 0.5rem 0.4rem;
+			border-radius: 6px;
+			cursor: pointer;
+			font-size: 0.9em;
+
+			&:hover {
+				box-shadow: inset 0 0 0 1px $border;
+
+				.icon,
+				.name {
+					color: $primary;
+				}
+			}
+
+			.name {
+				font-weight: weight(bold);
+				grid-column: 1;
+				grid-row: 1;
+			}
+
+			.author {
+				font-size: 0.9em;
+				color: $fadedText;
+				grid-column: 1;
+				grid-row: 2;
+
+				em {
+					font-weight: weight(bold);
+				}
+			}
+
+			.icon {
+				grid-column: 2;
+				grid-row: 1 / 2;
+			}
+		}
+	}
 }

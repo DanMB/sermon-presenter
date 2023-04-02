@@ -1,10 +1,17 @@
-import { h } from 'preact';
 import './Song.scss';
 
-import { useEffect, useState } from 'preact/hooks';
+// import { useEffect, useState } from 'preact/hooks';
 import Slide, { ISlideProps } from '../Slide/Slide';
 
+
+import { useTabs } from '@src/ts/tabs/Tabs';
+import { cleanMultiline } from '@src/utils/textUtils';
+import ISongSlide from '@src/types/ISongSlide';
+import { current } from '@src/ts/presenter/hooks';
+import { HTMLAttributes, useEffect, useState } from 'react';
+
 export interface ISongSlideProps extends Partial<ISlideProps> {
+	slide: string;
 	listId: string;
 	songId: string;
 	index: number;
@@ -38,6 +45,31 @@ const SongSlide = ({ listId, songId, index, ...restProps }: ISongSlideProps) => 
 	}, [listId, songId, index]);
 
 	return <Slide {...restProps} id={id} hotkey={hotkey.key !== '' ? hotkey : undefined} />;
+	useEffect(() => {
+		// setActiveSlide(active.parts[UriParts.SONG] === songId && active.parts[UriParts.SLIDE] === `${index}`);
+	}, [active]);
+
+	return (
+		<div
+			{...restProps}
+			id={slideData.id}
+			tabIndex={-1}
+			role='listitem'
+			className={`slide ${presentingCurrent === slideData.id ? 'active' : activeSlide ? 'subActive' : ''}`}
+		>
+			{slideData.key !== undefined && (
+				<div className='hotkey'>
+					{slideData.shift ? <li></li> : <></>}
+					{slideData.key}
+				</div>
+			)}
+			<div className='preview'>
+				<div className='textContent'>
+					<div className='inner'>{cleanMultiline(slide)}</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default SongSlide;

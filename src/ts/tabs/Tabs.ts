@@ -52,6 +52,14 @@ export class TabsStore extends Store<ITabState> {
 		this.map = map;
 	}
 
+	public next = () => {
+		this.move('+')
+	}
+
+	public prev = () => {
+		this.move('-')
+	}
+
 	public move = (movement: '+' | '-' | number) => {
 		const tabs = this.get().tabs;
 

@@ -1,4 +1,3 @@
-import { h, JSX } from 'preact';
 import './SettingComponent.scss';
 
 import Settings, { DefaultSettings, ISettingKey } from '@src/ts/Settings';
@@ -44,8 +43,8 @@ const SettingComponent = ({ setting, id, title, type = 'text', options, acceptFi
 	};
 
 	return (
-		<div class='SettingComponent'>
-			<label for={uid}>{title}</label>
+		<div className='SettingComponent'>
+			<label htmlFor={uid}>{title}</label>
 			{acceptFiles ? (
 				<FileInput
 					label={title}

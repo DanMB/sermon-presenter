@@ -1,8 +1,7 @@
-import { h, JSX } from 'preact';
-import { Ref, useEffect, useState } from 'preact/hooks';
+import { InputHTMLAttributes, Ref, useEffect, useState } from 'react';
 import './Input.scss';
 
-export interface IProps extends Omit<JSX.HTMLAttributes<HTMLInputElement>, 'onChange' | 'defaultValue'> {
+export interface IProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'defaultValue'> {
 	label: string;
 	defaultValue?: boolean;
 	onChange?: (value: boolean) => void;
@@ -20,7 +19,7 @@ const CheckboxInput = ({ className, label, defaultValue, onChange, inputRef, typ
 		<div className='CheckboxInput'>
 			<input
 				{...restProps}
-				class={`Input ${className}`}
+				className={`Input ${className}`}
 				type={'checkbox'}
 				ref={inputRef}
 				checked={currentValue}
@@ -32,7 +31,7 @@ const CheckboxInput = ({ className, label, defaultValue, onChange, inputRef, typ
 					setCurrentValue((e?.target as HTMLInputElement)?.checked ?? false);
 				}}
 			/>
-			<label className='CustomCheckbox' for={restProps.id}></label>
+			<label className='CustomCheckbox' htmlFor={restProps.id}></label>
 		</div>
 	);
 };

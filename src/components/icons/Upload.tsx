@@ -1,6 +1,6 @@
-import { h, JSX } from 'preact';
+import { SVGProps } from 'react';
 
-const Upload = (props: JSX.HTMLAttributes<SVGSVGElement>) => {
+const Upload = (props: SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'

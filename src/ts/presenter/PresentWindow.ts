@@ -6,7 +6,6 @@ import Client from '../Client';
 import WindowFeatures from '@src/utils/WindowFeatures';
 import CustomEvents, { Events } from '../CustomEvents';
 import Tabs from '../tabs/Tabs';
-import { useState } from 'preact/hooks';
 import { blackedOut, cleared, current, currentTab, isOpen } from './hooks';
 import ISetList from '@src/types/ISetList';
 import Settings, { ISettingsState } from '../Settings';
@@ -211,5 +210,122 @@ export default class PresentWindow {
 		CustomEvents.remove(Events.STOP, this.onStopShow);
 		appWindow.emit(EventNames.STOPPED);
 		isOpen.set(false);
+	};
+
+	public static clear = () => {
+		PresentWindow.get()?.clear();
+	};
+
+	public static blackout = () => {
+		PresentWindow.get()?.blackout();
+	};
+
+	public static start = () => {
+		CustomEvents.dispatch(Events.START);
+	};
+
+	public static stop = () => {
+		CustomEvents.dispatch(Events.STOP);
+	};
+
+	public static next = () => {
+		const currentSlide = current.get();
+		const tab = currentTab.get();
+		if (!tab || !currentSlide) return;
+		const tabData = Tabs.getTab<ISetList>(tab);
+		if (!tabData) return;
+
+		const parts = currentSlide ? currentSlide.split('/') : [];
+		const song = parts[1] ? tabData.get().data.songs.find(s => s.title === parts[1]) : null;
+		const slide = parts[2] ? parseInt(parts[2]) : null;
+		if (!song || slide == null) return;
+
+		let nextSlide = slide + 1;
+
+		if (nextSlide >= song.slides.length) nextSlide = 0;
+
+		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${parts[1]}/${nextSlide}`);
+	};
+
+	public static prev = () => {
+		const currentSlide = current.get();
+		const tab = currentTab.get();
+		if (!tab || !currentSlide) return;
+		const tabData = Tabs.getTab<ISetList>(tab);
+		if (!tabData) return;
+
+		const parts = currentSlide ? currentSlide.split('/') : [];
+		const song = parts[1] ? tabData.get().data.songs.find(s => s.title === parts[1]) : null;
+		const slide = parts[2] ? parseInt(parts[2]) : null;
+		if (!song || slide == null) return;
+
+		let prevSlide = slide - 1;
+
+		if (prevSlide < 0) prevSlide = song.slides.length - 1;
+
+		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${parts[1]}/${prevSlide}`);
+	};
+
+	public static nextGroup = () => {
+		const currentSlide = current.get();
+		const tab = currentTab.get();
+		if (!tab || !currentSlide) return;
+		const tabData = Tabs.getTab<ISetList>(tab);
+		if (!tabData) return;
+
+		const songs = tabData.get().data.songs;
+
+		const parts = currentSlide ? currentSlide.split('/') : [];
+		const song = parts[1] ? songs.findIndex(s => s.title === parts[1]) : null;
+		if (song == null) return;
+
+		let nextGroup = song + 1;
+
+		if (nextGroup >= songs.length) nextGroup = 0;
+		const id = songs[nextGroup]?.title;
+		if (!id) return;
+
+		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${id}/0`);
+	};
+
+	public static prevGroup = () => {
+		const currentSlide = current.get();
+		const tab = currentTab.get();
+		if (!tab || !currentSlide) return;
+		const tabData = Tabs.getTab<ISetList>(tab);
+		if (!tabData) return;
+
+		const songs = tabData.get().data.songs;
+
+		const parts = currentSlide ? currentSlide.split('/') : [];
+		const song = parts[1] ? songs.findIndex(s => s.title === parts[1]) : null;
+		if (song == null) return;
+
+		let prevGroup = song - 1;
+
+		if (prevGroup < 0) prevGroup = songs.length - 1;
+		const id = songs[prevGroup]?.title;
+		if (!id) return;
+
+		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${id}/0`);
+	};
+
+	public static gotoIndex = (index: number) => {
+		const currentSlide = current.get();
+		const tab = currentTab.get();
+		if (!tab || !currentSlide) return;
+		const tabData = Tabs.getTab<ISetList>(tab);
+		if (!tabData) return;
+
+		const parts = currentSlide ? currentSlide.split('/') : [];
+		const song = parts[1] ? tabData.get().data.songs.find(s => s.title === parts[1]) : null;
+		const slide = parts[2] ? parseInt(parts[2]) : null;
+		if (!song || slide == null) return;
+
+		let nextSlide = index;
+
+		if (nextSlide >= song.slides.length) return;
+
+		CustomEvents.dispatch(Events.SLIDE, `${parts[0]}/${parts[1]}/${nextSlide}`);
 	};
 }

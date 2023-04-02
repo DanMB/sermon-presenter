@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useState, useRef, useEffect, MouseEvent } from 'react';
 import Close from '../icons/Close';
 import Upload from '../icons/Upload';
 import Input, { IProps } from './Input';
@@ -35,7 +34,7 @@ const FileInput = ({ className, defaultValue, onChange, acceptFiles, ...restProp
 		};
 	}, [reader]);
 
-	const clearInput = (e: h.JSX.TargetedMouseEvent<SVGSVGElement>) => {
+	const clearInput = (e: MouseEvent<SVGSVGElement>) => {
 		e.preventDefault();
 		data.current = null;
 		setCurrentValue(null);
@@ -74,7 +73,7 @@ const FileInput = ({ className, defaultValue, onChange, acceptFiles, ...restProp
 				data-value={currentValue?.name ?? 'none'}
 				onChange={internalChange}
 			/>
-			<label className='CustomFile' for={restProps.id}>
+			<label className='CustomFile' htmlFor={restProps.id}>
 				<Upload />
 				<span>{currentValue?.name ?? 'No file chosen'}</span>
 				<Close className='clear' onClick={clearInput} />

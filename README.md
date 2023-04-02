@@ -1,6 +1,6 @@
 # ourpresenter
 
-Built in Preact Typescript with SCSS.
+Built in React Typescript with SCSS.
 Native app made with [Tauri](https://tauri.app/)
 
 ## SCRIPTS

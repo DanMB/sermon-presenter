@@ -1,13 +1,13 @@
-import { h } from 'preact';
 import './SidebarTab.scss';
 import Sidebar from '@src/ts/Sidebar';
+import { ReactNode } from 'react';
 
-const SidebarTab = ({ id, icon }: { id: string; icon: h.JSX.Element }) => {
+const SidebarTab = ({ id, icon }: { id: string; icon: ReactNode }) => {
 	const sidebar = Sidebar.use(state => state.sidebar);
 
 	return (
 		<div
-			class={`SidebarTab ${id === sidebar ? 'active' : ''}`}
+			className={`SidebarTab ${id === sidebar ? 'active' : ''}`}
 			key={id}
 			data-id={id}
 			onClick={() => {

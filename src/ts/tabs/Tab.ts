@@ -15,6 +15,7 @@ export interface ITabConfig<T = unknown> {
 	id: TabUid;
 	title: string;
 	data: T;
+	custom: Partial<T>;
 	type: TabTypes;
 	active: string;
 }

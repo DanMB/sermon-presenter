@@ -1,7 +1,6 @@
-import { h } from 'preact';
 import './PresentingContent.scss';
 import { getCanvasFont, getCssStyle, getTextWidth } from '@src/utils/textUtils';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'react';
 const newLine = /\r?\n/;
 
 const PresentingText = ({
@@ -54,7 +53,7 @@ const PresentingText = ({
 
 	return (
 		<div
-			class='text'
+			className='text'
 			ref={element}
 			style={{
 				transform: `scale(${autoScale ? scale : 1})`,

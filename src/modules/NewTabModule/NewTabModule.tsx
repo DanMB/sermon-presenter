@@ -1,7 +1,4 @@
-import { h } from 'preact';
 import './NewTabModule.scss';
-
-import { useEffect, useState } from 'preact/hooks';
 
 import Tabs from '@src/ts/tabs/Tabs';
 import Client from '@src/ts/Client';
@@ -17,10 +14,11 @@ import { slug } from '@src/utils/textUtils';
 import { IPdfSlide } from '@src/types/IPdfSlides';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
 import PdfFiles from '@src/ts/PdfFiles';
+import { useState, useEffect, MouseEvent } from 'react';
 
 const NewTabModule = () => {
-	const clickEvent = async (e: MouseEvent) => {
-		const target = e.currentTarget as HTMLElement;
+	const clickEvent = async (e: MouseEvent<HTMLDivElement>) => {
+		const target = e.currentTarget;
 		const id = target?.getAttribute('data-id');
 		if (!id) return;
 		const event = await OurPraise.getEvent(id, true);
@@ -43,6 +41,7 @@ const NewTabModule = () => {
 					data: event,
 					type: TabTypes.SETLIST,
 					active: '',
+					custom: {},
 				})
 			);
 			Tabs.set({
@@ -144,15 +143,15 @@ const NewTabModule = () => {
 	};
 
 	return (
-		<div class='page NewTab'>
-			<div class='title'>OurPresenter</div>
-			<div class='groups'>
-				<label class='group' for='pdf'>
-					<div class='groupName'>
+		<div className='page NewTab'>
+			<div className='title'>OurPresenter</div>
+			<div className='groups'>
+				<label className='group' for='pdf'>
+					<div className='groupName'>
 						<Powerpoint />
 						<span>Slides</span>
 					</div>
-					<div class='button'>PDF Presentations</div>
+					<div className='button'>PDF Presentations</div>
 					<FileInput
 						label={'PDF Slide'}
 						id={'pdf'}
@@ -163,10 +162,10 @@ const NewTabModule = () => {
 					/>
 				</label>
 			</div>
-			<div class='events'>
+			<div className='events'>
 				{orgEvents.map(org => (
-					<div key={org.name} class='org'>
-						<div class='orgName'>
+					<div key={org.name} className='org'>
+						<div className='orgName'>
 							<span>{org.name}</span>
 							{!org.loading && <Spinner />}
 						</div>
@@ -174,21 +173,21 @@ const NewTabModule = () => {
 							const eventDate = new Date(event.date);
 							return (
 								<div
-									class={`event ${Dates.hasPassed(eventDate) && 'passed'}`}
+									className={`event ${Dates.hasPassed(eventDate) && 'passed'}`}
 									key={event.id}
 									data-id={event.id}
 									onClick={clickEvent}
 								>
-									<span class='evTitle'>{event.title || 'NULL'}</span>
-									<span class='evDate'>{Dates.Full(eventDate)}</span>
-									<span class='evLength'>{event.songs}</span>
+									<span className='evTitle'>{event.title || 'NULL'}</span>
+									<span className='evDate'>{Dates.Full(eventDate)}</span>
+									<span className='evLength'>{event.songs}</span>
 								</div>
 							);
 						})}
 					</div>
 				))}
 			</div>
-			<div class='footer'>
+			<div className='footer'>
 				<span>ver {Client.versions.client}</span>
 				{Client.isTau ? (
 					<span>

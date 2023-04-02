@@ -1,7 +1,5 @@
-import { h } from 'preact';
 import './HeaderModule.scss';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
 import Plus from '@src/components/icons/Plus';
 
 // import main from '../../ts/window';
@@ -13,6 +11,7 @@ import { newtabUri, UriParts } from '@src/types/URIParts';
 import CustomEvents, { Events } from '@src/ts/CustomEvents';
 import { blackedOut, cleared, isOpen } from '@src/ts/presenter/hooks';
 import PresentWindow from '@src/ts/presenter/PresentWindow';
+import { useEffect } from 'react';
 
 const digitExp = /^Digit\d+$/i;
 
@@ -27,16 +26,7 @@ const HeaderModule = () => {
 	const keyDown = (e: KeyboardEvent) => {
 		if (!e.ctrlKey) return;
 
-		if (e.key === 'Tab') {
-			e.preventDefault();
-			// if ctrl + tab
-			// should move backward or forward
-			if (e.shiftKey) {
-				Tabs.move('-');
-			} else {
-				Tabs.move('+');
-			}
-		} else if (digitExp.test(e.code)) {
+		if (digitExp.test(e.code)) {
 			e.preventDefault();
 			// if ctrl + number
 			let tab = parseInt(e.key) - 1;
@@ -54,9 +44,9 @@ const HeaderModule = () => {
 	}, []);
 
 	return (
-		<div class='Header'>
-			<div class='nav'>
-				<div class='tabs'>
+		<div className='Header'>
+			<div className='nav'>
+				<div className='tabs'>
 					{tabs.map(id => {
 						const tab = Tabs.getTab(id);
 						if (!tab || id === newtabUri) return null;
@@ -65,7 +55,7 @@ const HeaderModule = () => {
 					})}
 				</div>
 				<div
-					class={`add ${active.toString() === newtabUri ? 'active' : ''}`}
+					className={`add ${active.toString() === newtabUri ? 'active' : ''}`}
 					onClick={() => {
 						Tabs.set({
 							active: newtabUri,
@@ -75,32 +65,28 @@ const HeaderModule = () => {
 					<Plus />
 				</div>
 			</div>
-			<div class='control'>
+			<div className='control'>
 				<div
-					class={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
-					onClick={() => {
-						PresentWindow.get()?.blackout();
-					}}
+					className={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
+					onClick={PresentWindow.blackout}
 				>
 					<span>BL</span>
 				</div>
 				<div
-					class={`stateButton ${
+					className={`stateButton ${
 						!presentingIsOpen ? 'disabled' : isBlackedOut ? 'pen active' : isCleared ? 'active' : ''
 					}`}
-					onClick={() => {
-						PresentWindow.get()?.clear();
-					}}
+					onClick={PresentWindow.clear}
 				>
 					<span>CL</span>
 				</div>
 				<div
-					class={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
+					className={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
 					onClick={() => {
 						if (presentingIsOpen) {
-							CustomEvents.dispatch(Events.STOP);
+							PresentWindow.stop();
 						} else {
-							CustomEvents.dispatch(Events.START);
+							PresentWindow.start();
 						}
 					}}
 				>
