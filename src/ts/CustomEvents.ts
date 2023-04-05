@@ -5,6 +5,7 @@ export enum Events {
 	START = 'sermon://custom/start',
 	STOP = 'sermon://custom/stop',
 	OPTIONS = 'sermon://custom/options',
+	COMMANDS = 'sermon://custom/commands',
 }
 
 export default class CustomEvents {
