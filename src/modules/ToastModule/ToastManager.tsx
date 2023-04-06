@@ -6,7 +6,7 @@ export interface IToastProps {
 	id: string;
 	title?: string;
 	text: string;
-	theme?: string;
+	theme?: 'default' | 'negative';
 	type?: 'foreground' | 'background';
 }
 
@@ -15,7 +15,7 @@ export interface IToastState {
 }
 
 export default class ToastManager {
-	public static TIMEOUT = 3000;
+	public static TIMEOUT = 5000;
 	private static _store = create<IToastState>((set, get) => ({
 		items: [],
 	}));
@@ -90,10 +90,15 @@ export default class ToastManager {
 		};
 
 		return (
-			<Toast.Root className='ToastRoot' duration={ToastManager.TIMEOUT} type={props.type} onOpenChange={onChange}>
+			<Toast.Root
+				className={`ToastRoot ${props.theme ?? 'default'}`}
+				duration={ToastManager.TIMEOUT}
+				type={props.type}
+				onOpenChange={onChange}
+			>
 				{props.title && <Toast.Title className='ToastTitle'>{props.title}</Toast.Title>}
 				<Toast.Description className='ToastDescription'>{props.text}</Toast.Description>
-				<Toast.Close className='ToastAction'>X</Toast.Close>
+				<Toast.Close className='ToastAction'>x</Toast.Close>
 			</Toast.Root>
 		);
 	};

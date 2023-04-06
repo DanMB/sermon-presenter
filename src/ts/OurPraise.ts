@@ -35,7 +35,7 @@ export default class OurPraise {
 		});
 
 		if (!data) {
-			throw new Error('Got null from song request');
+			throw new Error('Empty response from song requst');
 		}
 
 		try {
@@ -54,12 +54,12 @@ export default class OurPraise {
 		}
 
 		const data = await Request.get(OurPraise.endpoint + 'event?id=' + id).catch(e => {
-			console.warn(`Error getting events`, e);
+			if (e) console.warn(e);
 			return null;
 		});
 
 		if (!data) {
-			throw new Error('Got null from event request');
+			throw new Error('Empty response from event request');
 		}
 
 		try {
@@ -83,7 +83,7 @@ export default class OurPraise {
 		});
 
 		if (!data) {
-			throw new Error('Got null from events request');
+			throw new Error('Empty response from events request');
 		}
 
 		try {
@@ -110,7 +110,7 @@ export default class OurPraise {
 		});
 
 		if (!data) {
-			throw new Error('Got null from search request');
+			throw new Error('Empty response from search request');
 		}
 
 		try {
