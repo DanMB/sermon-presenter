@@ -12,7 +12,6 @@ const CommandDialog = () => {
 	const [value, setValue] = useState('');
 
 	const toggleOpen = () => {
-		console.log('toggleOpen');
 		setOpen(current => !current);
 	};
 
@@ -23,12 +22,9 @@ const CommandDialog = () => {
 	}, [isOpen]);
 
 	useEffect(() => {
-		console.log('mount');
-		// Mousetrap.bind('shift+k', toggleOpen);
 		CustomEvents.listen(Events.COMMANDS, toggleOpen);
 
 		return function () {
-			// Mousetrap.unbind('shift+k');
 			CustomEvents.remove(Events.COMMANDS, toggleOpen);
 		};
 	}, []);
@@ -44,8 +40,6 @@ const CommandDialog = () => {
 			<Command.Input className={'CommandInput'} />
 
 			<Command.List className={'CommandList'}>
-				{/* {loading && <Command.Loading>Hang on…</Command.Loading>} */}
-
 				<Command.Empty className={'CommandEmpty'}>No results found.</Command.Empty>
 
 				{commands.map(command => (
