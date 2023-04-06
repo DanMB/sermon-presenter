@@ -37,12 +37,14 @@ export default class Commands {
 		meta: '⌘',
 		shift: '⇧',
 		enter: '↵',
-		tab: 'tab',
+		tab: '⇥',
 		ctrl: 'ctrl',
-		right: 'R',
-		left: 'L',
-		up: 'U',
-		down: 'D',
+		esc: '␛',
+		alt: '⌥',
+		right: '→',
+		left: '←',
+		up: '↑',
+		down: '↓',
 	};
 
 	public static keycode(key: string): string {
