@@ -203,9 +203,9 @@ export const AllCommands: ICommand[] = [
 		call: () => CustomEvents.dispatch(Events.COMMANDS),
 		keybind: 'shift+k',
 	},
-	{
-		name: 'Test toast',
-		call: ToastManager.test,
-		keybind: 'f',
-	},
+	// {
+	// 	name: 'Test toast',
+	// 	call: ToastManager.test,
+	// 	keybind: 'f',
+	// },
 ];
