@@ -15,13 +15,23 @@ import { IPdfSlide } from '@src/types/IPdfSlides';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
 import PdfFiles from '@src/ts/PdfFiles';
 import { useState, useEffect, MouseEvent } from 'react';
+import ToastManager from '../ToastModule/ToastManager';
 
 const NewTabModule = () => {
 	const clickEvent = async (e: MouseEvent<HTMLDivElement>) => {
 		const target = e.currentTarget;
 		const id = target?.getAttribute('data-id');
 		if (!id) return;
-		const event = await OurPraise.getEvent(id, true);
+		const event = await OurPraise.getEvent(id, true).catch((err: Error) => {
+			ToastManager.add({
+				id: `failed-event-get_${id}`,
+				title: 'Failed to get setlist',
+				text: err.message,
+				theme: 'negative',
+			});
+			console.error(err);
+			return null;
+		});
 		if (!event) return;
 		const title = target?.querySelector('.evTitle')?.innerHTML;
 		if (!title) return;
@@ -78,7 +88,17 @@ const NewTabModule = () => {
 		const cached = Cache.get<IOurPraiseEvent[]>('OurPraise.events');
 		if (cached) handleEventsData(cached, false);
 
-		OurPraise.getAllEvents().then(handleEventsData);
+		OurPraise.getAllEvents()
+			.then(handleEventsData)
+			.catch((err: Error) => {
+				ToastManager.add({
+					id: `failed-events-list`,
+					title: 'Failed to get all setlists',
+					text: err.message,
+					theme: 'negative',
+				});
+				console.error(err);
+			});
 	}, []);
 
 	const newPDFSlides = (value: IFileData | null) => {

@@ -1,30 +1,44 @@
+@import 'src/style/shared.scss';
+
 .ToastViewport {
-	--viewport-padding: 25px;
 	position: fixed;
 	bottom: 0;
 	right: 0;
 	display: flex;
 	flex-direction: column;
-	padding: var(--viewport-padding);
-	gap: 10px;
-	width: 390px;
-	max-width: 100vw;
+	padding: $gap;
+	gap: $gap;
+	width: 20em;
+	max-width: calc(100vw - #{$gap * 2});
 	margin: 0;
 	list-style: none;
-	z-index: 2147483647;
+	z-index: 20;
 	outline: none;
 }
 
 .ToastRoot {
-	background-color: white;
-	border-radius: 6px;
-	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
-	padding: 15px;
+	--background: #{$offset};
+	--foreground: #{$text};
+	--border: #{$border};
+	--highlight: #{$primary};
+
+	&.negative {
+		--background: #{$red};
+		--foreground: #{darken($text, 10%)};
+		--border: #{lighten($red, 10%)};
+		--highlight: #{$text};
+	}
+
+	background-color: var(--background);
+	color: var(--foreground);
+	border: 1px solid var(--border);
+	border-radius: $radius;
+	padding: $padding;
 	display: grid;
 	grid-template-areas: 'title action' 'description action';
 	grid-template-columns: auto max-content;
-	column-gap: 15px;
-	align-items: center;
+	column-gap: $gap;
+	align-items: start;
 }
 .ToastRoot[data-state='open'] {
 	animation: slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -33,7 +47,7 @@
 	animation: hide 100ms ease-in;
 }
 .ToastRoot[data-swipe='move'] {
-	transform: translateX(var(--radix-toast-swipe-move-y));
+	transform: translateX(#{$gap});
 }
 .ToastRoot[data-swipe='cancel'] {
 	transform: translateX(0);
@@ -54,7 +68,7 @@
 
 @keyframes slideIn {
 	from {
-		transform: translateX(calc(100% + var(--viewport-padding)));
+		transform: translateX(calc(100% + #{$gap}));
 	}
 	to {
 		transform: translateX(0);
@@ -66,26 +80,39 @@
 		transform: translateX(var(--radix-toast-swipe-end-y));
 	}
 	to {
-		transform: translateX(calc(100% + var(--viewport-padding)));
+		transform: translateX(calc(100% + #{$gap}));
 	}
 }
 
 .ToastTitle {
 	grid-area: title;
-	margin-bottom: 5px;
-	font-weight: 500;
-	color: black;
-	font-size: 15px;
+	margin-bottom: 0.5em;
+	font-weight: weight(bold);
+	font-size: 1em;
+	color: var(--highlight);
 }
 
 .ToastDescription {
 	grid-area: description;
 	margin: 0;
-	color: black;
-	font-size: 13px;
-	line-height: 1.3;
+	font-size: 0.9em;
+	line-height: 1.3em;
 }
 
-.ToastClose {
+.ToastAction {
 	grid-area: action;
+	background: none;
+	border: none;
+	font: inherit;
+	font-family: $mono-stack;
+	color: var(--text);
+	cursor: pointer;
+	padding: $padding;
+	margin: -$padding;
+	padding-left: $gap;
+	margin-left: -$gap;
+
+	&:hover {
+		color: var(--highlight);
+	}
 }

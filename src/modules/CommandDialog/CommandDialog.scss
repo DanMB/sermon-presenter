@@ -1,0 +1,104 @@
+@import 'src/style/shared.scss';
+
+[cmdk-overlay] {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	background-color: $background;
+	opacity: 0.5;
+	backdrop-filter: blur(3px);
+	z-index: 9;
+}
+
+.CommandDialog {
+	position: fixed;
+	top: $padding;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+	max-width: calc(100vw - #{$padding * 2});
+	height: min(calc(100vh - #{$padding * 2}), 25em);
+	width: 30em;
+	background-color: $offset;
+	color: $text;
+	border: 1px solid $border;
+	border-radius: $radius;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+
+	&:not(:focus-within) {
+		opacity: 0.85;
+	}
+
+	.CommandInput {
+		padding: 0.3em 0.4em;
+		font-weight: weight(bold);
+		background: $offset;
+		color: $text;
+		line-height: 1.25em;
+		width: 100%;
+		border: none;
+		border-bottom: 1px solid $border;
+		border-radius: $small-radius;
+		display: block;
+		flex: 0 0 auto;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.CommandList {
+		overflow-y: scroll;
+		@include cleanScrollbar();
+		flex: 1 1 100%;
+	}
+
+	.CommandItem {
+		padding: 0.4em calc(0.4em + #{$padding});
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		border: 1px solid transparent;
+		border-width: 1px 0;
+		cursor: pointer;
+
+		&[aria-selected='true'] {
+			border-color: $border;
+			color: $primary;
+		}
+
+		span {
+			display: flex;
+			flex-direction: row;
+			gap: 0.4em;
+
+			kbd {
+				color: $fadedText;
+				border: 1px solid $border;
+				border-radius: $small-radius;
+				height: 1.5em;
+				min-width: 1.5em;
+				box-sizing: border-box;
+				padding: 0 0.2em;
+				font-size: 0.8em;
+				text-align: center;
+				line-height: 1.2em;
+				// flex: 1 0 1em;
+			}
+		}
+	}
+
+	.CommandEmpty {
+		padding: 0.3em 0.4em;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		color: $fadedText;
+	}
+}

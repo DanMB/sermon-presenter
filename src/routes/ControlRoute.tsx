@@ -10,6 +10,7 @@ import PresentWindow from '@src/ts/presenter/PresentWindow';
 import Commands from '@src/ts/commands/Commands';
 import ToastManager from '@src/modules/ToastModule/ToastManager';
 import { useEffect } from 'react';
+import CommandDialog from '@src/modules/CommandDialog/CommandDialog';
 
 const ControlRoute = () => {
 	const active = useTabs(state => state.active);
@@ -36,9 +37,9 @@ const ControlRoute = () => {
 					<HeaderModule />
 					{active == newtabUri ? <NewTabModule /> : <TabModule id={active} />}
 				</div>
-
 				{/* <ContextMenu /> */}
 			</div>
+			<CommandDialog />
 		</ToastManager.Container>
 	);
 };

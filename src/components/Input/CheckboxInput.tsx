@@ -8,7 +8,16 @@ export interface IProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onC
 	inputRef?: Ref<HTMLInputElement>;
 }
 
-const CheckboxInput = ({ className, label, defaultValue, onChange, inputRef, type, ...restProps }: IProps) => {
+const CheckboxInput = ({
+	className,
+	label,
+	defaultValue,
+	onChange,
+	inputRef,
+	type,
+	placeholder,
+	...restProps
+}: IProps) => {
 	const [currentValue, setCurrentValue] = useState<boolean>(defaultValue ?? false);
 
 	useEffect(() => {
@@ -19,6 +28,7 @@ const CheckboxInput = ({ className, label, defaultValue, onChange, inputRef, typ
 		<div className='CheckboxInput'>
 			<input
 				{...restProps}
+				placeholder={placeholder?.toString()}
 				className={`Input ${className}`}
 				type={'checkbox'}
 				ref={inputRef}

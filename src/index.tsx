@@ -21,7 +21,7 @@ const App = () => {
 		};
 
 		const failed = () => {
-			console.error('Failed to initialize Tauri client');
+			console.warn('Failed to initialize Tauri client');
 			ready();
 		};
 

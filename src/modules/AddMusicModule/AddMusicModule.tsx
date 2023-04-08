@@ -8,6 +8,7 @@ import ISearchHit from '@src/types/ISearchHit';
 import Spinner from '@src/components/icons/Spinner';
 import ISetList from '@src/types/ISetList';
 import { useState, useEffect } from 'react';
+import ToastManager from '../ToastModule/ToastManager';
 
 const AddMusicModule = () => {
 	const [loadingQuery, setLoadingQuery] = useState<string>('');
@@ -47,7 +48,13 @@ const AddMusicModule = () => {
 					},
 				});
 			})
-			.catch(err => {
+			.catch((err: Error) => {
+				ToastManager.add({
+					id: `failed-song-add_${id}`,
+					title: 'Failed to add song',
+					text: err.message,
+					theme: 'negative',
+				});
 				console.error(err);
 			});
 	};
