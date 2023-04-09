@@ -21,7 +21,7 @@ async fn close_splash(window: tauri::Window) {
 
 fn main() {
   tauri::Builder::default()
-		.invoke_handler(tauri::generate_handler![close_splash])
+		.invoke_handler(tauri::generate_handler![close_splash, load_slideshow])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
