@@ -6,6 +6,12 @@
 use tauri::Manager;
 
 #[tauri::command]
+fn load_slideshow(filepath: String) -> Result<String, String> {
+	// Err("This failed!".into())
+	Ok("This worked!".into())
+ }
+
+#[tauri::command]
 async fn close_splash(window: tauri::Window) {
   // Close splashscreen
   if let Some(splashscreen) = window.get_window("splash") {
