@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import './PdfSlidesModule.scss';
 
 import Tab from '@src/ts/tabs/Tab';
@@ -93,18 +92,18 @@ const PdfSlidesModule = ({ tab }: { tab: Tab<IPdfSlides> }) => {
 		};
 	}, []);
 
-	const onClick = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+	const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
 		CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
 	};
 
-	const onFocus = (e: h.JSX.TargetedEvent<HTMLDivElement>) => {
+	const onFocus = (e: React.FocusEvent<HTMLDivElement>) => {
 		if (PresentWindow.get()?.current !== e.currentTarget.id) {
 			CustomEvents.dispatch(Events.SLIDE, e.currentTarget.id);
 		}
 	};
 
 	return (
-		<div class='page PdfGroup' key={`${id}/group`} role='list'>
+		<div className='page PdfGroup' key={`${id}/group`} role='list'>
 			{data.slides.map(slide => (
 				<PdfSlide
 					key={slide.index}

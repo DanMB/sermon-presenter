@@ -1,8 +1,7 @@
 import { IPdfSlide } from '@src/types/IPdfSlides';
-import { h } from 'preact';
-import { useEffect, useRef } from 'preact/hooks';
 import { ISlideProps } from '../Slide/Slide';
 import PdfFiles from '@src/ts/PdfFiles';
+import { useEffect, useRef } from 'react';
 
 export interface IPdfSlideProps extends Partial<ISlideProps> {
 	slide: IPdfSlide;

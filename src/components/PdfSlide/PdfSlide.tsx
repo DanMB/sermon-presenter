@@ -1,9 +1,8 @@
 import { IPdfSlide } from '@src/types/IPdfSlides';
-import { h } from 'preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
 import Slide, { ISlideProps } from '../Slide/Slide';
 import PdfFiles from '@src/ts/PdfFiles';
 import { cleanMultiline } from '@src/utils/textUtils';
+import { useEffect, useRef, useState } from 'react';
 
 export interface IPdfSlideProps extends Partial<ISlideProps> {
 	slide: IPdfSlide;
@@ -81,12 +80,12 @@ const PdfSlide = ({ slide, pdfId, ...restProps }: IPdfSlideProps) => {
 
 	return (
 		<Slide {...restProps} text={slide.text} id={id} hotkey={hotkey.key !== '' ? hotkey : undefined}>
-			<canvas class={`${ready ? 'ready' : 'loading'}`} ref={canvasRef}></canvas>
+			<canvas className={`${ready ? 'ready' : 'loading'}`} ref={canvasRef}></canvas>
 			{ready ? (
 				<></>
 			) : (
-				<div class='textContent'>
-					<div class='inner'>{cleanMultiline(slide.text)}</div>
+				<div className='textContent'>
+					<div className='inner'>{cleanMultiline(slide.text)}</div>
 				</div>
 			)}
 		</Slide>

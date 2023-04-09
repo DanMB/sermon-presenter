@@ -166,7 +166,7 @@ const NewTabModule = () => {
 		<div className='page NewTab'>
 			<div className='title'>OurPresenter</div>
 			<div className='groups'>
-				<label className='group' for='pdf'>
+				<label className='group' htmlFor='pdf'>
 					<div className='groupName'>
 						<Powerpoint />
 						<span>Slides</span>

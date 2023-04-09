@@ -1,11 +1,10 @@
 import { PageViewport, RenderTask } from 'pdfjs-dist';
 import { RenderParameters } from 'pdfjs-dist/types/src/display/api';
-import { h } from 'preact';
+import { useEffect, useRef } from 'react';
 
-import { useEffect, useRef, useState } from 'preact/hooks';
 import Slide, { ISlideProps } from '../Slide/Slide';
 
-export interface IPdfCanvasProps extends h.JSX.HTMLAttributes<HTMLCanvasElement> {
+export interface IPdfCanvasProps extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
 	viewport: PageViewport;
 	render: (params: RenderParameters) => RenderTask;
 }

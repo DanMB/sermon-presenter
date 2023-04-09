@@ -1,6 +1,6 @@
 import { getDocument, PDFDocumentProxy, GlobalWorkerOptions } from 'pdfjs-dist';
 import Storage from './Storage';
-import { signal, Signal } from '@preact/signals';
+import { signal, Signal } from '@preact/signals-react';
 
 export default class PdfFiles {
 	private static loaded = new Map<string, PDFDocumentProxy>();
