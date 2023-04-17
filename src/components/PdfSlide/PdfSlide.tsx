@@ -56,15 +56,23 @@ const PdfSlide = ({ slide, pdfId, ...restProps }: IPdfSlideProps) => {
 		});
 		if (!page) return;
 
+		const height = canvasRef.current.parentElement?.offsetHeight || 1;
+		const width = canvasRef.current.parentElement?.offsetWidth || 1;
+
 		const viewport = page.getViewport({ scale: 1 });
 
-		canvasRef.current.height = viewport.height;
-		canvasRef.current.width = viewport.width;
+		const viewportScale = Math.min(width / viewport.width, height / viewport.height);
+
+		canvasRef.current.height = viewport.height * viewportScale;
+		canvasRef.current.width = viewport.width * viewportScale;
+
+		canvasRef.current.style.height = viewport.height * viewportScale + 'px';
+		canvasRef.current.style.width = viewport.width * viewportScale + 'px';
 
 		page
 			.render({
 				canvasContext: context,
-				viewport,
+				viewport: page.getViewport({ scale: viewportScale }),
 			})
 			.promise.then(() => {
 				setReady(true);
