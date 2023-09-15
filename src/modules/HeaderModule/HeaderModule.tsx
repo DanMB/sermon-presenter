@@ -70,7 +70,7 @@ const HeaderModule = () => {
 					className={`stateButton ${!presentingIsOpen ? 'disabled' : isBlackedOut ? 'active' : ''}`}
 					onClick={PresentWindow.blackout}
 				>
-					<span>BL</span>
+					<span>BLACKOUT</span>
 				</div>
 				<div
 					className={`stateButton ${
@@ -78,7 +78,7 @@ const HeaderModule = () => {
 					}`}
 					onClick={PresentWindow.clear}
 				>
-					<span>CL</span>
+					<span>CLEAR</span>
 				</div>
 				<div
 					className={`present ${presentingIsOpen ? 'isPresenting' : ''}`}
