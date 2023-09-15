@@ -48,7 +48,7 @@ export default class Store<T extends object> {
 
 			state = saved ?? state;
 
-			if (this._maxAge > 0) {
+			if (this._maxAge < Infinity) {
 				Cache.set<T>(this._id, state, this._maxAge);
 			} else {
 				Storage.set<T>(this._id, state);
@@ -70,7 +70,7 @@ export default class Store<T extends object> {
 		this._store.setState(partial, replace);
 
 		if (this._id) {
-			if (this._maxAge > 0) {
+			if (this._maxAge < Infinity) {
 				Cache.set<T>(this._id, this._store.getState(), this._maxAge);
 			} else {
 				Storage.set<T>(this._id, this._store.getState());
