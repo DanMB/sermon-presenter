@@ -38,7 +38,7 @@ export class SettingsStore extends Store<ISettingsState> {
 	constructor() {
 		super(DefaultSettings, {
 			id: 'settings_0',
-			maxAge: Infinity,
+			// maxAge: Infinity,
 		});
 
 		function reduceKeysToObj(obj: SettingsKeys, name: string) {
