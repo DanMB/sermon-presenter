@@ -20,6 +20,7 @@ export class TabsStore extends Store<ITabState> {
 			},
 			{
 				id: 'tabs',
+				maxAge: 86400,
 			}
 		);
 
@@ -53,12 +54,12 @@ export class TabsStore extends Store<ITabState> {
 	}
 
 	public next = () => {
-		this.move('+')
-	}
+		this.move('+');
+	};
 
 	public prev = () => {
-		this.move('-')
-	}
+		this.move('-');
+	};
 
 	public move = (movement: '+' | '-' | number) => {
 		const tabs = this.get().tabs;
