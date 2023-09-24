@@ -46,7 +46,7 @@
 		"sass": "^1.51.0",
 		"svelte-check": "^3.5.1",
 		"typescript": "^4.6.4",
-		"vite": "^2.9.13",
+		"vite": "^2.9.16",
 		"vite-plugin-mkcert": "^1.10.1",
 		"vite-plugin-pwa": "^0.12.0",
 		"vite-plugin-svgr": "^1.1.0",
