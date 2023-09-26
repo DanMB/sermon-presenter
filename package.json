@@ -2,13 +2,17 @@
 	"name": "ourpresenter",
 	"version": "0.8.2",
 	"description": "",
+	"engines": {
+		"node": "18"
+	},
+	"type": "module",
 	"scripts": {
 		"start": "tauri dev",
 		"start:src": "vite",
 		"build": "tauri build",
 		"build:src": "vite build",
 		"build:github": "vite build --base=/sermon-presenter",
-		"type-check": "tsc --noEmit",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"tauri": "tauri"
 	},
 	"keywords": [],

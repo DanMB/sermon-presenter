@@ -10,6 +10,7 @@
 *.sln
 *.sw?
 .sasslintrc
+.svelte-kit
 
 # Binaries and builds
 bin

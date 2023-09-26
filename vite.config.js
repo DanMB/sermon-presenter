@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import react from '@vitejs/plugin-react';
+// import react from '@vitejs/plugin-react';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
@@ -26,7 +26,7 @@ export default defineConfig({
 		tsconfigPaths({
 			root: '../../',
 		}),
-		react(),
+		sveltekit(),
 		VitePWA({
 			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
 			manifest: {
@@ -52,11 +52,11 @@ export default defineConfig({
 			},
 		}),
 	],
-	esbuild: {
-		minify: isProd,
-		sourcemap: !isProd,
-		target: 'esnext',
-	},
+	// esbuild: {
+	// 	minify: isProd,
+	// 	sourcemap: !isProd,
+	// 	target: 'esnext',
+	// },
 	server: {
 		port: process.env['VITE_PORT'] || 3000,
 		open: false,
@@ -68,9 +68,9 @@ export default defineConfig({
 	build: {
 		outDir: '../build',
 		emptyOutDir: true,
-		target: 'esnext',
-		sourcemap: !isProd,
-		minify: isProd,
+		// target: 'esnext',
+		// sourcemap: !isProd,
+		// minify: isProd,
 	},
 	cssPreprocessOptions: {
 		includePaths: [path.resolve(__dirname, 'src/style/')],
