@@ -1,18 +1,16 @@
 import { defineConfig } from 'vite';
 // import tsconfigPaths from 'vite-tsconfig-paths';
-import path from 'path';
-import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
+import { readFileSync } from 'fs';
+import { VitePWA } from 'vite-plugin-pwa';
 // import mkcert from 'vite-plugin-mkcert';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 const isProd = process.env.NODE_ENV === 'production';
 
-let envFile = './.env.' + (isProd ? 'prod' : 'dev');
-require('dotenv').config({ path: envFile });
-
 const fileName = resolve(__dirname, './tauri/tauri.conf.json');
-const config = require(fileName);
+// @ts-ignore
+const config = JSON.parse(readFileSync(fileName));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,11 +19,11 @@ export default defineConfig({
 		__VERSION__: JSON.stringify(process.env.npm_package_version),
 	},
 	plugins: [
+		sveltekit(),
 		// mkcert(),
 		// tsconfigPaths({
 		// 	root: '../../',
 		// }),
-		sveltekit(),
 		VitePWA({
 			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
 			manifest: {
@@ -65,7 +63,7 @@ export default defineConfig({
 	},
 	css: {
 		preprocessorOptions: {
-			includePaths: [path.resolve(__dirname, 'src/style/')],
+			includePaths: [resolve(__dirname, 'src/style/')],
 		},
 	},
 });
