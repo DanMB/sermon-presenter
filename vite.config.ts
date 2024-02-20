@@ -30,6 +30,7 @@ export default defineConfig({
 		VitePWA({
 			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
 			manifest: {
+				// @ts-ignore
 				version: process.env.npm_package_version,
 				app: config.package.version,
 				name: 'OurPresenter',
@@ -52,27 +53,20 @@ export default defineConfig({
 			},
 		}),
 	],
-	esbuild: {
-		minify: isProd,
-		sourcemap: !isProd,
-		target: 'esnext',
-	},
 	server: {
-		port: process.env['VITE_PORT'] || 3000,
+		port: parseInt(process.env['VITE_PORT'] || '3000'),
 		open: false,
 		host: true,
-		https: true,
 	},
 	logLevel: 'info',
 	clearScreen: false,
 	build: {
 		outDir: '../build',
 		emptyOutDir: true,
-		target: 'esnext',
-		sourcemap: !isProd,
-		minify: isProd,
 	},
-	cssPreprocessOptions: {
-		includePaths: [path.resolve(__dirname, 'src/style/')],
+	css: {
+		preprocessorOptions: {
+			includePaths: [path.resolve(__dirname, 'src/style/')],
+		},
 	},
 });
