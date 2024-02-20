@@ -12,5 +12,5 @@
 		"types": ["vite-plugin-pwa/client"]
 	},
 	// "include": ["src", "node_modules/**/*.d.ts"],
-	"exclude": ["src/public", "node_modules "]
+	"exclude": ["src/static", "node_modules "]
 }

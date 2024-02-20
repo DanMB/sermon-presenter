@@ -1,7 +1,7 @@
 {
 	"name": "ourpresenter",
-	"version": "0.8.2",
-	"description": "",
+	"version": "0.9.0",
+	"type": "module",
 	"scripts": {
 		"start": "tauri dev",
 		"start:src": "vite",
@@ -11,7 +11,6 @@
 		"type-check": "tsc --noEmit",
 		"tauri": "tauri"
 	},
-	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {

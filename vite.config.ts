@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
+// import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import { resolve } from 'path';
-import mkcert from 'vite-plugin-mkcert';
+// import mkcert from 'vite-plugin-mkcert';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -20,12 +20,11 @@ export default defineConfig({
 	define: {
 		__VERSION__: JSON.stringify(process.env.npm_package_version),
 	},
-	root: './src',
 	plugins: [
-		mkcert(),
-		tsconfigPaths({
-			root: '../../',
-		}),
+		// mkcert(),
+		// tsconfigPaths({
+		// 	root: '../../',
+		// }),
 		sveltekit(),
 		VitePWA({
 			includeAssets: ['icons/logo-192x192.png', 'icons/logo-512x512', 'favicon.ico', 'robots.txt'],
