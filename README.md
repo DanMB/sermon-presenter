@@ -7,8 +7,8 @@ Native app made with [Tauri](https://tauri.app/)
 
 ###### Start the dev server and run in Tauri:
 
-- `yarn start`
+- `pnpm start`
 
 ###### Compile a client and Tauri build for distribution:
 
-- `yarn build`
+- `pnpm build`
