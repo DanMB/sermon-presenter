@@ -1,27 +1,16 @@
 {
+	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"target": "esnext",
-		"module": "esnext",
-		"moduleResolution": "node",
-		"jsx": "react-jsx",
-		"lib": ["dom", "dom.iterable", "esnext"],
 		"strict": true,
-		"noEmit": true,
 		"allowJs": true,
-		"skipLibCheck": true,
+		"checkJs": true,
 		"esModuleInterop": true,
-		"isolatedModules": true,
 		"resolveJsonModule": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
-		"allowSyntheticDefaultImports": true,
-		"baseUrl": ".",
-		"paths": {
-			"@src/*": ["./src/*"]
-		},
 		"types": ["vite-plugin-pwa/client"]
 	},
-	"include": ["src", "node_modules/**/*.d.ts"],
+	// "include": ["src", "node_modules/**/*.d.ts"],
 	"exclude": ["src/public", "node_modules "]
 }
