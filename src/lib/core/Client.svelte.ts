@@ -18,9 +18,7 @@ export class ClientInstance {
 		this.tauriVersion = await getTauriVersion();
 		this.appVersion = await getVersion();
 
-		setTimeout(async () => {
-			appWindow.show();
-		}, 800);
+		appWindow.show();
 	};
 }
 
