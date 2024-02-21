@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Tabs } from '@dan-ui/tabs';
 
-	let tabPanel = Tabs.buildPanel('newtab');
+	const tabPanel = Tabs.buildPanel('newtab');
 </script>
 
 <section {...tabPanel}>

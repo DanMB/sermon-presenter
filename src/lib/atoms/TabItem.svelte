@@ -4,7 +4,7 @@
 
 	let { value, children } = $props<{ value: string; children: Snippet }>();
 
-	let tabController = Tabs.buildController(value);
+	const tabController = Tabs.buildController(value);
 </script>
 
 <button {...tabController}>
