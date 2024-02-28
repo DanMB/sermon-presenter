@@ -7,7 +7,6 @@
 </script>
 
 <nav {...tabList}>
-	<TabItem value="tab-1">Tab 1</TabItem>
 	<TabItem value="newtab">
 		<Plus />
 	</TabItem>

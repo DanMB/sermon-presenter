@@ -37,16 +37,6 @@ export class Tabs {
 		setContext<Tabs>(id('tabs'), this);
 	}
 
-	public addOption = (value: string) => {
-		if (this.options.includes(value)) return;
-		this.options.push(value);
-	};
-
-	public removeOption = (value: string) => {
-		if (!this.options.includes(value)) return;
-		this.options = this.options.filter(v => v !== value);
-	};
-
 	public static buildList = () => {
 		const tab = Tabs.current;
 
@@ -90,14 +80,6 @@ export class Tabs {
 
 	public static buildController = (value: string | undefined) => {
 		const tab = Tabs.current;
-
-		onMount(() => {
-			if (value) tab.addOption(value);
-
-			return () => {
-				if (value) tab.removeOption(value);
-			};
-		});
 
 		return builder({
 			props: {

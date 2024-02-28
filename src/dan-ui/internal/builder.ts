@@ -6,7 +6,7 @@ export function builder<T extends HTMLElement>({
 	action,
 }: { props?: HTMLAttributes<T>; action?: Action<T> } = {}) {
 	if (action) {
-		Object.defineProperty(props, 'action', {
+		Object.defineProperty(props, 'use:action', {
 			value: action,
 			enumerable: false,
 		});

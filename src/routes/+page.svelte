@@ -1,7 +1,6 @@
 <script lang="ts">
-	import NewTab from '$lib/components/NewTab.svelte';
-	import TopBar from '$lib/components/TopBar.svelte';
-	import Page from '$lib/components/Page.svelte';
+	import TabsContent from '$lib/sections/TabsContent.svelte';
+	import TopBar from '$lib/sections/TopBar.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { Tabs } from '@dan-ui/tabs';
 
@@ -16,44 +15,17 @@
 
 <main>
 	<TopBar />
-	<NewTab />
-	<Page />
+	<TabsContent />
 </main>
 
 <style lang="scss">
 	main {
-		height: 100%;
-	}
-
-	section {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	nav {
-		display: flex;
+		flex-direction: column;
 		align-items: stretch;
-		height: 100%;
-	}
-
-	div {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.3em 1em;
-
-		:global(svg) {
-			height: 1em;
-			width: 1em;
-		}
-	}
-
-	.test {
-		background-color: red;
-	}
-
-	p {
-		color: white;
+		height: 100vh;
+		width: 100%;
+		gap: $gap;
+		padding: $gap;
 	}
 </style>
