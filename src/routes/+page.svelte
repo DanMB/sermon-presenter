@@ -25,7 +25,7 @@
 		align-items: stretch;
 		height: 100vh;
 		width: 100%;
-		gap: $gap;
-		padding: $gap;
+		gap: var(--gap);
+		padding: var(--gap);
 	}
 </style>

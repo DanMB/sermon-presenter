@@ -64,7 +64,7 @@ export default defineConfig({
 	css: {
 		preprocessorOptions: {
 			scss: {
-				additionalData: `@import 'src/app.scss';`,
+				// additionalData: `@import 'src/app.scss';`,
 			},
 			includePaths: [resolve(__dirname, 'src/style/')],
 		},
