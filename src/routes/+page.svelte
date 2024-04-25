@@ -2,7 +2,7 @@
 	import TabsContent from '$lib/sections/TabsContent.svelte';
 	import TopBar from '$lib/sections/TopBar.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
-	import { Tabs } from '@dan-ui/tabs';
+	import { Tabs } from '$lib/core/tabs';
 
 	new Tabs({
 		value: 'newtab',

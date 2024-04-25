@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tabs } from '@dan-ui/tabs';
+	import { Tabs } from '$lib/core/tabs';
 
 	const tabPanel = Tabs.buildPanel('newtab');
 </script>

@@ -1,7 +1,7 @@
 import { getContext, onMount, setContext } from 'svelte';
-import type { Orientation } from '../../internal/types';
-import { builder } from '@dan-ui/internal/builder';
-import { id } from '@dan-ui/internal/id';
+import type { Orientation } from '../types';
+import { builder } from '../builder';
+import { id } from '../id';
 
 export type CreateTabsProps = {
 	value?: string;

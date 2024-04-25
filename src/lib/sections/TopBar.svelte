@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TabItem from '$lib/atoms/TabItem.svelte';
-	import { Tabs } from '@dan-ui/tabs';
+	import { Tabs } from '$lib/core/tabs';
 	import Plus from 'lucide-svelte/icons/plus';
 
 	const tabList = Tabs.buildList();

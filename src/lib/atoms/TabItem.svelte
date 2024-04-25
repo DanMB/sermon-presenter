@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tabs } from '@dan-ui/tabs';
+	import { Tabs } from '$lib/core/tabs';
 	import type { Snippet } from 'svelte';
 
 	let { value, children } = $props<{ value: string; children: Snippet }>();
