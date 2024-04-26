@@ -54,7 +54,24 @@ button {
 	background: none;
 	margin: 0;
 	padding: 0;
-	cursor: pointer;
 	font: inherit;
 	color: inherit;
+
+	&:not(:disabled) {
+		cursor: pointer;
+	}
+}
+
+svg.lucide-icon.lucide-loader-2 path {
+	transform-origin: 50% 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }

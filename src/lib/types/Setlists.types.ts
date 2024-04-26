@@ -1,13 +1,13 @@
 export interface SetlistEvent {
 	id: string;
-	organisationName: string;
+	location: string;
 	title: string;
 	date: string;
 	songs: number;
 }
 
 export interface SetListGroup {
-	organisationName: string;
+	location: string;
 	events: SetlistEvent[];
 }
 

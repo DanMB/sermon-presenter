@@ -25,8 +25,18 @@ class OurPraiseClass {
 	// 		});
 	// };
 
-	public getAllEvents = async (): Promise<SetlistEvent[] | null> => {
-		return await fetch(OurPraiseClass.endpoint + '/events')
+	public getEvents = async ({
+		location,
+		limit = 8,
+	}: {
+		location?: string;
+		limit?: number;
+	}): Promise<SetlistEvent[] | null> => {
+		const params = new URLSearchParams();
+		if (location) params.set('location', location);
+		params.set('limit', limit.toString());
+
+		return await fetch(`${OurPraiseClass.endpoint}/events?${params}`)
 			.then(async res => await res.json())
 			.catch(e => {
 				console.warn(`Error getting events`, e);

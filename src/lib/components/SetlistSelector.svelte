@@ -1,25 +1,52 @@
 <script lang="ts">
 	import { ourPraise } from '$lib/OurPraise.svelte';
 	import type { SetlistEvent } from '$lib/types/Setlists.types';
-	import { onMount } from 'svelte';
 	import dates from '../../tools/dates';
+	import Loader2 from 'lucide-svelte/icons/loader-2';
+	import RotateCw from 'lucide-svelte/icons/rotate-cw';
 
 	let setlists: SetlistEvent[] = $state([]);
 	let loading = $state(true);
+	let location: string | undefined = $state();
 
-	onMount(() => {
-		ourPraise.getAllEvents().then(data => {
-			loading = false;
-			if (data) setlists = data;
-		});
+	const fetch = () => {
+		loading = true;
+		ourPraise
+			.getEvents({
+				location,
+			})
+			.then(data => {
+				loading = false;
+				if (data) setlists = data;
+			});
+	};
+
+	$effect(() => {
+		fetch();
 	});
 </script>
 
 <section>
+	<div class="header">
+		<h3>Setlists</h3>
+		<select bind:value={location}>
+			<option value="aav" selected>Aarhus Vineyard</option>
+			<option value="rov">Roskilde Vineyard</option>
+		</select>
+		<button disabled={loading} onclick={fetch}>
+			{#if loading}
+				<Loader2 />
+			{:else}
+				<RotateCw />
+			{/if}
+		</button>
+	</div>
 	<ol>
 		{#each setlists as setlist}
 			<li class:passed={dates.hasPassed(setlist.date)}>
 				<button
+					class="item"
+					disabled={loading}
 					onclick={() => {
 						console.log(setlist.id);
 					}}
@@ -39,6 +66,10 @@
 		flex-direction: column;
 	}
 
+	.header {
+		display: flex;
+	}
+
 	ol {
 		list-style: none;
 		padding: 0;
@@ -56,7 +87,7 @@
 		display: flex;
 	}
 
-	button {
+	.item {
 		border: 0;
 		background: none;
 
@@ -69,12 +100,16 @@
 		padding: 0.5rem 1rem;
 		border-radius: 6px;
 
-		&:hover {
+		&:not(:disabled):hover {
 			box-shadow: inset 0 0 0 1px var(--color-border);
 
 			.title {
 				color: var(--color-primary);
 			}
+		}
+
+		&:disabled {
+			opacity: 0.75;
 		}
 	}
 
