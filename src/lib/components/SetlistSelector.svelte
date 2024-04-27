@@ -106,23 +106,22 @@
 	}
 
 	.item {
-		border: 0;
-		background: none;
-
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		align-items: stretch;
 		justify-content: center;
-		gap: 1.5em;
-		padding: 0.5rem 1rem;
-		border-radius: 6px;
+		gap: 1em;
+		padding: 0.5rem;
+		border: 0;
+		border-bottom: 1px solid hsl(var(--border));
+		border-radius: 0;
 
 		&:not(:disabled):hover {
-			box-shadow: inset 0 0 0 1px var(--color-border);
+			background-color: hsl(var(--muted) / 0.5);
 
 			.title {
-				color: var(--color-primary);
+				color: hsl(var(--primary));
 			}
 		}
 
@@ -131,8 +130,12 @@
 		}
 	}
 
+	li:last-child .item {
+		border-bottom: 0;
+	}
+
 	.passed {
-		color: var(--color-faded-text);
+		color: hsl(var(--muted-foreground));
 	}
 
 	.title {
@@ -144,6 +147,6 @@
 	.length {
 		font-family: var(--mono-font);
 		font-size: 0.9em;
-		color: var(--color-faded-text);
+		color: hsl(var(--muted-foreground));
 	}
 </style>

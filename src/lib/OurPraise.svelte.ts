@@ -27,7 +27,7 @@ class OurPraiseClass {
 
 	public getEvents = async ({
 		location,
-		limit = 8,
+		limit = 5,
 	}: {
 		location?: string;
 		limit?: number;
