@@ -7,13 +7,11 @@
 		"node": "^20"
 	},
 	"scripts": {
-		"start": "tauri dev",
-		"start:src": "vite",
-		"build": "tauri build",
-		"build:src": "vite build",
-		"build:github": "vite build --base=/sermon-presenter",
-		"type-check": "tsc --noEmit",
-		"tauri": "tauri"
+		"start": "vite dev --mode=development && tauri dev",
+		"dev": "vite dev --mode=development",
+		"dist": "tauri build",
+		"build": "vite build --mode=production",
+		"check": "tsc --noEmit"
 	},
 	"author": "",
 	"license": "ISC",

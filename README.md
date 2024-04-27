@@ -9,6 +9,10 @@ Native app made with [Tauri](https://tauri.app/)
 
 - `pnpm start`
 
-###### Compile a client and Tauri build for distribution:
+###### Compile a Tauri build for distribution:
+
+- `pnpm dist`
+
+###### Compile a web client build for serving:
 
 - `pnpm build`
