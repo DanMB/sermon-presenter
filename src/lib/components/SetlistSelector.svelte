@@ -34,7 +34,7 @@
 			<option value="aav" selected>Aarhus Vineyard</option>
 			<option value="rov">Roskilde Vineyard</option>
 		</select>
-		<button disabled={loading} onclick={fetch}>
+		<button class="reload" disabled={loading} onclick={fetch}>
 			{#if loading}
 				<Loader2 />
 			{:else}
@@ -65,10 +65,27 @@
 	section {
 		display: flex;
 		flex-direction: column;
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+		color: hsl(var(--card-foreground));
+		background-color: hsl(var(--card));
+		border-radius: calc(var(--radius) + 4px);
+		border: 1px solid hsl(var(--border));
+		padding: 1.5rem 1.75rem;
+		gap: 1.5rem;
 	}
 
 	.header {
 		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	h3 {
+		margin-right: auto;
+	}
+
+	.reload {
+		border: 1px solid hsl(var(--input));
 	}
 
 	ol {

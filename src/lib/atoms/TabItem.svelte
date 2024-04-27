@@ -13,26 +13,16 @@
 
 <style lang="scss">
 	button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.3em 1em;
-		border: none;
-		border-bottom: 2px solid transparent;
-		background: none;
-		color: white;
+		color: hsl(var(--muted-foreground));
+		border-radius: calc(var(--radius) - 2px);
 
 		&:hover {
-			background: rgba(255, 255, 255, 0.1);
+			color: hsl(var(--foreground));
 		}
 
 		&:global([aria-selected="true"]) {
-			border-bottom-color: blue;
-		}
-
-		:global(svg) {
-			height: 1em;
-			width: 1em;
+			background-color: hsl(var(--muted));
+			color: hsl(var(--foreground));
 		}
 	}
 </style>

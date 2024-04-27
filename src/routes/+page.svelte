@@ -13,19 +13,5 @@
 	});
 </script>
 
-<main>
-	<TopBar />
-	<TabsContent />
-</main>
-
-<style lang="scss">
-	main {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		height: 100vh;
-		width: 100%;
-		gap: var(--gap);
-		padding: var(--gap);
-	}
-</style>
+<TopBar />
+<TabsContent />

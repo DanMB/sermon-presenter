@@ -7,34 +7,34 @@
 	const tabList = Tabs.buildList();
 </script>
 
-<nav {...tabList}>
-	{#each tabs.list as tab}
-		<TabItem value={tab.id}>
-			<div>{tab.title}</div>
+<header>
+	<nav {...tabList}>
+		{#each tabs.list as tab}
+			<TabItem value={tab.id}>
+				{tab.title}
+			</TabItem>
+		{/each}
+		<TabItem value="newtab">
+			<Plus />
 		</TabItem>
-	{/each}
-	<TabItem value="newtab">
-		<Plus />
-	</TabItem>
-</nav>
+	</nav>
+</header>
 
 <style lang="scss">
-	nav {
+	header {
 		display: flex;
 		align-items: stretch;
 		height: 100%;
 		flex: 0 0 0;
+		border-bottom: 1px solid hsl(var(--border));
+		padding: 0.5rem 0.5rem;
+		gap: 0.25rem;
 	}
 
-	div {
+	nav {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.3em 1em;
-
-		:global(svg) {
-			height: 1em;
-			width: 1em;
-		}
+		align-items: stretch;
+		height: 100%;
+		gap: 0.25rem;
 	}
 </style>
