@@ -42,23 +42,29 @@
 			{/if}
 		</button>
 	</div>
-	<ol>
-		{#each setlists as setlist}
-			<li class:passed={dates.hasPassed(setlist.date)}>
-				<button
-					class="item"
-					disabled={loading}
-					onclick={() => {
-						tabs.addSetList(setlist);
-					}}
-				>
-					<span class="title">{setlist.title || 'NULL'}</span>
-					<span class="date">{dates.readable(setlist.date)}</span>
-					<span class="songs">{setlist.songs}</span>
-				</button>
-			</li>
-		{/each}
-	</ol>
+	{#if setlists.length > 0}
+		<ol>
+			{#each setlists as setlist}
+				<li class:passed={dates.hasPassed(setlist.date)}>
+					<button
+						class="item"
+						disabled={loading}
+						onclick={() => {
+							tabs.addSetList(setlist);
+						}}
+					>
+						<span class="title">{setlist.title || 'NULL'}</span>
+						<span class="date">{dates.readable(setlist.date)}</span>
+						<span class="songs">{setlist.songs}</span>
+					</button>
+				</li>
+			{/each}
+		</ol>
+	{:else}
+		<div class="loader">
+			<Loader2 />
+		</div>
+	{/if}
 </section>
 
 <style lang="scss">
@@ -86,6 +92,20 @@
 
 	.reload {
 		border: 1px solid hsl(var(--input));
+	}
+
+	.loader {
+		height: 10.5rem;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		:global(svg) {
+			height: 2rem;
+			width: 2rem;
+			color: hsl(var(--muted-foreground));
+		}
 	}
 
 	ol {

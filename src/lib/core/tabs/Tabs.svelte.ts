@@ -1,4 +1,4 @@
-import { getContext, onMount, setContext } from 'svelte';
+import { getContext, setContext } from 'svelte';
 import type { Orientation } from '../types';
 import { builder } from '../builder';
 import { id } from '../id';
@@ -80,6 +80,8 @@ export class Tabs {
 
 	public static buildController = (value: string | undefined) => {
 		const tab = Tabs.current;
+
+		tab.active = value;
 
 		return builder({
 			props: {
