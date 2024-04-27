@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { ourPraise } from '$lib/OurPraise.svelte';
+	import { tabs } from '$lib/Tabs.svelte';
 	import type { SetlistEvent } from '$lib/types/Setlists.types';
 	import dates from '../../tools/dates';
 	import Loader2 from 'lucide-svelte/icons/loader-2';
@@ -29,7 +30,7 @@
 <section>
 	<div class="header">
 		<h3>Setlists</h3>
-		<select bind:value={location}>
+		<select bind:value={location} disabled={loading}>
 			<option value="aav" selected>Aarhus Vineyard</option>
 			<option value="rov">Roskilde Vineyard</option>
 		</select>
@@ -48,7 +49,7 @@
 					class="item"
 					disabled={loading}
 					onclick={() => {
-						console.log(setlist.id);
+						tabs.addSetList(setlist);
 					}}
 				>
 					<span class="title">{setlist.title || 'NULL'}</span>

@@ -1,4 +1,4 @@
-import type { SetListGroup, SetlistEvent } from '$lib/types/Setlists.types';
+import type { SetListGroup, SetlistEvent, SongData } from '$lib/types/Setlists.types';
 
 class OurPraiseClass {
 	private static endpoint = 'https://europe-west1-ourpraise-fb.cloudfunctions.net/api';
@@ -8,7 +8,7 @@ class OurPraiseClass {
 	constructor() {}
 
 	// public getSong = async (id: string): Promise<SongData | null> => {
-	// 	return await fetch(OurPraiseInstance.endpoint + '/song?id=' + id)
+	// 	return await fetch(OurPraiseClass.endpoint + '/song?id=' + id)
 	// 		.then(async res => await res.json())
 	// 		.catch(e => {
 	// 			console.warn(`Error getting song`, e);
@@ -16,14 +16,14 @@ class OurPraiseClass {
 	// 		});
 	// };
 
-	// public getEvent = async (id: string): Promise<SongData[] | null> => {
-	// 	return await fetch(OurPraiseInstance.endpoint + '/event?id=' + id)
-	// 		.then(async res => await res.json())
-	// 		.catch(e => {
-	// 			console.warn(`Error getting event`, e);
-	// 			return null;
-	// 		});
-	// };
+	public getEvent = async (id: string): Promise<SongData[] | null> => {
+		return await fetch(OurPraiseClass.endpoint + '/event?id=' + id)
+			.then(async res => await res.json())
+			.catch(e => {
+				console.warn(`Error getting event`, e);
+				return null;
+			});
+	};
 
 	public getEvents = async ({
 		location,
@@ -45,7 +45,7 @@ class OurPraiseClass {
 	};
 
 	// public search = async (query: string): Promise<unknown[] | null> => {
-	// 	return await fetch(OurPraiseInstance.endpoint + '/search?q=' + query)
+	// 	return await fetch(OurPraiseClass.endpoint + '/search?q=' + query)
 	// 		.then(async res => await res.json())
 	// 		.catch(e => {
 	// 			console.warn(`Error searching`, e);

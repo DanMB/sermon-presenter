@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tabs } from '$lib/Tabs.svelte';
 	import TabItem from '$lib/atoms/TabItem.svelte';
 	import { Tabs } from '$lib/core/tabs';
 	import Plus from 'lucide-svelte/icons/plus';
@@ -7,22 +8,22 @@
 </script>
 
 <nav {...tabList}>
+	{#each tabs.list as tab}
+		<TabItem value={tab.id}>
+			<div>{tab.title}</div>
+		</TabItem>
+	{/each}
 	<TabItem value="newtab">
 		<Plus />
 	</TabItem>
 </nav>
 
 <style lang="scss">
-	section {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
 	nav {
 		display: flex;
 		align-items: stretch;
 		height: 100%;
+		flex: 0 0 0;
 	}
 
 	div {

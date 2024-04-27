@@ -12,6 +12,6 @@
 
 <style lang="scss">
 	section {
-		color: white;
+		flex: 1 1 auto;
 	}
 </style>
