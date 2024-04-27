@@ -2,7 +2,7 @@
 	import { Tabs } from '$lib/core/tabs';
 	import type { Snippet } from 'svelte';
 
-	let { value, children } = $props<{ value: string; children: Snippet }>();
+	let { value, children }:{ value: string; children: Snippet } = $props();
 
 	const tabController = Tabs.buildController(value);
 </script>
