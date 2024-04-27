@@ -96,6 +96,14 @@ input, button, select, textarea {
 	border-radius: calc(var(--radius) - 2px);
 	border: 1px solid hsl(var(--input));
 	transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 1px solid hsl(var(--ring));
+	}
 }
 
 button, select {
