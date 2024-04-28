@@ -163,10 +163,12 @@
 		font-weight: var(--bold-weight);
 	}
 
-	.date,
+	.date {
+		color: hsl(var(--muted-foreground));
+	}
+
 	.length {
 		font-family: var(--mono-font);
-		font-size: 0.9em;
 		color: hsl(var(--muted-foreground));
 	}
 </style>

@@ -10,12 +10,7 @@ export class Tab {
 	constructor({ id, title }: { id: string; title?: string }) {
 		this.id = id;
 		this.title = title || id;
-		this.load();
 	}
-
-	public load = async () => {
-		this.loading = false;
-	};
 
 	public close = () => {};
 }
@@ -23,31 +18,39 @@ export class Tab {
 export class SetListTab extends Tab {
 	public songs = $state<SongData[]>([]);
 
+	constructor(setlist: SetlistEvent) {
+		super(setlist);
+		this.load();
+	}
+
 	public load = async () => {
+		console.log('LOAD2');
 		const data = await ourPraise.getEvent(this.id);
 		if (data) {
-			this.songs = data;
+			this.title = data.title;
+			this.songs = data.songs;
 		}
+		this.loading = false;
 	};
 }
 
-class TabsClass extends Map<string, Tab> {
+class TabsClass {
+	public map = new Map<string, Tab>();
 	public list = $derived(
-		Array.from(this.values(), tab => ({
+		Array.from(this.map.values(), tab => ({
 			id: tab.id,
 			title: tab.title,
 		}))
 	);
-	constructor() {
-		super();
-	}
+
+	constructor() {}
 
 	public addSetList = (setlist: SetlistEvent) => {
-		this.set(setlist.id, new SetListTab(setlist));
+		this.map.set(setlist.id, new SetListTab(setlist));
 	};
 
-	public find = <T = Tab>(id: string) => {
-		return this.get(id) as T | undefined;
+	public get = <T = Tab>(id: string) => {
+		return this.map.get(id) as T | undefined;
 	};
 }
 

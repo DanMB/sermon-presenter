@@ -1,4 +1,4 @@
-import type { SetListGroup, SetlistEvent, SongData } from '$lib/types/Setlists.types';
+import type { SetListGroup, SetlistData, SetlistEvent } from '$lib/types/Setlists.types';
 
 class OurPraiseClass {
 	private static endpoint = 'https://europe-west1-ourpraise-fb.cloudfunctions.net/api';
@@ -16,7 +16,7 @@ class OurPraiseClass {
 	// 		});
 	// };
 
-	public getEvent = async (id: string): Promise<SongData[] | null> => {
+	public getEvent = async (id: string): Promise<SetlistData | null> => {
 		return await fetch(OurPraiseClass.endpoint + '/event?id=' + id)
 			.then(async res => await res.json())
 			.catch(e => {

@@ -5,13 +5,29 @@
 	const tabPanel = Tabs.buildPanel('newtab');
 </script>
 
-<section {...tabPanel}>
-	<h1>NEWTAB</h1>
-	<SetlistSelector />
-</section>
+<main {...tabPanel}>
+	<section>
+		<h1>OurPresenter</h1>
+		<SetlistSelector />
+	</section>
+</main>
 
 <style lang="scss">
-	section {
+	main {
+		background-color: hsl(var(--muted) / 0.4);
 		flex: 1 1 auto;
+		padding: 1.5rem 2rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	section {
+		width: 100%;
+		max-width: 60rem;
+	}
+
+	h1 {
+		text-align: center;
 	}
 </style>

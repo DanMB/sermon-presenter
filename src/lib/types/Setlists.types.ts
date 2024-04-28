@@ -6,6 +6,14 @@ export interface SetlistEvent {
 	songs: number;
 }
 
+export interface SetlistData {
+	id: string;
+	location: string;
+	title: string;
+	date: string;
+	songs: SongData[];
+}
+
 export interface SetListGroup {
 	location: string;
 	events: SetlistEvent[];
