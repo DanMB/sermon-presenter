@@ -8,10 +8,6 @@
 
 	const tabPanel = Tabs.buildPanel(id);
 	const tab = tabs.get<SetListTab>(id);
-
-	console.log(tab);
-
-	$inspect(tab?.songs);
 </script>
 
 {#if tab}
