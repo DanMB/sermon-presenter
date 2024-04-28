@@ -24,7 +24,6 @@ export class SetListTab extends Tab {
 	}
 
 	public load = async () => {
-		console.log('LOAD2');
 		const data = await ourPraise.getEvent(this.id);
 		if (data) {
 			this.title = data.title;
@@ -42,8 +41,6 @@ class TabsClass {
 			title: tab.title,
 		}))
 	);
-
-	constructor() {}
 
 	public addSetList = (setlist: SetlistEvent) => {
 		this.map.set(setlist.id, new SetListTab(setlist));
