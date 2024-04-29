@@ -11,11 +11,12 @@ export type TabTypes = {
 export type TabConstructor<T extends keyof TabTypes = keyof TabTypes> = { id: string; title?: string; type: T };
 
 export class Tab<T extends keyof TabTypes = keyof TabTypes> {
-	public loading = $state<boolean>(true);
 	public readonly id: string;
-	public title = $state<string>('');
-	public data = $state<TabTypes[T] | undefined>();
 	public readonly type: T;
+
+	public title = $state<string>('');
+	public loading = $state<boolean>(true);
+	public data = $state<TabTypes[T] | undefined>();
 
 	constructor({ id, title, type }: TabConstructor<T>) {
 		this.id = id;
@@ -55,6 +56,17 @@ class TabsClass {
 			for (const constructor of constructors) {
 				this.add(constructor);
 			}
+
+			window.addEventListener('beforeunload', () => {
+				storage.set(
+					'tabs',
+					Array.from(this.map.values(), tab => ({
+						id: tab.id,
+						title: tab.title,
+						type: tab.type,
+					}))
+				);
+			});
 		}
 	}
 
