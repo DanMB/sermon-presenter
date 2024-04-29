@@ -55,7 +55,10 @@
 						class="item"
 						disabled={loading}
 						onclick={() => {
-							tabs.addSetList(setlist);
+							tabs.add({
+								...setlist,
+								type: 'setlist',
+							});
 						}}
 					>
 						<span class="title">{setlist.title || 'NULL'}</span>

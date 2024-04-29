@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SetListTab, tabs } from '$lib/Tabs.svelte';
+	import { tabs } from '$lib/Tabs.svelte';
 	import Song from '$lib/components/Song.svelte';
 	import { Tabs } from '$lib/core/tabs';
 	import Loader2 from 'lucide-svelte/icons/loader-2';
@@ -7,7 +7,7 @@
 	const { id }: { id: string } = $props();
 
 	const tabPanel = Tabs.buildPanel(id);
-	const tab = tabs.get<SetListTab>(id);
+	const tab = tabs.get<'setlist'>(id);
 </script>
 
 {#if tab}
@@ -16,8 +16,8 @@
 			<div class="loader">
 				<Loader2 />
 			</div>
-		{:else}
-			{#each tab.songs as song}
+		{:else if tab.data}
+			{#each tab.data as song}
 				<Song data={song} />
 			{/each}
 		{/if}

@@ -1,36 +1,43 @@
+import { browser } from '$app/environment';
 import { ourPraise } from './OurPraise.svelte';
-import type { SetlistEvent, SongData } from './types/Setlists.types';
+import { storage } from './Storage.svelte';
+import type { SongData } from './types/Setlists.types';
 import { Map } from 'svelte/reactivity';
 
-export class Tab {
+export type TabTypes = {
+	setlist: SongData[];
+};
+
+export type TabConstructor<T extends keyof TabTypes = keyof TabTypes> = { id: string; title?: string; type: T };
+
+export class Tab<T extends keyof TabTypes = keyof TabTypes> {
 	public loading = $state<boolean>(true);
 	public readonly id: string;
 	public title = $state<string>('');
+	public data = $state<TabTypes[T] | undefined>();
+	public readonly type: T;
 
-	constructor({ id, title }: { id: string; title?: string }) {
+	constructor({ id, title, type }: TabConstructor<T>) {
 		this.id = id;
 		this.title = title || id;
-	}
-
-	public close = () => {};
-}
-
-export class SetListTab extends Tab {
-	public songs = $state<SongData[]>([]);
-
-	constructor(setlist: SetlistEvent) {
-		super(setlist);
-		this.load();
+		this.type = type;
 	}
 
 	public load = async () => {
-		const data = await ourPraise.getEvent(this.id);
-		if (data) {
-			this.title = data.title;
-			this.songs = data.songs;
+		this.loading = true;
+		if (this.type === 'setlist') {
+			const data = await ourPraise.getEvent(this.id);
+			if (data) {
+				this.title = data.title;
+				this.data = data.songs;
+			}
 		}
 		this.loading = false;
 	};
+
+	public close = () => {};
+
+	public focus = () => {};
 }
 
 class TabsClass {
@@ -42,12 +49,31 @@ class TabsClass {
 		}))
 	);
 
-	public addSetList = (setlist: SetlistEvent) => {
-		this.map.set(setlist.id, new SetListTab(setlist));
+	constructor() {
+		if (browser) {
+			const constructors = storage.get<TabConstructor[]>('tabs') ?? [];
+			for (const constructor of constructors) {
+				this.add(constructor);
+			}
+		}
+	}
+
+	public add = (constructor: TabConstructor) => {
+		if (!constructor.id) return;
+		const existing = this.get(constructor.id);
+		if (existing) {
+			existing.load();
+			return;
+		}
+
+		const created = new Tab(constructor);
+		this.map.set(constructor.id, created);
+		created.load();
+		created.focus();
 	};
 
-	public get = <T = Tab>(id: string) => {
-		return this.map.get(id) as T | undefined;
+	public get = <T extends keyof TabTypes = keyof TabTypes>(id: string) => {
+		return this.map.get(id) as Tab<T> | undefined;
 	};
 }
 
