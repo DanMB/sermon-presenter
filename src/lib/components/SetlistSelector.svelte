@@ -3,7 +3,7 @@
 	import { storage } from '$lib/Storage.svelte';
 	import { pages } from '$lib/Pages.svelte';
 	import type { SetlistEvent } from '$lib/types/Setlists.types';
-	import dates from '../../tools/dates';
+	import dates from '$lib/tools/dates';
 	import Loader2 from 'lucide-svelte/icons/loader-2';
 	import RotateCw from 'lucide-svelte/icons/rotate-cw';
 
