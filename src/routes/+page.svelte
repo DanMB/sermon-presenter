@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TabsContent from '$lib/sections/TabsContent.svelte';
+	import PagesContent from '$lib/sections/PagesContent.svelte';
 	import TopBar from '$lib/sections/TopBar.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 	import { Tabs } from '$lib/core/tabs';
@@ -14,4 +14,4 @@
 </script>
 
 <TopBar />
-<TabsContent />
+<PagesContent />

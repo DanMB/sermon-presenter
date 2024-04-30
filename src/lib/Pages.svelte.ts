@@ -4,21 +4,26 @@ import { storage } from './Storage.svelte';
 import type { SongData } from './types/Setlists.types';
 import { Map } from 'svelte/reactivity';
 
-export type TabTypes = {
+export type PageTypes = {
 	setlist: SongData[];
 };
 
-export type TabConstructor<T extends keyof TabTypes = keyof TabTypes> = { id: string; title?: string; type: T };
+export type PageConstructor<T extends keyof PageTypes = keyof PageTypes> = {
+	id: string;
+	title?: string;
+	type: T;
+	active?: boolean;
+};
 
-export class Tab<T extends keyof TabTypes = keyof TabTypes> {
+export class Page<T extends keyof PageTypes = keyof PageTypes> {
 	public readonly id: string;
 	public readonly type: T;
 
 	public title = $state<string>('');
 	public loading = $state<boolean>(true);
-	public data = $state<TabTypes[T] | undefined>();
+	public data = $state<PageTypes[T] | undefined>();
 
-	constructor({ id, title, type }: TabConstructor<T>) {
+	constructor({ id, title, type }: PageConstructor<T>) {
 		this.id = id;
 		this.title = title || id;
 		this.type = type;
@@ -35,14 +40,11 @@ export class Tab<T extends keyof TabTypes = keyof TabTypes> {
 		}
 		this.loading = false;
 	};
-
-	public close = () => {};
-
-	public focus = () => {};
 }
 
-class TabsClass {
-	public map = new Map<string, Tab>();
+class PagesClass {
+	public map = new Map<string, Page>();
+	public active = $state('');
 	public list = $derived(
 		Array.from(this.map.values(), tab => ({
 			id: tab.id,
@@ -52,25 +54,26 @@ class TabsClass {
 
 	constructor() {
 		if (browser) {
-			const constructors = storage.get<TabConstructor[]>('tabs') ?? [];
+			const constructors = storage.get<PageConstructor[]>('pages') ?? [];
 			for (const constructor of constructors) {
 				this.add(constructor);
 			}
 
 			window.addEventListener('beforeunload', () => {
 				storage.set(
-					'tabs',
+					'pages',
 					Array.from(this.map.values(), tab => ({
 						id: tab.id,
 						title: tab.title,
 						type: tab.type,
+						active: tab.id === this.active,
 					}))
 				);
 			});
 		}
 	}
 
-	public add = (constructor: TabConstructor) => {
+	public add = (constructor: PageConstructor) => {
 		if (!constructor.id) return;
 		const existing = this.get(constructor.id);
 		if (existing) {
@@ -78,15 +81,16 @@ class TabsClass {
 			return;
 		}
 
-		const created = new Tab(constructor);
+		const created = new Page(constructor);
 		this.map.set(constructor.id, created);
 		created.load();
-		created.focus();
+		console.log(constructor);
+		if (constructor.active !== false) this.active = constructor.id;
 	};
 
-	public get = <T extends keyof TabTypes = keyof TabTypes>(id: string) => {
-		return this.map.get(id) as Tab<T> | undefined;
+	public get = <T extends keyof PageTypes = keyof PageTypes>(id: string) => {
+		return this.map.get(id) as Page<T> | undefined;
 	};
 }
 
-export const tabs = new TabsClass();
+export const pages = new PagesClass();

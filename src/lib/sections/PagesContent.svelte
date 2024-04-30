@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { tabs } from '$lib/Tabs.svelte';
+	import { pages } from '$lib/Pages.svelte';
 	import NewTab from '$lib/sections/NewTab.svelte';
 	import SetList from './SetList.svelte';
 </script>
 
-{#each tabs.list as tab}
-	<SetList id={tab.id} />
+{#each pages.list as page}
+	<SetList id={page.id} />
 {/each}
 <NewTab />

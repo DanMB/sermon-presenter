@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ourPraise } from '$lib/OurPraise.svelte';
 	import { storage } from '$lib/Storage.svelte';
-	import { tabs } from '$lib/Tabs.svelte';
+	import { pages } from '$lib/Pages.svelte';
 	import type { SetlistEvent } from '$lib/types/Setlists.types';
 	import dates from '../../tools/dates';
 	import Loader2 from 'lucide-svelte/icons/loader-2';
@@ -55,7 +55,7 @@
 						class="item"
 						disabled={loading}
 						onclick={() => {
-							tabs.add({
+							pages.add({
 								...setlist,
 								type: 'setlist',
 							});
