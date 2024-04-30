@@ -27,6 +27,8 @@
 
 <style lang="scss">
 	header {
+		background-color: hsl(var(--topbar));
+		color: hsl(var(--topbar-foreground));
 		display: flex;
 		align-items: stretch;
 		height: 100%;

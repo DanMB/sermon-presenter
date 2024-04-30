@@ -2,8 +2,10 @@
 
 :root {
 
-	--background: 240 10% 3.9%;
+	--background: 240 6.7% 8.8%;
 	--foreground: 0 0% 98%;
+	--topbar: 240 10% 3.9%;
+	--topbar-foreground: 0 0% 98%;
 	--card: 240 10% 3.9%;
 	--card-foreground: 0 0% 98%;
 	--popover: 240 10% 3.9%;
@@ -24,18 +26,6 @@
 
 	--radius: .5rem;
 
-	--color-background: #0f0f0f;
-	--color-offset: #151617;
-	--color-box: #27313b;
-	--color-border: rgba(227, 226, 233, 0.15);
-	--color-border-light: rgba(227, 226, 233, 0.4);
-	--color-text: #f2f5f8;
-	--color-faded-text: #8594a3;
-	--color-scrollbar: lighten($border, 20%);
-	--color-primary: #24f091;
-	--color-highlight: rgba(78, 160, 237, 0.6);
-	--color-red: #f0324b;
-	--color-green: #24f091;
 
 	--root-font: 'Fira Sans', sans-serif;
 	--mono-font: 'Fira Mono', monospace;

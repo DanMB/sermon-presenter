@@ -26,7 +26,6 @@
 
 <style lang="scss">
 	main {
-		background-color: hsl(var(--muted) / 0.4);
 		flex: 1 1 auto;
 		padding: 1.5rem 2rem;
 		display: flex;
