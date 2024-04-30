@@ -1,6 +1,6 @@
 # ourpresenter
 
-Built in React Typescript with SCSS.
+Built in Svelte 5 with Typescript and SCSS.
 Native app made with [Tauri](https://tauri.app/)
 
 ## SCRIPTS
