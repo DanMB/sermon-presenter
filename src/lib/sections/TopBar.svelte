@@ -36,6 +36,8 @@
 		border-bottom: 1px solid hsl(var(--border));
 		padding: 0.5rem 0.5rem;
 		gap: 0.25rem;
+		position: sticky;
+		top: 0;
 	}
 
 	nav {
