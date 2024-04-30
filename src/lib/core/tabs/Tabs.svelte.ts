@@ -14,7 +14,6 @@ export class Tabs {
 	public active = $state<string | undefined>();
 	public orientation: Orientation;
 	public loop: boolean;
-	public options = $state<string[]>([]);
 
 	public static get current() {
 		return (
@@ -22,7 +21,6 @@ export class Tabs {
 				active: undefined,
 				orientation: 'horizontal',
 				loop: false,
-				options: [],
 				addOption: (_: string) => {},
 				removeOption: (_: string) => {},
 			}
