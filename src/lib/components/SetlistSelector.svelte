@@ -79,7 +79,6 @@
 	section {
 		display: flex;
 		flex-direction: column;
-		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 		color: hsl(var(--card-foreground));
 		background-color: hsl(var(--card));
 		border-radius: calc(var(--radius) + 4px);
