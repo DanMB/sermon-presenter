@@ -97,10 +97,6 @@
 		margin-right: auto;
 	}
 
-	.reload {
-		border: 1px solid hsl(var(--input));
-	}
-
 	.loader {
 		height: 10.5rem;
 		width: 100%;

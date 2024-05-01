@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400&family=Fira+Sans:wght@300;400&display=swap');
 
 :root {
-	--background: 240 6.7% 8.8%;
+	--background: 240 6.7% 9.8%;
 	--foreground: 0 0% 98%;
 	--topbar: 240 10% 3.9%;
 	--topbar-foreground: 0 0% 98%;
@@ -19,8 +19,9 @@
 	--accent-foreground: 0 0% 98%;
 	--destructive: 0 62.8% 30.6%;
 	--destructive-foreground: 0 0% 98%;
-	--border: 240 3.7% 15.9%;
+	--border: 240 3.7% 19.2%;
 	--input: 240 3.7% 15.9%;
+	--input-border: 240 3.7% 19.2%;
 	--ring: 240 4.9% 83.9%;
 
 	--radius: 0.5rem;
@@ -47,7 +48,7 @@ html {
 body {
 	min-height: 100vh;
 	width: 100%;
-	background-color: hsl(var(--background));
+	background-color: hsl(var(--background)) !important;
 	color: hsl(var(--foreground));
 	font-family: var(--root-font);
 	font-weight: var(--root-weight);
