@@ -1,21 +1,19 @@
 <script lang="ts">
 	import { pages } from '$lib/Pages.svelte';
 	import Song from '$lib/components/Song.svelte';
-	import Loader2 from 'lucide-svelte/icons/loader-2';
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
-	const { id }: { id: string } = $props();
-
-	const page = pages.get<'setlist'>(id);
+	let { data } = $props();
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-<main role="tabpanel" tabindex="0" {id}>
-	{#if page.loading}
+<main role="tabpanel" tabindex="0" id={data.page.id}>
+	{#if data.page.loading}
 		<div class="loader">
-			<Loader2 />
+			<LoaderCircle />
 		</div>
-	{:else if page.data}
-		{#each page.data as song}
+	{:else if data.page.data}
+		{#each data.page.data as song}
 			<Song data={song} />
 		{/each}
 	{/if}

@@ -4,7 +4,7 @@
 	import { pages } from '$lib/Pages.svelte';
 	import type { SetlistEvent } from '$lib/types/Setlists.types';
 	import dates from '$lib/tools/dates';
-	import Loader2 from 'lucide-svelte/icons/loader-2';
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import RotateCw from 'lucide-svelte/icons/rotate-cw';
 
 	let setlists: SetlistEvent[] = $state([]);
@@ -41,7 +41,7 @@
 		</select>
 		<button class="reload" disabled={loading} onclick={fetch}>
 			{#if loading}
-				<Loader2 />
+				<LoaderCircle />
 			{:else}
 				<RotateCw />
 			{/if}
@@ -70,7 +70,7 @@
 		</ol>
 	{:else}
 		<div class="loader">
-			<Loader2 />
+			<LoaderCircle />
 		</div>
 	{/if}
 </section>

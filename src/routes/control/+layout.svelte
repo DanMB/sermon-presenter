@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TopBar from '$lib/sections/TopBar.svelte';
+	import TopBar from '$lib/components/TopBar.svelte';
 	import { invoke } from '@tauri-apps/api/tauri';
 
 	let { children } = $props();
