@@ -34,6 +34,7 @@
 		align-items: stretch;
 		position: relative;
 		width: 100%;
+		gap: 1rem;
 	}
 
 	/* h3 {
@@ -46,6 +47,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 		grid-auto-rows: max-content;
+		gap: 1rem;
 	}
 
 	li {
@@ -60,7 +62,7 @@
 		position: relative;
 		color: hsl(var(--card-foreground));
 		background-color: hsl(var(--card));
-		border-radius: calc(var(--radius) + 4px);
+		border-radius: calc(var(--radius) + 2px);
 		border-color: hsl(var(--border));
 	}
 

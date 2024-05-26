@@ -46,13 +46,12 @@ html {
 }
 
 body {
-	min-height: 100vh;
+	height: 100vh;
 	width: 100%;
-	background-color: hsl(var(--background)) !important;
 	color: hsl(var(--foreground));
 	font-family: var(--root-font);
 	font-weight: var(--root-weight);
-	overflow: auto;
+	overflow: hidden;
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -61,6 +60,24 @@ body {
 
 * {
 	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.page {
+	background-color: hsl(var(--background));
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+	padding: 1.5rem 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	gap: 1rem;
 }
 
 svg.lucide-icon.lucide-loader-2 path {
@@ -84,7 +101,9 @@ h3 {
 input,
 button,
 select,
-textarea {
+textarea,
+.input,
+.button {
 	background: none;
 	margin: 0;
 	padding: 0;
@@ -120,7 +139,8 @@ li {
 }
 
 button,
-select {
+select,
+.button {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
@@ -142,7 +162,8 @@ select {
 	}
 }
 
-button {
+button,
+.button {
 	padding: 0 0.75rem;
 
 	svg {
