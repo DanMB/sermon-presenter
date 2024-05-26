@@ -84,7 +84,6 @@ class PagesClass {
 		const created = new Page(constructor);
 		this.map.set(constructor.id, created);
 		created.load();
-		console.log(constructor);
 		if (constructor.active !== false) this.active = created;
 	};
 
