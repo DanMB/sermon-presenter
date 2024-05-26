@@ -1,18 +1,28 @@
 <script lang="ts">
-	import { Tabs } from '$lib/core/tabs';
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
+	import { page } from '$app/stores';
 
-	let { value, children }:{ value: string; children: Snippet } = $props();
+	let { value, children }:{ value?: string; children: Snippet } = $props();
 
-	const tabController = Tabs.buildController(value);
+	let active = $state(false);
+
+	onMount(() => {
+		const unsub = page.subscribe((newPage) => {
+			active = newPage.params.tab === value;
+		});
+
+		return () => {
+			unsub();
+		}
+	})
 </script>
 
-<button {...tabController}>
+<a class="button" href={value ? `/control/${value}` : '/control'} role="tab" aria-selected={active} aria-controls={value} tabindex={active ? 0 : -1}>
 	{@render children()}
-</button>
+</a>
 
 <style lang="scss">
-	button {
+	a {
 		color: hsl(var(--muted-foreground));
 		border-radius: calc(var(--radius) - 2px);
 
@@ -24,5 +34,9 @@
 			background-color: hsl(var(--muted));
 			color: hsl(var(--foreground));
 		}
+
+		/* &:global(span) {
+			width: 12em;
+		} */
 	}
 </style>

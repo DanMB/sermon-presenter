@@ -1,25 +1,20 @@
 <script lang="ts">
 	import { pages } from '$lib/Pages.svelte';
 	import TabItem from '$lib/atoms/TabItem.svelte';
-	import { Tabs } from '$lib/core/tabs';
 	import Plus from 'lucide-svelte/icons/plus';
-
-	const tabList = Tabs.buildList();
-	const tab = Tabs.current;
-
-	$effect(() => {
-		tab.active = pages.active;
-	});
+	import X from 'lucide-svelte/icons/x';
 </script>
 
 <header>
-	<nav {...tabList}>
+	<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
+	<nav role="tablist" aria-orientation="horizontal">
 		{#each pages.list as page}
 			<TabItem value={page.id}>
-				{page.title}
+				<span>{page.title}</span>
+				<X />
 			</TabItem>
 		{/each}
-		<TabItem value="newtab">
+		<TabItem>
 			<Plus />
 		</TabItem>
 	</nav>
@@ -36,8 +31,6 @@
 		border-bottom: 1px solid hsl(var(--border));
 		padding: 0.5rem 0.5rem;
 		gap: 0.25rem;
-		position: sticky;
-		top: 0;
 	}
 
 	nav {

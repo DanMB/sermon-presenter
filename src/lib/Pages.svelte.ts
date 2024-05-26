@@ -44,7 +44,7 @@ export class Page<T extends keyof PageTypes = keyof PageTypes> {
 
 class PagesClass {
 	public map = new Map<string, Page>();
-	public active = $state('');
+	public active = $state<Page | undefined>();
 	public list = $derived(
 		Array.from(this.map.values(), tab => ({
 			id: tab.id,
@@ -66,7 +66,7 @@ class PagesClass {
 						id: tab.id,
 						title: tab.title,
 						type: tab.type,
-						active: tab.id === this.active,
+						active: tab.id === this.active?.id,
 					}))
 				);
 			});
@@ -85,10 +85,11 @@ class PagesClass {
 		this.map.set(constructor.id, created);
 		created.load();
 		console.log(constructor);
-		if (constructor.active !== false) this.active = constructor.id;
+		if (constructor.active !== false) this.active = created;
 	};
 
-	public get = <T extends keyof PageTypes = keyof PageTypes>(id: string) => {
+	public get = <T extends keyof PageTypes = keyof PageTypes>(id: string | undefined) => {
+		if (!id) return;
 		return this.map.get(id) as Page<T> | undefined;
 	};
 }

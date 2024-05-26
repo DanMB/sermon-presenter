@@ -1,11 +1,8 @@
 <script lang="ts">
 	import SetlistSelector from '$lib/components/SetlistSelector.svelte';
-	import { Tabs } from '$lib/core/tabs';
-
-	const tabPanel = Tabs.buildPanel('newtab');
 </script>
 
-<main {...tabPanel}>
+<main>
 	<section>
 		<h1>OurPresenter</h1>
 		<SetlistSelector />
