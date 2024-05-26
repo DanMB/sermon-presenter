@@ -4,34 +4,20 @@
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
 	let { data } = $props();
+	const page = pages.get<'setlist'>(data.id)!;
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-<main role="tabpanel" tabindex="0" id={data.page.id}>
-	{#if data.page.loading}
-		<div class="loader">
-			<LoaderCircle />
-		</div>
-	{:else if data.page.data}
-		{#each data.page.data as song}
-			<Song data={song} />
-		{/each}
-	{/if}
-</main>
+{#if page.loading}
+	<div class="loader">
+		<LoaderCircle />
+	</div>
+{:else if page.data}
+	{#each page.data as song}
+		<Song data={song} />
+	{/each}
+{/if}
 
 <style lang="scss">
-	main {
-		flex: 1 1 auto;
-		min-height: 0;
-		overflow: auto;
-		padding: 1.5rem 2rem;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		position: relative;
-		gap: 1rem;
-	}
-
 	.loader {
 		position: absolute;
 		top: 0;

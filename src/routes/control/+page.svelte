@@ -2,22 +2,12 @@
 	import SetlistSelector from '$lib/components/SetlistSelector.svelte';
 </script>
 
-<main>
-	<section>
-		<h1>OurPresenter</h1>
-		<SetlistSelector />
-	</section>
-</main>
+<section>
+	<h1>OurPresenter</h1>
+	<SetlistSelector />
+</section>
 
 <style lang="scss">
-	main {
-		flex: 1 1 auto;
-		padding: 1.5rem 2rem;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
 	section {
 		width: 100%;
 		max-width: 60rem;
