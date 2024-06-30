@@ -7,21 +7,21 @@ class OurPraiseClass {
 
 	constructor() {}
 
-	// public getSong = async (id: string): Promise<SongData | null> => {
+	// public getSong = async (id: string): Promise<SongData | undefined> => {
 	// 	return await fetch(OurPraiseClass.endpoint + '/song?id=' + id)
 	// 		.then(async res => await res.json())
 	// 		.catch(e => {
 	// 			console.warn(`Error getting song`, e);
-	// 			return null;
+	// 			return undefined;
 	// 		});
 	// };
 
-	public getEvent = async (id: string): Promise<SetlistData | null> => {
+	public getEvent = async (id: string): Promise<SetlistData | undefined> => {
 		return await fetch(OurPraiseClass.endpoint + '/event?id=' + id)
 			.then(async res => await res.json())
 			.catch(e => {
 				console.warn(`Error getting event`, e);
-				return null;
+				return;
 			});
 	};
 
@@ -31,7 +31,7 @@ class OurPraiseClass {
 	}: {
 		location?: string;
 		limit?: number;
-	}): Promise<SetlistEvent[] | null> => {
+	}): Promise<SetlistEvent[] | undefined> => {
 		const params = new URLSearchParams();
 		if (location) params.set('location', location);
 		params.set('limit', limit.toString());
@@ -40,16 +40,16 @@ class OurPraiseClass {
 			.then(async res => await res.json())
 			.catch(e => {
 				console.warn(`Error getting events`, e);
-				return null;
+				return;
 			});
 	};
 
-	// public search = async (query: string): Promise<unknown[] | null> => {
+	// public search = async (query: string): Promise<unknown[] | undefined> => {
 	// 	return await fetch(OurPraiseClass.endpoint + '/search?q=' + query)
 	// 		.then(async res => await res.json())
 	// 		.catch(e => {
 	// 			console.warn(`Error searching`, e);
-	// 			return null;
+	// 			return undefined;
 	// 		});
 	// };
 }

@@ -1,4 +1,3 @@
-
 import './HeaderTab.scss';
 import Live from '@src/components/icons/Live';
 import GroupIcon from '@src/components/icons/GroupIcon';

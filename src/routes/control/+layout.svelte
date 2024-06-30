@@ -27,5 +27,9 @@
 		align-items: center;
 		position: relative;
 		gap: 1rem;
+
+		&:focus-visible {
+			outline: none;
+		}
 	}
 </style>

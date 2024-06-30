@@ -1,8 +1,22 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { pages } from '$lib/Pages.svelte';
 	import TabItem from '$lib/atoms/TabItem.svelte';
 	import Plus from 'lucide-svelte/icons/plus';
 	import X from 'lucide-svelte/icons/x';
+	import { onMount } from 'svelte';
+
+	let activeId = $state('');
+
+	onMount(() => {
+		const unsub = page.subscribe(newPage => {
+			activeId = newPage.params.tab;
+		});
+
+		return () => {
+			unsub();
+		};
+	});
 </script>
 
 <header>
@@ -11,7 +25,15 @@
 		{#each pages.list as page}
 			<TabItem value={page.id}>
 				<span>{page.title}</span>
-				<X />
+				{#if page.id === activeId}
+					<button
+						onclick={() => {
+							pages.remove(page.id);
+						}}
+					>
+						<X />
+					</button>
+				{/if}
 			</TabItem>
 		{/each}
 		<TabItem>
@@ -38,5 +60,11 @@
 		align-items: stretch;
 		height: 100%;
 		gap: 0.25rem;
+	}
+
+	button {
+		display: flex;
+		place-items: center;
+		cursor: pointer;
 	}
 </style>

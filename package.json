@@ -11,7 +11,8 @@
 		"dev": "vite dev --mode=development",
 		"dist": "tauri build",
 		"build": "vite build --mode=production",
-		"check": "tsc --noEmit"
+		"check": "tsc --noEmit",
+		"format": "prettier --write ."
 	},
 	"author": "",
 	"license": "ISC",
@@ -53,6 +54,7 @@
 		"dotenv": "^16.4.5",
 		"eslint": "^9.3.0",
 		"eslint-plugin-svelte": "^2.39.0",
+		"prettier": "^3.3.2",
 		"react-refresh": "^0.14.2",
 		"sass": "^1.77.2",
 		"typescript": "^5.4.5",

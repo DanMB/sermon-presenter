@@ -19,21 +19,21 @@ export class SidebarStore extends Store<ISidebarState> {
 
 	public openMusic = () => {
 		this.set({
-			sidebar: 'music'
-		})
-	}
+			sidebar: 'music',
+		});
+	};
 
 	public openSettings = () => {
 		this.set({
-			sidebar: 'settings'
-		})
-	}
+			sidebar: 'settings',
+		});
+	};
 
 	public close = () => {
 		this.set({
-			sidebar: null
-		})
-	}
+			sidebar: null,
+		});
+	};
 }
 
 const Sidebar = new SidebarStore();

@@ -87,6 +87,11 @@ class PagesClass {
 		if (constructor.active !== false) this.active = created;
 	};
 
+	public remove = (id: string) => {
+		this.map.delete(id);
+		if (this.active?.id === id) this.active = undefined;
+	};
+
 	public get = <T extends keyof PageTypes = keyof PageTypes>(id: string | undefined) => {
 		if (!id) return;
 		return this.map.get(id) as Page<T> | undefined;

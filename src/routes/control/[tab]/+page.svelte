@@ -4,18 +4,20 @@
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
 	let { data } = $props();
-	const page = pages.get<'setlist'>(data.id)!;
+	const page = $derived(pages.get<'setlist'>(data.id)!);
 </script>
 
-{#if page.loading}
-	<div class="loader">
-		<LoaderCircle />
-	</div>
-{:else if page.data}
-	{#each page.data as song}
-		<Song data={song} />
-	{/each}
-{/if}
+{#key page.id}
+	{#if page.loading}
+		<div class="loader">
+			<LoaderCircle />
+		</div>
+	{:else if page.data}
+		{#each page.data as song (song.id)}
+			<Song data={song} />
+		{/each}
+	{/if}
+{/key}
 
 <style lang="scss">
 	.loader {

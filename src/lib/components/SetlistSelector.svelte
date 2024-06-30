@@ -35,11 +35,11 @@
 <section>
 	<div class="header">
 		<h3>Setlists</h3>
-		<select bind:value={location} disabled={loading}>
+		<select class="select" bind:value={location} disabled={loading}>
 			<option value="aav">Aarhus Vineyard</option>
 			<option value="rov">Roskilde Vineyard</option>
 		</select>
-		<button class="reload" disabled={loading} onclick={fetch}>
+		<button class="button reload" disabled={loading} onclick={fetch}>
 			{#if loading}
 				<LoaderCircle />
 			{:else}
@@ -52,7 +52,7 @@
 			{#each setlists as setlist}
 				<li class:passed={dates.hasPassed(setlist.date)}>
 					<button
-						class="item"
+						class="button item"
 						disabled={loading}
 						onclick={() => {
 							pages.add({
@@ -61,7 +61,7 @@
 							});
 						}}
 					>
-						<span class="title">{setlist.title || 'NULL'}</span>
+						<span class="title" class:italic={!setlist.title}>{setlist.title || 'No name'}</span>
 						<span class="date">{dates.readable(setlist.date)}</span>
 						<span class="songs">{setlist.songs}</span>
 					</button>
@@ -164,6 +164,10 @@
 	.title {
 		flex-grow: 1;
 		font-weight: var(--bold-weight);
+	}
+
+	.italic {
+		font-style: italic;
 	}
 
 	.date {

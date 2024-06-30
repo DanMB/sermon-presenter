@@ -11,7 +11,7 @@
 	<ol>
 		{#each data.slides as slide, index}
 			<li>
-				<button>
+				<button class="button">
 					{#if index <= 20}
 						<kbd>
 							{#if index > 10}<ArrowBigUp />{/if}
