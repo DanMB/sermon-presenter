@@ -66,25 +66,19 @@ const AddMusicModule = () => {
 			{!!loadingQuery && <Spinner />}
 			{!loadingQuery && hits && (
 				<div className='searchResults'>
-					{hits.map(song => {
-						if (song._highlightResult.title.matchLevel!)
-							return (
-								<div
-									className='result'
-									key={song.path}
-									onClick={() => {
-										if (tab) addSong(song.objectID);
-									}}
-								>
-									<div className='name' dangerouslySetInnerHTML={{ __html: song._highlightResult.title.value }}></div>
-									<div
-										className='author'
-										dangerouslySetInnerHTML={{ __html: song._highlightResult.authors.value }}
-									></div>
-									<div className='icon'></div>
-								</div>
-							);
-					})}
+					{hits.map(song => (
+						<div
+							className='result'
+							key={song.id}
+							onClick={() => {
+								if (tab) addSong(song.id);
+							}}
+						>
+							<div className='name'>{song.title}</div>
+							<div className='author'>{song.authors}</div>
+							<div className='icon'></div>
+						</div>
+					))}
 				</div>
 			)}
 		</div>

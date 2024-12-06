@@ -8,15 +8,6 @@ export interface ISearchHighlight {
 export default interface ISearchHit {
 	authors: string;
 	key: string;
-	lastmodified: number;
-	objectID: string;
-	path: string;
+	id: string;
 	title: string;
-	_highlightResult: {
-		authors: ISearchHighlight;
-		key: ISearchHighlight;
-		lastmodified: ISearchHighlight;
-		path: ISearchHighlight;
-		title: ISearchHighlight;
-	};
 }
