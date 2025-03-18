@@ -1,3 +1,9 @@
+# Tauri
+# Copied from tauri/.gitignore
+# Because eslint looks at this file and not the Tauri one
+tauri/target/
+tauri/gen/schemas
+
 # Developer tools' files
 .lite_workspace.lua
 .vscode/*

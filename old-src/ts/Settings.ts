@@ -5,7 +5,12 @@ import PresentWindow from './presenter/PresentWindow';
 export interface ISettingsState {
 	font: string;
 	scale: number;
-	background: IFileData | null;
+	background: {
+		lastModified: number;
+		name: string;
+		type: string;
+		data: string | ArrayBuffer;
+	} | null;
 	foreground: string;
 	autoScale: boolean;
 	position: number;
@@ -17,7 +22,7 @@ export const DefaultSettings: ISettingsState = {
 	background: null,
 	foreground: '#ffffff',
 	autoScale: true,
-	position: 0.5,
+	position: 0.5
 };
 
 export interface ISettingKey {
@@ -37,7 +42,7 @@ export class SettingsStore extends Store<ISettingsState> {
 
 	constructor() {
 		super(DefaultSettings, {
-			id: 'settings_0',
+			id: 'settings_0'
 			// maxAge: Infinity,
 		});
 

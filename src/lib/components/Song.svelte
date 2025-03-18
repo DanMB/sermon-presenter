@@ -1,6 +1,6 @@
 <script lang="ts">
 	import text from '$lib/tools/text';
-	import type { SongData } from '$lib/types/Setlists.types';
+	import type { SongData } from '$lib/core/ourpraise';
 	import ArrowBigUp from 'lucide-svelte/icons/arrow-big-up';
 
 	const { data }: { data: SongData } = $props();
@@ -27,7 +27,7 @@
 	</ol>
 </section>
 
-<style lang="scss">
+<style>
 	section {
 		display: flex;
 		flex-direction: column;
@@ -105,7 +105,7 @@
 		max-height: 100%;
 		width: 100%;
 
-		::selection {
+		&::selection {
 			background-color: none;
 		}
 	}

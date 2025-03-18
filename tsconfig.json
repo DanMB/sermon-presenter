@@ -6,11 +6,22 @@
 		"checkJs": true,
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
-		"noImplicitAny": true,
-		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
-		"types": ["vite-plugin-pwa/client"]
-	},
-	// "include": ["src", "node_modules/**/*.d.ts"],
-	"exclude": ["src/static", "node_modules "]
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"moduleResolution": "bundler",
+		"plugins": [
+			{
+				"name": "typescript-svelte-plugin",
+				// the following options can be set additionally; they are optional; their default values are listed here
+				"enabled": true, // enables this plugin
+				"assumeIsSvelteProject": false // if true, skip detection and always assume it's a Svelte project
+			}
+		]
+	}
+	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
+	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
+	//
+	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
+	// from the referenced tsconfig.json - TypeScript does not merge them in
 }

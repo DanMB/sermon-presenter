@@ -1,33 +1,32 @@
 import { browser } from '$app/environment';
-import { Map } from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
 
 class StorageClass {
-	public map = new Map<string, unknown>();
+	public map = new SvelteMap<string, unknown>();
 
 	constructor() {
-		if (browser) {
-			const now = Date.now();
+		if (!browser) return;
+		const now = Date.now();
 
-			for (let i = 0; i < window.localStorage.length; i++) {
-				const key = window.localStorage.key(i);
-				if (!key) continue;
-				const value = window.localStorage.getItem(key);
-				if (!value) continue;
+		for (let i = 0; i < window.localStorage.length; i++) {
+			const key = window.localStorage.key(i);
+			if (!key) continue;
+			const value = window.localStorage.getItem(key);
+			if (!value) continue;
 
-				try {
-					const item: {
-						expires: number;
-						data: unknown;
-					} = JSON.parse(value as string);
+			try {
+				const item: {
+					expires: number;
+					data: unknown;
+				} = JSON.parse(value as string);
 
-					if (item.expires > 0 && item.expires < now) {
-						window.localStorage.removeItem(key);
-					} else {
-						this.map.set(key, item.data);
-					}
-				} catch (e) {
-					console.warn('Failed to parse cache value', key);
+				if (item.expires > 0 && item.expires < now) {
+					window.localStorage.removeItem(key);
+				} else {
+					this.map.set(key, item.data);
 				}
+			} catch (e) {
+				console.warn('Failed to parse cache value', key);
 			}
 		}
 	}
@@ -42,7 +41,7 @@ class StorageClass {
 		if (!data) return;
 		const value = JSON.stringify({
 			expires: expires >= 0 ? Date.now() + expires * 24 * 60 * 60 * 1000 : -1,
-			data,
+			data
 		});
 		this.map.set(key, data);
 		if (browser) window.localStorage.setItem(key, value);

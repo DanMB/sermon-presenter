@@ -1,34 +1,23 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { pages } from '$lib/Pages.svelte';
-	import TabItem from '$lib/atoms/TabItem.svelte';
+	import { page } from '$app/state';
+	import TabItem from './tab-item.svelte';
 	import Plus from 'lucide-svelte/icons/plus';
 	import X from 'lucide-svelte/icons/x';
-	import { onMount } from 'svelte';
+	import { pages } from '$lib/pages.svelte';
 
-	let activeId = $state('');
-
-	onMount(() => {
-		const unsub = page.subscribe(newPage => {
-			activeId = newPage.params.tab;
-		});
-
-		return () => {
-			unsub();
-		};
-	});
+	let activeId = $state(page.params.tab);
 </script>
 
 <header>
 	<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
 	<nav role="tablist" aria-orientation="horizontal">
-		{#each pages.list as page}
-			<TabItem value={page.id}>
-				<span>{page.title}</span>
-				{#if page.id === activeId}
+		{#each pages.list as pageItem}
+			<TabItem value={pageItem.id}>
+				<span>{pageItem.title}</span>
+				{#if pageItem.id === page.params.tab}
 					<button
 						onclick={() => {
-							pages.remove(page.id);
+							pages.remove(pageItem.id);
 						}}
 					>
 						<X />
@@ -42,7 +31,7 @@
 	</nav>
 </header>
 
-<style lang="scss">
+<style>
 	header {
 		background-color: hsl(var(--topbar));
 		color: hsl(var(--topbar-foreground));

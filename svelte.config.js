@@ -5,11 +5,21 @@ import { preprocessMeltUI, sequence } from '@melt-ui/pp';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	preprocess: sequence([vitePreprocess(), preprocessMeltUI()]),
-	compilerOptions: {
-		// runes: true,
-	},
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			fallback: 'index.html',
+		}),
+	},
+	alias: {
+		'@core': './src/lib/core',
+	},
+	prerender: {
+		handleHttpError: ({ message, status }) => {
+			if (status === 403) {
+				return;
+			}
+			throw new Error(message);
+		},
 	},
 	files: {
 		assets: 'src/static',

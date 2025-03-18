@@ -1,8 +1,7 @@
 import { browser } from '$app/environment';
-import { ourPraise } from './OurPraise.svelte';
-import { storage } from './Storage.svelte';
-import type { SongData } from './types/Setlists.types';
-import { Map } from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
+import OurPraise, { type SongData } from './core/ourpraise';
+import { storage } from './storage.svelte';
 
 export type PageTypes = {
 	setlist: SongData[];
@@ -32,7 +31,7 @@ export class Page<T extends keyof PageTypes = keyof PageTypes> {
 	public load = async () => {
 		this.loading = true;
 		if (this.type === 'setlist') {
-			const data = await ourPraise.getEvent(this.id);
+			const data = await OurPraise.getEvent(this.id);
 			if (data) {
 				this.title = data.title;
 				this.data = data.songs;
@@ -43,12 +42,12 @@ export class Page<T extends keyof PageTypes = keyof PageTypes> {
 }
 
 class PagesClass {
-	public map = new Map<string, Page>();
+	public map = new SvelteMap<string, Page>();
 	public active = $state<Page | undefined>();
 	public list = $derived(
-		Array.from(this.map.values(), tab => ({
+		Array.from(this.map.values(), (tab) => ({
 			id: tab.id,
-			title: tab.title,
+			title: tab.title
 		}))
 	);
 
@@ -62,11 +61,11 @@ class PagesClass {
 			window.addEventListener('beforeunload', () => {
 				storage.set(
 					'pages',
-					Array.from(this.map.values(), tab => ({
+					Array.from(this.map.values(), (tab) => ({
 						id: tab.id,
 						title: tab.title,
 						type: tab.type,
-						active: tab.id === this.active?.id,
+						active: tab.id === this.active?.id
 					}))
 				);
 			});
